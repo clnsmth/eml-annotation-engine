@@ -10,6 +10,7 @@ dependencies:
   - ca-certificates=2025.11.12
   - certifi=2025.11.12
   - click=8.3.1
+  - colorama=0.4.6
   - dnspython=2.8.0
   - email-validator=2.3.0
   - email_validator=2.3.0
@@ -25,6 +26,7 @@ dependencies:
   - httpx=0.28.1
   - hyperframe=6.1.0
   - idna=3.11
+  - iniconfig=2.3.0
   - jinja2=3.1.6
   - libexpat=2.7.3
   - libffi=3.5.2
@@ -37,10 +39,13 @@ dependencies:
   - mdurl=0.1.2
   - ncurses=6.5
   - openssl=3.6.0
+  - packaging=25.0
   - pip=25.3
+  - pluggy=1.6.0
   - pydantic=2.12.5
   - pydantic-core=2.41.5
   - pygments=2.19.2
+  - pytest=9.0.2
   - python=3.12.12
   - python-dotenv=1.2.1
   - python-multipart=0.0.20
