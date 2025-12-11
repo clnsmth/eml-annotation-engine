@@ -1,4 +1,3 @@
-import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -47,16 +46,16 @@ class ProposalRequest(BaseModel):
 def send_email_notification(proposal: ProposalRequest):
     """
     Sends an email with the proposal details to the configured recipient.
-    Credentials and recipient are set via config.py, but can be overridden by environment variables.
+    Credentials and recipient are set via config.py only.
     """
-    recipient = os.getenv("PROPOSAL_RECIPIENT_EMAIL", Config.VOCABULARY_PROPOSAL_RECIPIENT)
-    smtp_server = os.getenv("SMTP_SERVER", Config.SMTP_SERVER)
-    smtp_port = int(os.getenv("SMTP_PORT", str(Config.SMTP_PORT)))
-    smtp_user = os.getenv("SMTP_USER", Config.SMTP_USER)
-    smtp_password = os.getenv("SMTP_PASSWORD", Config.SMTP_PASSWORD)
+    recipient = Config.VOCABULARY_PROPOSAL_RECIPIENT
+    smtp_server = Config.SMTP_SERVER
+    smtp_port = Config.SMTP_PORT
+    smtp_user = Config.SMTP_USER
+    smtp_password = Config.SMTP_PASSWORD
 
     if not recipient:
-        print("Warning: PROPOSAL_RECIPIENT_EMAIL not set. Skipping email dispatch.")
+        print("Warning: VOCABULARY_PROPOSAL_RECIPIENT not set. Skipping email dispatch.")
         print(f"Payload received: {proposal.model_dump_json(indent=2)}")
         return
 
