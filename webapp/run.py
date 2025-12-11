@@ -103,6 +103,11 @@ def send_email_notification(proposal: ProposalRequest):
 
 # --- Endpoints ---
 
+@app.get("/")
+def read_root():
+    return {"message": "Semantic EML Annotator Backend is running."}
+
+
 @app.post("/api/proposals")
 async def submit_proposal(proposal: ProposalRequest, background_tasks: BackgroundTasks):
     """
