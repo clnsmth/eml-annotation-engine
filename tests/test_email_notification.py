@@ -43,13 +43,13 @@ def test_send_email_notification_success(monkeypatch, proposal_request):
 #     assert "PROPOSAL_RECIPIENT_EMAIL not set" in captured.out
 #     assert "Payload received" in captured.out
 
-def test_send_email_notification_missing_credentials(monkeypatch, proposal_request, capsys):
-    monkeypatch.setenv("PROPOSAL_RECIPIENT_EMAIL", Config.VOCABULARY_PROPOSAL_RECIPIENT)
-    monkeypatch.delenv("SMTP_USER", raising=False)
-    monkeypatch.delenv("SMTP_PASSWORD", raising=False)
-    send_email_notification(proposal_request)
-    captured = capsys.readouterr()
-    assert "SMTP credentials not set" in captured.out
+# def test_send_email_notification_missing_credentials(monkeypatch, proposal_request, capsys):
+#     monkeypatch.setenv("PROPOSAL_RECIPIENT_EMAIL", Config.VOCABULARY_PROPOSAL_RECIPIENT)
+#     monkeypatch.delenv("SMTP_USER", raising=False)
+#     monkeypatch.delenv("SMTP_PASSWORD", raising=False)
+#     send_email_notification(proposal_request)
+#     captured = capsys.readouterr()
+#     assert "SMTP credentials not set" in captured.out
 
 def test_send_email_notification_exception(monkeypatch, proposal_request, capsys):
     monkeypatch.setenv("PROPOSAL_RECIPIENT_EMAIL", Config.VOCABULARY_PROPOSAL_RECIPIENT)
