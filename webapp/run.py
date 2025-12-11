@@ -8,6 +8,8 @@ from fastapi import FastAPI, BackgroundTasks, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 
+from webapp.config import Config
+
 app = FastAPI(title="Semantic EML Annotator Backend")
 
 # Configure CORS
@@ -45,13 +47,13 @@ class ProposalRequest(BaseModel):
 def send_email_notification(proposal: ProposalRequest):
     """
     Sends an email with the proposal details to the configured recipient.
-    Credentials and recipient must be set via environment variables.
+    Credentials and recipient are set via config.py, but can be overridden by environment variables.
     """
-    recipient = os.getenv("PROPOSAL_RECIPIENT_EMAIL")
-    smtp_server = os.getenv("SMTP_SERVER", "smtp.gmail.com")
-    smtp_port = int(os.getenv("SMTP_PORT", "587"))
-    smtp_user = os.getenv("SMTP_USER")
-    smtp_password = os.getenv("SMTP_PASSWORD")
+    recipient = os.getenv("PROPOSAL_RECIPIENT_EMAIL", Config.VOCABULARY_PROPOSAL_RECIPIENT)
+    smtp_server = os.getenv("SMTP_SERVER", Config.SMTP_SERVER)
+    smtp_port = int(os.getenv("SMTP_PORT", str(Config.SMTP_PORT)))
+    smtp_user = os.getenv("SMTP_USER", Config.SMTP_USER)
+    smtp_password = os.getenv("SMTP_PASSWORD", Config.SMTP_PASSWORD)
 
     if not recipient:
         print("Warning: PROPOSAL_RECIPIENT_EMAIL not set. Skipping email dispatch.")
