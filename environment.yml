@@ -6,6 +6,7 @@ dependencies:
   - annotated-doc=0.0.4
   - annotated-types=0.7.0
   - anyio=4.12.0
+  - black=25.12.0
   - bzip2=1.0.8
   - ca-certificates=2025.11.12
   - certifi=2025.11.12
@@ -37,10 +38,13 @@ dependencies:
   - markdown-it-py=4.0.0
   - markupsafe=3.0.3
   - mdurl=0.1.2
+  - mypy_extensions=1.1.0
   - ncurses=6.5
   - openssl=3.6.0
   - packaging=25.0
+  - pathspec=0.12.1
   - pip=25.3
+  - platformdirs=4.5.1
   - pluggy=1.6.0
   - pydantic=2.12.5
   - pydantic-core=2.41.5
@@ -50,6 +54,7 @@ dependencies:
   - python-dotenv=1.2.1
   - python-multipart=0.0.20
   - python_abi=3.12
+  - pytokens=0.3.0
   - pyyaml=6.0.3
   - readline=8.2
   - rich=14.2.0
