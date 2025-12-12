@@ -3,7 +3,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from typing import Optional
 
-from fastapi import FastAPI, BackgroundTasks, HTTPException
+from fastapi import FastAPI, BackgroundTasks, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 
@@ -135,12 +135,12 @@ async def submit_proposal(proposal: ProposalRequest, background_tasks: Backgroun
 
 
 @app.post("/api/recommendations")
-async def recommend_annotations(eml_metadata: EMLMetadata):
+async def recommend_annotations(request: Request):
     """
-    Accepts a JSON representation of EML metadata elements and returns recommended semantic annotations.
+    Accepts any JSON data and returns recommended semantic annotations.
     For now, returns a minimal example response.
     """
-    # Placeholder logic for recommendations
+    # Accept any POST body, ignore its structure
     return [
         {
             "id": "24632bb8dbdace8be4693baf5c9e4b97",
