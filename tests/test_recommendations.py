@@ -3,6 +3,10 @@ from webapp.run import (
     recommend_for_attribute,
     recommend_for_entity,
     recommend_for_geographic_coverage,
+    reformat_dataset_elements,
+    reformat_attribute_elements,
+    reformat_entity_elements,
+    reformat_geographic_coverage_elements,
     app,
 )
 from fastapi.testclient import TestClient
@@ -87,6 +91,57 @@ def test_recommend_for_geographic_coverage_unit():
         assert rec["ontology"] == "ENVO"
         assert rec["attributeName"] == geos[i]["description"]
         assert rec["objectName"] == geos[i]["objectName"]
+
+
+def test_parse_eml_elements_unit():
+    """
+    Unit test for parse_eml_elements, now ensures reformatting is applied.
+    """
+    from webapp.run import parse_eml_elements
+    payload = {
+        "elements": {
+            "dataset": [{"title": "A"}],
+            "attribute": [{"name": "B"}],
+            "entity": [{"name": "C"}],
+            "geographicCoverage": [{"description": "D"}]
+        }
+    }
+    grouped = parse_eml_elements(payload)
+    # Each group should be a list containing the reformatted list
+    assert set(grouped.keys()) == {"dataset", "attribute", "entity", "geographicCoverage"}
+    # Check that the reformatters were applied (for now, just returns input)
+    assert grouped["dataset"][0] == reformat_dataset_elements([{"title": "A"}])
+    assert grouped["attribute"][0] == reformat_attribute_elements([{"name": "B"}])
+    assert grouped["entity"][0] == reformat_entity_elements([{"name": "C"}])
+    assert grouped["geographicCoverage"][0] == reformat_geographic_coverage_elements([{"description": "D"}])
+
+
+def test_reformat_dataset_elements_unit():
+    from webapp.run import reformat_dataset_elements
+    data = [{"title": "A"}, {"title": "B"}]
+    out = reformat_dataset_elements(data)
+    assert out == data
+
+
+def test_reformat_attribute_elements_unit():
+    from webapp.run import reformat_attribute_elements
+    data = [{"name": "foo"}, {"name": "bar"}]
+    out = reformat_attribute_elements(data)
+    assert out == data
+
+
+def test_reformat_entity_elements_unit():
+    from webapp.run import reformat_entity_elements
+    data = [{"name": "Lake"}, {"name": "River"}]
+    out = reformat_entity_elements(data)
+    assert out == data
+
+
+def test_reformat_geographic_coverage_elements_unit():
+    from webapp.run import reformat_geographic_coverage_elements
+    data = [{"description": "D1"}, {"description": "D2"}]
+    out = reformat_geographic_coverage_elements(data)
+    assert out == data
 
 
 # --- Integration tests for the endpoint (keep only those that test the endpoint as a whole) ---

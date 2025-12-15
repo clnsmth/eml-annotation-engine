@@ -410,6 +410,29 @@ async def submit_proposal(proposal: ProposalRequest, background_tasks: Backgroun
         )
 
 
+def parse_eml_elements(payload):
+    """
+    Parses the input payload and groups EML elements by type, applying reformatting for each group.
+    Returns a dict of type -> list of reformatted elements.
+    """
+    elements = payload.get("elements", {})
+    grouped = {}
+    for k, v in elements.items():
+        # Always treat v as a list of elements
+        items = v if isinstance(v, list) else [v]
+        if k == "dataset":
+            grouped[k] = [reformat_dataset_elements(items)]
+        elif k == "attribute":
+            grouped[k] = [reformat_attribute_elements(items)]
+        elif k == "entity":
+            grouped[k] = [reformat_entity_elements(items)]
+        elif k == "geographicCoverage":
+            grouped[k] = [reformat_geographic_coverage_elements(items)]
+        else:
+            grouped[k] = [items]
+    return grouped
+
+
 @app.post("/api/recommendations")
 async def recommend_annotations(request: Request):
     """
@@ -423,20 +446,6 @@ async def recommend_annotations(request: Request):
     print("Received payload for recommendations: " + json.dumps(payload, indent=2, default=str))
 
     # --- Gateway Aggregation Pattern ---
-    def parse_eml_elements(payload):
-        """
-        Parses the input payload and groups EML elements by type.
-        Returns a dict of type -> list of elements.
-        """
-        # Stub: expects payload to have a top-level 'elements' dict with type keys
-        elements = payload.get("elements", {})
-        grouped = {}
-        for k, v in elements.items():
-            # In a real implementation, determine type from key/value
-            # For now, just group by key as type
-            grouped.setdefault(k, []).append(v)
-        return grouped
-
     grouped = parse_eml_elements(payload)
     results = []
     # Helper to flatten grouped values
@@ -448,7 +457,7 @@ async def recommend_annotations(request: Request):
             else:
                 flat.append(item)
         return flat
-    # Fan out to recommenders by type
+    # Fan out to recommenders by type (no reformatting here)
     if "dataset" in grouped:
         results.extend(recommend_for_dataset(flatten(grouped["dataset"])))
     if "attribute" in grouped:
@@ -460,11 +469,53 @@ async def recommend_annotations(request: Request):
     # Add more types as needed
 
     # Fan in: combine all results
-    return ORIGINAL_MOCK_RESPONSE  # for now
     if results:
         return results
     else:
         return ORIGINAL_MOCK_RESPONSE
+
+
+def reformat_dataset_elements(datasets):
+    """
+    Stub: Transform dataset elements to the format expected by the dataset recommender.
+    For now, returns input unchanged.
+    """
+    return datasets
+
+def reformat_attribute_elements(attributes):
+    """
+    Stub: Transform attribute elements to the format expected by the attribute recommender.
+    For now, returns input unchanged.
+    """
+    return attributes
+
+def reformat_entity_elements(entities):
+    """
+    Stub: Transform entity elements to the format expected by the entity recommender.
+    For now, returns input unchanged.
+    """
+    return entities
+
+def reformat_geographic_coverage_elements(geos):
+    """
+    Stub: Transform geographic coverage elements to the format expected by the geographic coverage recommender.
+    For now, returns input unchanged.
+    """
+    return geos
+
+
+__all__ = [
+    "recommend_for_dataset",
+    "recommend_for_attribute",
+    "recommend_for_entity",
+    "recommend_for_geographic_coverage",
+    "reformat_dataset_elements",
+    "reformat_attribute_elements",
+    "reformat_entity_elements",
+    "reformat_geographic_coverage_elements",
+    "parse_eml_elements",
+    "app",
+]
 
 
 if __name__ == "__main__":
