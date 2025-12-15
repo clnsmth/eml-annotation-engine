@@ -70,9 +70,27 @@ def test_parse_eml_elements_unit():
 
 def test_reformat_attribute_elements_unit():
     from webapp.run import reformat_attribute_elements
-    data = [{"name": "foo"}, {"name": "bar"}]
+    data = [
+        {
+            "id": "d49be2c0-7b9e-41f4-ae07-387d3e1f14c8",
+            "name": "Latitude",
+            "description": "Latitude of collection",
+            "context": "SurveyResults",
+            "objectName": "SurveyResults.csv",
+            "entityDescription": "Table contains survey information and the counts of the number of egg masses for each species during that survey."
+        }
+    ]
+    expected = [
+        {
+            "entity_name": "SurveyResults.csv",
+            "entity_description": "Table contains survey information and the counts of the number of egg masses for each species during that survey.",
+            "object_name": "SurveyResults.csv",
+            "column_name": "Latitude",
+            "column_description": "Latitude of collection"
+        }
+    ]
     out = reformat_attribute_elements(data)
-    assert out == data
+    assert out == expected
 
 
 def test_reformat_geographic_coverage_elements_unit():

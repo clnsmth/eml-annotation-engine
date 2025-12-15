@@ -429,10 +429,26 @@ async def recommend_annotations(request: Request):
 
 def reformat_attribute_elements(attributes):
     """
-    Stub: Transform attribute elements to the format expected by the attribute recommender.
-    For now, returns input unchanged.
+    Transform attribute elements to the format expected by the attribute recommender.
+    Converts each input dict to the output format:
+    {
+        "entity_name": <objectName>,
+        "entity_description": <entityDescription>,
+        "object_name": <objectName>,
+        "column_name": <name>,
+        "column_description": <description>
+    }
     """
-    return attributes
+    reformatted = []
+    for attr in attributes:
+        reformatted.append({
+            "entity_name": attr.get("objectName"),
+            "entity_description": attr.get("entityDescription"),
+            "object_name": attr.get("objectName"),
+            "column_name": attr.get("name"),
+            "column_description": attr.get("description"),
+        })
+    return reformatted
 
 def reformat_geographic_coverage_elements(geos):
     """
