@@ -373,7 +373,7 @@ async def submit_proposal(proposal: ProposalRequest, background_tasks: Backgroun
 def parse_eml_elements(payload):
     """
     Parses the input payload and groups EML elements by type, applying reformatting for each group.
-    Returns a dict of type -> list of reformatted elements.
+    Returns a dict of type -> list of reformatted elements (no extra list nesting).
     """
     elements = payload.get("elements", {})
     grouped = {}
@@ -381,11 +381,11 @@ def parse_eml_elements(payload):
         # Always treat v as a list of elements
         items = v if isinstance(v, list) else [v]
         if k == "attribute":
-            grouped[k] = [reformat_attribute_elements(items)]
+            grouped[k] = reformat_attribute_elements(items)
         elif k == "geographicCoverage":
-            grouped[k] = [reformat_geographic_coverage_elements(items)]
+            grouped[k] = reformat_geographic_coverage_elements(items)
         else:
-            grouped[k] = [items]
+            grouped[k] = items
     return grouped
 
 
@@ -403,7 +403,15 @@ def recommend_annotations(payload: dict = Body(...)):
     # --- Gateway Aggregation Pattern ---
     grouped = parse_eml_elements(payload)
     results = []
-
+    # Helper to flatten grouped values (no longer needed, but keep for future extensibility)
+    def flatten(lists):
+        flat = []
+        for item in lists:
+            if isinstance(item, list):
+                flat.extend(item)
+            else:
+                flat.append(item)
+        return flat
     # Fan out to recommenders by type (no reformatting here)
     if "attribute" in grouped:
         results.extend(recommend_for_attribute(grouped["attribute"]))
