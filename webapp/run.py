@@ -3,7 +3,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from typing import Optional
 
-from fastapi import FastAPI, BackgroundTasks, HTTPException, Request
+from fastapi import FastAPI, BackgroundTasks, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 
@@ -390,7 +390,7 @@ def parse_eml_elements(payload):
 
 
 @app.post("/api/recommendations")
-async def recommend_annotations(request: Request):
+def recommend_annotations(payload: dict = Body(...)):
     """
     Accepts a JSON payload of EML metadata elements grouped by type (e.g. dataset, attribute, entity),
     parses the types, fans out to respective recommendation engines, and combines the results.
@@ -398,7 +398,6 @@ async def recommend_annotations(request: Request):
     If no recognized types are present, returns the original mock response for backward compatibility.
     """
     import json
-    payload = await request.json()
     print("Received payload for recommendations: " + json.dumps(payload, indent=2, default=str))
 
     # --- Gateway Aggregation Pattern ---

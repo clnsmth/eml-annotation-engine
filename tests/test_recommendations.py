@@ -465,3 +465,19 @@ def test_formatters_with_mock_frontend_payload():
             assert isinstance(reformat_attribute_elements(items[0]), list)
         elif group == "geographicCoverage":
             assert isinstance(reformat_geographic_coverage_elements(items[0]), list)
+
+
+def test_parse_eml_elements_with_mock_frontend_payload():
+    """
+    Test parse_eml_elements to ensure it uses reformat_attribute_elements correctly with the mock frontend payload.
+    """
+    # Use only the ATTRIBUTE group for clarity
+    payload = {"elements": {"attribute": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"]}}
+    grouped = parse_eml_elements(payload)
+    # The 'attribute' group should be a list with one item: the reformatted list
+    assert "attribute" in grouped
+    reformatted = grouped["attribute"][0]
+    # Each item in reformatted should match the output of reformat_attribute_elements
+    expected = reformat_attribute_elements(MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"])
+    assert reformatted == expected
+
