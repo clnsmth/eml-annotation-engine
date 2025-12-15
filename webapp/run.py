@@ -324,27 +324,6 @@ def recommend_for_attribute(attributes):
         ]
     } for i, _ in enumerate(attributes)]
 
-def recommend_for_entity(entities):
-    """
-    Stub recommender for entity elements.
-    """
-    return [{
-        "id": f"entity-{i}",
-        "recommendations": [
-            {
-                "label": "Lake",
-                "uri": "http://purl.obolibrary.org/obo/ENVO_00000020",
-                "ontology": "ENVO",
-                "confidence": 0.92,
-                "description": "A large body of water surrounded by land.",
-                "propertyLabel": "contains measurements of type",
-                "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-                "attributeName": "Lake",
-                "objectName": "SurveyResults.csv",
-            }
-        ]
-    } for i, _ in enumerate(entities)]
-
 def recommend_for_geographic_coverage(geos):
     """
     Stub recommender for geographic coverage elements.
@@ -403,8 +382,6 @@ def parse_eml_elements(payload):
         items = v if isinstance(v, list) else [v]
         if k == "attribute":
             grouped[k] = [reformat_attribute_elements(items)]
-        elif k == "entity":
-            grouped[k] = [reformat_entity_elements(items)]
         elif k == "geographicCoverage":
             grouped[k] = [reformat_geographic_coverage_elements(items)]
         else:
@@ -439,8 +416,6 @@ async def recommend_annotations(request: Request):
     # Fan out to recommenders by type (no reformatting here)
     if "attribute" in grouped:
         results.extend(recommend_for_attribute(flatten(grouped["attribute"])))
-    if "entity" in grouped:
-        results.extend(recommend_for_entity(flatten(grouped["entity"])))
     if "geographicCoverage" in grouped:
         results.extend(recommend_for_geographic_coverage(flatten(grouped["geographicCoverage"])))
     # Add more types as needed
@@ -459,13 +434,6 @@ def reformat_attribute_elements(attributes):
     """
     return attributes
 
-def reformat_entity_elements(entities):
-    """
-    Stub: Transform entity elements to the format expected by the entity recommender.
-    For now, returns input unchanged.
-    """
-    return entities
-
 def reformat_geographic_coverage_elements(geos):
     """
     Stub: Transform geographic coverage elements to the format expected by the geographic coverage recommender.
@@ -476,10 +444,8 @@ def reformat_geographic_coverage_elements(geos):
 
 __all__ = [
     "recommend_for_attribute",
-    "recommend_for_entity",
     "recommend_for_geographic_coverage",
     "reformat_attribute_elements",
-    "reformat_entity_elements",
     "reformat_geographic_coverage_elements",
     "parse_eml_elements",
     "app",

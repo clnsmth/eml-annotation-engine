@@ -1,11 +1,10 @@
 from webapp.run import (
     recommend_for_attribute,
-    recommend_for_entity,
     recommend_for_geographic_coverage,
     reformat_attribute_elements,
-    reformat_entity_elements,
     reformat_geographic_coverage_elements,
-    app, parse_eml_elements,
+    parse_eml_elements,
+    app,
 )
 from fastapi.testclient import TestClient
 
@@ -30,25 +29,6 @@ def test_recommend_for_attribute_unit():
         rec = item["recommendations"][0]
         assert rec["label"] == "Identifier"
         assert rec["ontology"] == "IAO"
-
-
-def test_recommend_for_entity_unit():
-    """
-    Unit test for recommend_for_entity.
-    """
-    entities = [
-        {"name": "Lake", "type": "waterbody"},
-        {"name": "River", "type": "waterbody"},
-    ]
-    results = recommend_for_entity(entities)
-    assert isinstance(results, list)
-    assert len(results) == 2
-    for i, item in enumerate(results):
-        assert item["id"] == f"entity-{i}"
-        assert "recommendations" in item
-        rec = item["recommendations"][0]
-        assert rec["label"] == "Lake"
-        assert rec["ontology"] == "ENVO"
 
 
 def test_recommend_for_geographic_coverage_unit():
@@ -76,18 +56,15 @@ def test_parse_eml_elements_unit():
     """
     Unit test for parse_eml_elements, now ensures reformatting is applied.
     """
-    from webapp.run import parse_eml_elements
     payload = {
         "elements": {
             "attribute": [{"name": "B"}],
-            "entity": [{"name": "C"}],
             "geographicCoverage": [{"description": "D"}]
         }
     }
     grouped = parse_eml_elements(payload)
-    assert set(grouped.keys()) == {"attribute", "entity", "geographicCoverage"}
+    assert set(grouped.keys()) == {"attribute", "geographicCoverage"}
     assert grouped["attribute"][0] == reformat_attribute_elements([{"name": "B"}])
-    assert grouped["entity"][0] == reformat_entity_elements([{"name": "C"}])
     assert grouped["geographicCoverage"][0] == reformat_geographic_coverage_elements([{"description": "D"}])
 
 
@@ -95,13 +72,6 @@ def test_reformat_attribute_elements_unit():
     from webapp.run import reformat_attribute_elements
     data = [{"name": "foo"}, {"name": "bar"}]
     out = reformat_attribute_elements(data)
-    assert out == data
-
-
-def test_reformat_entity_elements_unit():
-    from webapp.run import reformat_entity_elements
-    data = [{"name": "Lake"}, {"name": "River"}]
-    out = reformat_entity_elements(data)
     assert out == data
 
 
@@ -437,7 +407,5 @@ def test_formatters_with_mock_frontend_payload():
     for group, items in grouped.items():
         if group == "attribute":
             assert isinstance(reformat_attribute_elements(items[0]), list)
-        elif group == "entity":
-            assert isinstance(reformat_entity_elements(items[0]), list)
         elif group == "geographicCoverage":
             assert isinstance(reformat_geographic_coverage_elements(items[0]), list)
