@@ -54,16 +54,16 @@ def test_recommend_for_geographic_coverage_unit():
 
 def test_parse_eml_elements_unit():
     """
-    Unit test for parse_eml_elements, now ensures reformatting is applied using the mock frontend payload as-is (no 'elements' key).
+    Unit test for parse_eml_elements, now ensures reformatting is applied using the mock frontend payload as-is (capitalized keys).
     """
     payload = {
         "ATTRIBUTE": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"],
         "GEOGRAPHICCOVERAGE": MOCK_FRONTEND_PAYLOAD["GEOGRAPHICCOVERAGE"]
     }
     grouped = parse_eml_elements(payload)
-    assert set(grouped.keys()) == {"attribute", "geographicCoverage"}
-    assert grouped["attribute"] == reformat_attribute_elements(MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"])
-    assert grouped["geographicCoverage"] == reformat_geographic_coverage_elements(MOCK_FRONTEND_PAYLOAD["GEOGRAPHICCOVERAGE"])
+    assert set(grouped.keys()) == {"ATTRIBUTE", "GEOGRAPHICCOVERAGE"}
+    assert grouped["ATTRIBUTE"] == reformat_attribute_elements(MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"])
+    assert grouped["GEOGRAPHICCOVERAGE"] == reformat_geographic_coverage_elements(MOCK_FRONTEND_PAYLOAD["GEOGRAPHICCOVERAGE"])
 
 
 def test_reformat_attribute_elements_unit():
@@ -496,9 +496,9 @@ def test_formatters_with_mock_frontend_payload():
     grouped = parse_eml_elements(MOCK_FRONTEND_PAYLOAD)
     # For each group, call the corresponding formatter and check output type
     for group, items in grouped.items():
-        if group == "attribute":
+        if group == "ATTRIBUTE":
             assert isinstance(reformat_attribute_elements(items), list)
-        elif group == "geographicCoverage":
+        elif group == "GEOGRAPHICCOVERAGE":
             assert isinstance(reformat_geographic_coverage_elements(items), list)
 
 
@@ -509,9 +509,9 @@ def test_parse_eml_elements_with_mock_frontend_payload():
     # Use only the ATTRIBUTE group for clarity
     payload = {"ATTRIBUTE": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"]}
     grouped = parse_eml_elements(payload)
-    # The 'attribute' group should be a list of reformatted items
-    assert "attribute" in grouped
-    reformatted = grouped["attribute"]
+    # The 'ATTRIBUTE' group should be a list of reformatted items
+    assert "ATTRIBUTE" in grouped
+    reformatted = grouped["ATTRIBUTE"]
     # Each item in reformatted should match the output of reformat_attribute_elements
     expected = reformat_attribute_elements(MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"])
     assert reformatted == expected

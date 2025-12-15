@@ -370,36 +370,27 @@ async def submit_proposal(proposal: ProposalRequest, background_tasks: Backgroun
         )
 
 
-# Mapping from frontend keys to backend types
-FRONTEND_TO_BACKEND_TYPE = {
-    "ATTRIBUTE": "attribute",
-    "GEOGRAPHICCOVERAGE": "geographicCoverage",
-    # Add more mappings as needed
-}
-
 def parse_eml_elements(payload):
     """
     Parses the input payload and groups EML elements by type, applying reformatting for each group.
-    Accepts the raw frontend payload (no 'elements' key).
-    Returns a dict of backend type -> list of reformatted elements.
+    Accepts the raw frontend payload (capitalized keys, e.g. 'ATTRIBUTE', 'GEOGRAPHICCOVERAGE').
+    Returns a dict of group key -> list of reformatted elements.
     """
     grouped = {}
-    for frontend_key, backend_key in FRONTEND_TO_BACKEND_TYPE.items():
-        if frontend_key in payload:
-            items = payload[frontend_key] if isinstance(payload[frontend_key], list) else [payload[frontend_key]]
-            if backend_key == "attribute":
-                grouped[backend_key] = reformat_attribute_elements(items)
-            elif backend_key == "geographicCoverage":
-                grouped[backend_key] = reformat_geographic_coverage_elements(items)
-            else:
-                grouped[backend_key] = items
+    if "ATTRIBUTE" in payload:
+        items = payload["ATTRIBUTE"] if isinstance(payload["ATTRIBUTE"], list) else [payload["ATTRIBUTE"]]
+        grouped["ATTRIBUTE"] = reformat_attribute_elements(items)
+    if "GEOGRAPHICCOVERAGE" in payload:
+        items = payload["GEOGRAPHICCOVERAGE"] if isinstance(payload["GEOGRAPHICCOVERAGE"], list) else [payload["GEOGRAPHICCOVERAGE"]]
+        grouped["GEOGRAPHICCOVERAGE"] = reformat_geographic_coverage_elements(items)
+    # Add more types as needed
     return grouped
 
 
 @app.post("/api/recommendations")
 def recommend_annotations(payload: dict = Body(...)):
     """
-    Accepts a JSON payload of EML metadata elements grouped by type (e.g. DATATABLE, ATTRIBUTE, COVERAGE),
+    Accepts a JSON payload of EML metadata elements grouped by type (e.g. ATTRIBUTE, GEOGRAPHICCOVERAGE),
     parses the types, fans out to respective recommendation engines, and combines the results.
     Implements a gateway aggregation pattern for annotation recommendations.
     If no recognized types are present, returns the original mock response for backward compatibility.
@@ -407,17 +398,14 @@ def recommend_annotations(payload: dict = Body(...)):
     import json
     print("Received payload for recommendations: " + json.dumps(payload, indent=2, default=str))
 
-    # --- Gateway Aggregation Pattern ---
     grouped = parse_eml_elements(payload)
     results = []
-    # Fan out to recommenders by type
-    if "attribute" in grouped:
-        results.extend(recommend_for_attribute(grouped["attribute"]))
-    if "geographicCoverage" in grouped:
-        results.extend(recommend_for_geographic_coverage(grouped["geographicCoverage"]))
+    if "ATTRIBUTE" in grouped:
+        results.extend(recommend_for_attribute(grouped["ATTRIBUTE"]))
+    if "GEOGRAPHICCOVERAGE" in grouped:
+        results.extend(recommend_for_geographic_coverage(grouped["GEOGRAPHICCOVERAGE"]))
     # Add more types as needed
 
-    # Fan in: combine all results
     if results:
         return results
     else:
