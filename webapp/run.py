@@ -403,20 +403,12 @@ def recommend_annotations(payload: dict = Body(...)):
     # --- Gateway Aggregation Pattern ---
     grouped = parse_eml_elements(payload)
     results = []
-    # Helper to flatten grouped values
-    def flatten(lists):
-        flat = []
-        for item in lists:
-            if isinstance(item, list):
-                flat.extend(item)
-            else:
-                flat.append(item)
-        return flat
+
     # Fan out to recommenders by type (no reformatting here)
     if "attribute" in grouped:
-        results.extend(recommend_for_attribute(flatten(grouped["attribute"])))
+        results.extend(recommend_for_attribute(grouped["attribute"]))
     if "geographicCoverage" in grouped:
-        results.extend(recommend_for_geographic_coverage(flatten(grouped["geographicCoverage"])))
+        results.extend(recommend_for_geographic_coverage(grouped["geographicCoverage"]))
     # Add more types as needed
 
     # Fan in: combine all results
