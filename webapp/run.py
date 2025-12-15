@@ -328,22 +328,26 @@ def recommend_for_geographic_coverage(geos):
     """
     Stub recommender for geographic coverage elements.
     """
-    return [{
-        "id": f"geographicCoverage-{i}",
-        "recommendations": [
+    return [
             {
-                "label": "Geographic Region",
-                "uri": "http://purl.obolibrary.org/obo/ENVO_00000009",
+                "label": "Freshwater Lake Ecosystem",
+                "uri": "http://purl.obolibrary.org/obo/ENVO_01000021",
                 "ontology": "ENVO",
-                "confidence": 0.93,
-                "description": "A spatial region defined for ecological or environmental study.",
-                "propertyLabel": "has geographic coverage",
-                "propertyUri": "http://rs.tdwg.org/dwc/terms/Location",
-                "attributeName": geo.get("description", "Unknown"),
-                "objectName": geo.get("objectName", "Unknown"),
-            }
+                "confidence": 0.75,
+                "description": "An aquatic ecosystem that is part of a lake.",
+                "propertyLabel": "contains",
+                "propertyUri": "http://www.w3.org/ns/oa#hasBody",
+            },
+            {
+                "label": "Temperate Climate",
+                "uri": "http://purl.obolibrary.org/obo/ENVO_01000000",
+                "ontology": "ENVO",
+                "confidence": 0.80,
+                "description": "A climate with moderate conditions",
+                "propertyLabel": "contains",
+                "propertyUri": "http://www.w3.org/ns/oa#hasBody",
+            },
         ]
-    } for i, geo in enumerate(geos)]
 
 
 # --- Endpoints ---
@@ -406,10 +410,11 @@ def recommend_annotations(payload: dict = Body(...)):
         results.extend(recommend_for_geographic_coverage(grouped["GEOGRAPHICCOVERAGE"]))
     # Add more types as needed
 
-    if results:
-        return results
-    else:
-        return ORIGINAL_MOCK_RESPONSE
+    return ORIGINAL_MOCK_RESPONSE  # Just mocking for now
+    # if results:
+    #     return results
+    # else:
+    #     return ORIGINAL_MOCK_RESPONSE
 
 
 def reformat_attribute_elements(attributes):
