@@ -370,29 +370,36 @@ async def submit_proposal(proposal: ProposalRequest, background_tasks: Backgroun
         )
 
 
+# Mapping from frontend keys to backend types
+FRONTEND_TO_BACKEND_TYPE = {
+    "ATTRIBUTE": "attribute",
+    "COVERAGE": "geographicCoverage",
+    # Add more mappings as needed
+}
+
 def parse_eml_elements(payload):
     """
     Parses the input payload and groups EML elements by type, applying reformatting for each group.
-    Returns a dict of type -> list of reformatted elements (no extra list nesting).
+    Accepts the raw frontend payload (no 'elements' key).
+    Returns a dict of backend type -> list of reformatted elements.
     """
-    elements = payload.get("elements", {})
     grouped = {}
-    for k, v in elements.items():
-        # Always treat v as a list of elements
-        items = v if isinstance(v, list) else [v]
-        if k == "attribute":
-            grouped[k] = reformat_attribute_elements(items)
-        elif k == "geographicCoverage":
-            grouped[k] = reformat_geographic_coverage_elements(items)
-        else:
-            grouped[k] = items
+    for frontend_key, backend_key in FRONTEND_TO_BACKEND_TYPE.items():
+        if frontend_key in payload:
+            items = payload[frontend_key] if isinstance(payload[frontend_key], list) else [payload[frontend_key]]
+            if backend_key == "attribute":
+                grouped[backend_key] = reformat_attribute_elements(items)
+            elif backend_key == "geographicCoverage":
+                grouped[backend_key] = reformat_geographic_coverage_elements(items)
+            else:
+                grouped[backend_key] = items
     return grouped
 
 
 @app.post("/api/recommendations")
 def recommend_annotations(payload: dict = Body(...)):
     """
-    Accepts a JSON payload of EML metadata elements grouped by type (e.g. dataset, attribute, entity),
+    Accepts a JSON payload of EML metadata elements grouped by type (e.g. DATATABLE, ATTRIBUTE, COVERAGE),
     parses the types, fans out to respective recommendation engines, and combines the results.
     Implements a gateway aggregation pattern for annotation recommendations.
     If no recognized types are present, returns the original mock response for backward compatibility.
@@ -403,8 +410,7 @@ def recommend_annotations(payload: dict = Body(...)):
     # --- Gateway Aggregation Pattern ---
     grouped = parse_eml_elements(payload)
     results = []
-
-    # Fan out to recommenders by type (no reformatting here)
+    # Fan out to recommenders by type
     if "attribute" in grouped:
         results.extend(recommend_for_attribute(grouped["attribute"]))
     if "geographicCoverage" in grouped:

@@ -54,12 +54,12 @@ def test_recommend_for_geographic_coverage_unit():
 
 def test_parse_eml_elements_unit():
     """
-    Unit test for parse_eml_elements, now ensures reformatting is applied using the mock frontend payload.
+    Unit test for parse_eml_elements, now ensures reformatting is applied using the mock frontend payload as-is (no 'elements' key).
     """
-    payload = {"elements": {
-        "attribute": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"],
-        "geographicCoverage": MOCK_FRONTEND_PAYLOAD["COVERAGE"]
-    }}
+    payload = {
+        "ATTRIBUTE": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"],
+        "COVERAGE": MOCK_FRONTEND_PAYLOAD["COVERAGE"]
+    }
     grouped = parse_eml_elements(payload)
     assert set(grouped.keys()) == {"attribute", "geographicCoverage"}
     assert grouped["attribute"] == reformat_attribute_elements(MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"])
@@ -98,23 +98,21 @@ def test_reformat_geographic_coverage_elements_unit():
     assert out == data
 
 
-# --- Integration tests for the endpoint (keep only those that test the endpoint as a whole) ---
-def test_recommendations_endpoint():
-    # Minimal example EML metadata payload using a supported type key
-    payload = {"elements": {"attribute": [
-        {"name": "SurveyID", "type": "string"}
-    ]}}
+def test_recommend_annotations_endpoint_with_attributes():
+    """
+    Integration test for the /api/recommendations endpoint with only attribute elements, using the mock frontend payload as-is.
+    """
+    payload = {"ATTRIBUTE": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"]}
     response = client.post("/api/recommendations", json=payload)
     assert response.status_code == 200
     data = response.json()
     assert isinstance(data, list)
-    assert len(data) > 0
-    # Check that each item has 'id' and 'recommendations' keys
-    for item in data:
+    assert len(data) == len(MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"])
+    for i, item in enumerate(data):
         assert "id" in item
+        assert item["id"].startswith("attribute-")
         assert "recommendations" in item
         assert isinstance(item["recommendations"], list)
-        # Check that each recommendation has required keys
         for rec in item["recommendations"]:
             assert "label" in rec
             assert "uri" in rec
@@ -123,7 +121,36 @@ def test_recommendations_endpoint():
             assert "description" in rec
             assert "propertyLabel" in rec
             assert "propertyUri" in rec
-            # Optional keys: attributeName, objectName (may not be present in all)
+            assert "attributeName" in rec
+            assert "objectName" in rec
+
+
+def test_recommend_annotations_endpoint_with_full_mock_frontend_payload():
+    """
+    Integration test for the /api/recommendations endpoint with the full mock frontend payload as input (as-is).
+    Checks that the response is a list and that the number of items matches the number of attributes and coverages.
+    """
+    payload = {"ATTRIBUTE": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"], "COVERAGE": MOCK_FRONTEND_PAYLOAD["COVERAGE"]}
+    response = client.post("/api/recommendations", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    assert isinstance(data, list)
+    # Should return one result per attribute and one per geographicCoverage
+    expected_count = len(MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"]) + len(MOCK_FRONTEND_PAYLOAD["COVERAGE"])
+    assert len(data) == expected_count
+    # Check structure of each item
+    for item in data:
+        assert "id" in item
+        assert "recommendations" in item
+        assert isinstance(item["recommendations"], list)
+        for rec in item["recommendations"]:
+            assert "label" in rec
+            assert "uri" in rec
+            assert "ontology" in rec
+            assert "confidence" in rec
+            assert "description" in rec
+            assert "propertyLabel" in rec
+            assert "propertyUri" in rec
 
 
 def test_recommend_annotations_endpoint_with_mock_frontend_payload_as_is():
@@ -477,10 +504,10 @@ def test_formatters_with_mock_frontend_payload():
 
 def test_parse_eml_elements_with_mock_frontend_payload():
     """
-    Test parse_eml_elements to ensure it uses reformat_attribute_elements correctly with the mock frontend payload.
+    Test parse_eml_elements to ensure it uses reformat_attribute_elements correctly with the mock frontend payload as-is.
     """
     # Use only the ATTRIBUTE group for clarity
-    payload = {"elements": {"attribute": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"]}}
+    payload = {"ATTRIBUTE": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"]}
     grouped = parse_eml_elements(payload)
     # The 'attribute' group should be a list of reformatted items
     assert "attribute" in grouped
