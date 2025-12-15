@@ -54,18 +54,16 @@ def test_recommend_for_geographic_coverage_unit():
 
 def test_parse_eml_elements_unit():
     """
-    Unit test for parse_eml_elements, now ensures reformatting is applied.
+    Unit test for parse_eml_elements, now ensures reformatting is applied using the mock frontend payload.
     """
-    payload = {
-        "elements": {
-            "attribute": [{"name": "B"}],
-            "geographicCoverage": [{"description": "D"}]
-        }
-    }
+    payload = {"elements": {
+        "attribute": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"],
+        "geographicCoverage": MOCK_FRONTEND_PAYLOAD["COVERAGE"]
+    }}
     grouped = parse_eml_elements(payload)
     assert set(grouped.keys()) == {"attribute", "geographicCoverage"}
-    assert grouped["attribute"][0] == reformat_attribute_elements([{"name": "B"}])
-    assert grouped["geographicCoverage"][0] == reformat_geographic_coverage_elements([{"description": "D"}])
+    assert grouped["attribute"][0] == reformat_attribute_elements(MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"])
+    assert grouped["geographicCoverage"][0] == reformat_geographic_coverage_elements(MOCK_FRONTEND_PAYLOAD["COVERAGE"])
 
 
 def test_reformat_attribute_elements_unit():
