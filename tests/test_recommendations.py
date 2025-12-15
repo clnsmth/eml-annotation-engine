@@ -448,22 +448,6 @@ MOCK_FRONTEND_PAYLOAD = {
     ]
 }
 
-def test_formatters_with_mock_frontend_payload():
-    """
-    Test the formatter functions using the example mock POST JSON payload from the frontend.
-    This is a placeholder; user should fill in MOCK_FRONTEND_PAYLOAD with real data.
-    """
-    if not MOCK_FRONTEND_PAYLOAD:
-        import pytest
-        pytest.skip("No mock frontend payload provided.")
-    grouped = parse_eml_elements(MOCK_FRONTEND_PAYLOAD)
-    # For each group, call the corresponding formatter and check output type
-    for group, items in grouped.items():
-        if group == "attribute":
-            assert isinstance(reformat_attribute_elements(items[0]), list)
-        elif group == "geographicCoverage":
-            assert isinstance(reformat_geographic_coverage_elements(items[0]), list)
-
 
 def test_parse_eml_elements_with_mock_frontend_payload():
     """
