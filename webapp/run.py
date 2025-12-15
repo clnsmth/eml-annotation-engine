@@ -303,25 +303,6 @@ def send_email_notification(proposal: ProposalRequest):
 
 # --- Recommender Functions ---
 
-def recommend_for_dataset(datasets):
-    """
-    Stub recommender for dataset elements.
-    """
-    return [{
-        "id": f"dataset-{i}",
-        "recommendations": [
-            {
-                "label": "Survey Dataset",
-                "uri": "http://purl.obolibrary.org/obo/IAO_0000100",
-                "ontology": "IAO",
-                "confidence": 0.90,
-                "description": "A data set that is a collection of data about a survey.",
-                "propertyLabel": "contains",
-                "propertyUri": "http://www.w3.org/ns/oa#hasBody",
-            }
-        ]
-    } for i, _ in enumerate(datasets)]
-
 def recommend_for_attribute(attributes):
     """
     Stub recommender for attribute elements.
@@ -420,9 +401,7 @@ def parse_eml_elements(payload):
     for k, v in elements.items():
         # Always treat v as a list of elements
         items = v if isinstance(v, list) else [v]
-        if k == "dataset":
-            grouped[k] = [reformat_dataset_elements(items)]
-        elif k == "attribute":
+        if k == "attribute":
             grouped[k] = [reformat_attribute_elements(items)]
         elif k == "entity":
             grouped[k] = [reformat_entity_elements(items)]
@@ -458,8 +437,6 @@ async def recommend_annotations(request: Request):
                 flat.append(item)
         return flat
     # Fan out to recommenders by type (no reformatting here)
-    if "dataset" in grouped:
-        results.extend(recommend_for_dataset(flatten(grouped["dataset"])))
     if "attribute" in grouped:
         results.extend(recommend_for_attribute(flatten(grouped["attribute"])))
     if "entity" in grouped:
@@ -474,13 +451,6 @@ async def recommend_annotations(request: Request):
     else:
         return ORIGINAL_MOCK_RESPONSE
 
-
-def reformat_dataset_elements(datasets):
-    """
-    Stub: Transform dataset elements to the format expected by the dataset recommender.
-    For now, returns input unchanged.
-    """
-    return datasets
 
 def reformat_attribute_elements(attributes):
     """
@@ -505,11 +475,9 @@ def reformat_geographic_coverage_elements(geos):
 
 
 __all__ = [
-    "recommend_for_dataset",
     "recommend_for_attribute",
     "recommend_for_entity",
     "recommend_for_geographic_coverage",
-    "reformat_dataset_elements",
     "reformat_attribute_elements",
     "reformat_entity_elements",
     "reformat_geographic_coverage_elements",
