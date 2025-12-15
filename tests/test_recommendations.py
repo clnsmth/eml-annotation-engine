@@ -126,6 +126,15 @@ def test_recommendations_endpoint():
             # Optional keys: attributeName, objectName (may not be present in all)
 
 
+def test_recommend_annotations_endpoint_with_mock_frontend_payload_as_is():
+    """
+    Integration test for the /api/recommendations endpoint using MOCK_FRONTEND_PAYLOAD as-is (no transformation).
+    Only asserts True for now.
+    """
+    response = client.post("/api/recommendations", json=MOCK_FRONTEND_PAYLOAD)
+    assert True
+
+
 # --- Example mock POST JSON payload from frontend (to be filled in by user) ---
 MOCK_FRONTEND_PAYLOAD = {
     "DATATABLE": [

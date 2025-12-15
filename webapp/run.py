@@ -403,7 +403,7 @@ def recommend_annotations(payload: dict = Body(...)):
     # --- Gateway Aggregation Pattern ---
     grouped = parse_eml_elements(payload)
     results = []
-    
+
     # Fan out to recommenders by type (no reformatting here)
     if "attribute" in grouped:
         results.extend(recommend_for_attribute(grouped["attribute"]))
