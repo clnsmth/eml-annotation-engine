@@ -188,3 +188,31 @@ def test_recommendations_endpoint():
 #     assert any(i.startswith("dataset-") for i in ids)
 #     assert any(i.startswith("attribute-") for i in ids)
 #     assert any(i.startswith("entity-") for i in ids)
+
+
+# --- Example mock POST JSON payload from frontend (to be filled in by user) ---
+MOCK_FRONTEND_PAYLOAD = {
+    # TODO: Fill in with actual example payload from frontend
+    # 'elements': { ... }
+}
+
+def test_formatters_with_mock_frontend_payload():
+    """
+    Test the formatter functions using the example mock POST JSON payload from the frontend.
+    This is a placeholder; user should fill in MOCK_FRONTEND_PAYLOAD with real data.
+    """
+    if not MOCK_FRONTEND_PAYLOAD:
+        # Skip test if no payload is provided
+        import pytest
+        pytest.skip("No mock frontend payload provided.")
+    grouped = parse_eml_elements(MOCK_FRONTEND_PAYLOAD)
+    # For each group, call the corresponding formatter and check output type
+    for group, items in grouped.items():
+        if group == "dataset":
+            assert isinstance(reformat_dataset_elements(items[0]), list)
+        elif group == "attribute":
+            assert isinstance(reformat_attribute_elements(items[0]), list)
+        elif group == "entity":
+            assert isinstance(reformat_entity_elements(items[0]), list)
+        elif group == "geographicCoverage":
+            assert isinstance(reformat_geographic_coverage_elements(items[0]), list)
