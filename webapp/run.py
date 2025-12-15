@@ -373,7 +373,7 @@ async def submit_proposal(proposal: ProposalRequest, background_tasks: Backgroun
 # Mapping from frontend keys to backend types
 FRONTEND_TO_BACKEND_TYPE = {
     "ATTRIBUTE": "attribute",
-    "COVERAGE": "geographicCoverage",
+    "GEOGRAPHICCOVERAGE": "geographicCoverage",
     # Add more mappings as needed
 }
 
