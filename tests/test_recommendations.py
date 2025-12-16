@@ -82,29 +82,6 @@ def test_reformat_geographic_coverage_elements_unit():
     assert out == data
 
 
-def test_recommend_annotations_endpoint_with_attributes():
-    """
-    Integration test for the /api/recommendations endpoint with only attribute elements, using the mock frontend payload as-is.
-    """
-    payload = {"ATTRIBUTE": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"]}
-    response = client.post("/api/recommendations", json=payload)
-    assert response.status_code == 200
-    data = response.json()
-    assert isinstance(data, list)
-    # assert len(data) == len(MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"])
-    for i, item in enumerate(data):
-        assert "id" in item
-        assert "recommendations" in item
-        for rec in item["recommendations"]:
-            assert "label" in rec
-            assert "uri" in rec
-            assert "ontology" in rec
-            assert "confidence" in rec
-            assert "description" in rec
-            assert "propertyLabel" in rec
-            assert "propertyUri" in rec
-
-
 def test_recommend_annotations_endpoint_with_full_mock_frontend_payload():
     """
     Integration test for the /api/recommendations endpoint with the full mock frontend payload as input (as-is).
@@ -127,15 +104,6 @@ def test_recommend_annotations_endpoint_with_full_mock_frontend_payload():
             assert "description" in rec
             assert "propertyLabel" in rec
             assert "propertyUri" in rec
-
-
-def test_recommend_annotations_endpoint_with_mock_frontend_payload_as_is():
-    """
-    Integration test for the /api/recommendations endpoint using MOCK_FRONTEND_PAYLOAD as-is (no transformation).
-    Only asserts True for now.
-    """
-    response = client.post("/api/recommendations", json=MOCK_FRONTEND_PAYLOAD)
-    assert True
 
 
 # --- Example mock POST JSON payload from frontend (to be filled in by user) ---
