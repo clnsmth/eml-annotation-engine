@@ -2,8 +2,6 @@ import json
 from webapp.run import (
     recommend_for_attribute,
     recommend_for_geographic_coverage,
-    reformat_attribute_elements,
-    reformat_geographic_coverage_elements,
     app,
     MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS,
 )

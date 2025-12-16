@@ -5,7 +5,7 @@ from collections import defaultdict
 from itertools import groupby
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from typing import Optional, List, Dict
+from typing import Optional
 
 import requests
 from fastapi import FastAPI, BackgroundTasks, HTTPException, Body
