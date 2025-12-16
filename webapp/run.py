@@ -450,6 +450,7 @@ def parse_recommended_geographic_coverage(recommended_geographic_coverage):
     Stub: Parse or transform the recommended_geographic_coverage object as needed before returning to the client.
     For now, returns input unchanged.
     """
+    
     return recommended_geographic_coverage
 
 # --- Endpoints ---
