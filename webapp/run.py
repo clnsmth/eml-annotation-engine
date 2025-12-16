@@ -438,6 +438,20 @@ def recommend_for_geographic_coverage(geos):
     # Real logic would go here
     return []
 
+def parse_recommended_attributes(recommended_attributes):
+    """
+    Stub: Parse or transform the recommended_attributes object as needed before returning to the client.
+    For now, returns input unchanged.
+    """
+    return recommended_attributes
+
+def parse_recommended_geographic_coverage(recommended_geographic_coverage):
+    """
+    Stub: Parse or transform the recommended_geographic_coverage object as needed before returning to the client.
+    For now, returns input unchanged.
+    """
+    return recommended_geographic_coverage
+
 # --- Endpoints ---
 
 
@@ -493,9 +507,13 @@ def recommend_annotations(payload: dict = Body(...)):
     grouped = parse_eml_elements(payload)
     results = []
     if "ATTRIBUTE" in grouped:
-        results.append({"ATTRIBUTE": recommend_for_attribute(grouped["ATTRIBUTE"])})
+        recommended_attributes = recommend_for_attribute(grouped["ATTRIBUTE"])
+        parsed_recommended_attributes = parse_recommended_attributes(recommended_attributes)
+        results.append(parsed_recommended_attributes)
     if "GEOGRAPHICCOVERAGE" in grouped:
-        results.append({"GEOGRAPHICCOVERAGE": recommend_for_geographic_coverage(grouped["GEOGRAPHICCOVERAGE"])})
+        recommended_geographic_coverage = recommend_for_geographic_coverage(grouped)
+        parsed_recommended_geographic_coverage = parse_recommended_geographic_coverage(recommended_geographic_coverage)
+        results.append(parsed_recommended_geographic_coverage)
     # Add more types as needed
 
     if USE_MOCK_RECOMMENDATIONS:
