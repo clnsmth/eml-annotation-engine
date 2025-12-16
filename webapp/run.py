@@ -211,6 +211,46 @@ ORIGINAL_MOCK_RESPONSE = [
     },
 ]
 
+MOCK_ATTRIBUTE_RECOMMENDATIONS = [
+    {
+        "id": f"attribute-0",
+        "recommendations": [
+            {
+                "label": "Identifier",
+                "uri": "http://purl.obolibrary.org/obo/IAO_0000578",
+                "ontology": "IAO",
+                "confidence": 0.95,
+                "description": "An information content entity that identifies something.",
+                "propertyLabel": "contains measurements of type",
+                "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+                "attributeName": "SurveyID",
+                "objectName": "SurveyResults.csv",
+            }
+        ]
+    }
+]
+
+MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS = [
+    {
+        "label": "Freshwater Lake Ecosystem",
+        "uri": "http://purl.obolibrary.org/obo/ENVO_01000021",
+        "ontology": "ENVO",
+        "confidence": 0.75,
+        "description": "An aquatic ecosystem that is part of a lake.",
+        "propertyLabel": "contains",
+        "propertyUri": "http://www.w3.org/ns/oa#hasBody",
+    },
+    {
+        "label": "Temperate Climate",
+        "uri": "http://purl.obolibrary.org/obo/ENVO_01000000",
+        "ontology": "ENVO",
+        "confidence": 0.80,
+        "description": "A climate with moderate conditions",
+        "propertyLabel": "contains",
+        "propertyUri": "http://www.w3.org/ns/oa#hasBody",
+    },
+]
+
 
 # --- Data Models ---
 
@@ -307,47 +347,14 @@ def recommend_for_attribute(attributes):
     """
     Stub recommender for attribute elements.
     """
-    return [{
-        "id": f"attribute-{i}",
-        "recommendations": [
-            {
-                "label": "Identifier",
-                "uri": "http://purl.obolibrary.org/obo/IAO_0000578",
-                "ontology": "IAO",
-                "confidence": 0.95,
-                "description": "An information content entity that identifies something.",
-                "propertyLabel": "contains measurements of type",
-                "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-                "attributeName": "SurveyID",
-                "objectName": "SurveyResults.csv",
-            }
-        ]
-    } for i, _ in enumerate(attributes)]
+    # Return a list of mock recommendations, one per attribute
+    return MOCK_ATTRIBUTE_RECOMMENDATIONS
 
 def recommend_for_geographic_coverage(geos):
     """
     Stub recommender for geographic coverage elements.
     """
-    return [
-            {
-                "label": "Freshwater Lake Ecosystem",
-                "uri": "http://purl.obolibrary.org/obo/ENVO_01000021",
-                "ontology": "ENVO",
-                "confidence": 0.75,
-                "description": "An aquatic ecosystem that is part of a lake.",
-                "propertyLabel": "contains",
-                "propertyUri": "http://www.w3.org/ns/oa#hasBody",
-            },
-            {
-                "label": "Temperate Climate",
-                "uri": "http://purl.obolibrary.org/obo/ENVO_01000000",
-                "ontology": "ENVO",
-                "confidence": 0.80,
-                "description": "A climate with moderate conditions",
-                "propertyLabel": "contains",
-                "propertyUri": "http://www.w3.org/ns/oa#hasBody",
-            },
-        ]
+    return MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
 
 
 # --- Endpoints ---

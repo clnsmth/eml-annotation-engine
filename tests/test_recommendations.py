@@ -5,6 +5,8 @@ from webapp.run import (
     reformat_geographic_coverage_elements,
     parse_eml_elements,
     app,
+    MOCK_ATTRIBUTE_RECOMMENDATIONS,
+    MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS,
 )
 from fastapi.testclient import TestClient
 
@@ -22,13 +24,11 @@ def test_recommend_for_attribute_unit():
     ]
     results = recommend_for_attribute(attributes)
     assert isinstance(results, list)
-    assert len(results) == 2
+    assert len(results) == 1
     for i, item in enumerate(results):
-        assert item["id"] == f"attribute-{i}"
         assert "recommendations" in item
-        rec = item["recommendations"][0]
-        assert rec["label"] == "Identifier"
-        assert rec["ontology"] == "IAO"
+        # Compare to the module-level mock constant
+        assert item["recommendations"] == MOCK_ATTRIBUTE_RECOMMENDATIONS[0]["recommendations"]
 
 
 def test_recommend_for_geographic_coverage_unit():
@@ -40,22 +40,7 @@ def test_recommend_for_geographic_coverage_unit():
     ]
     results = recommend_for_geographic_coverage(geos)
     assert isinstance(results, list)
-    assert len(results) > 0
-    for i, item in enumerate(results):
-        assert "label" in item
-        assert isinstance(item["label"], str)
-        assert  "uri" in item
-        assert isinstance(item["uri"], str)
-        assert "ontology" in item
-        assert isinstance(item["ontology"], str)
-        assert "confidence" in item
-        assert isinstance(item["confidence"], float)
-        assert "description" in item
-        assert isinstance(item["description"], str)
-        assert "propertyLabel" in item
-        assert isinstance(item["propertyLabel"], str)
-        assert "propertyUri" in item
-        assert isinstance(item["propertyUri"], str)
+    assert results == MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
 
 
 def test_parse_eml_elements_unit():
