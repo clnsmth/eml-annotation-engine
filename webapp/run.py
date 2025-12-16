@@ -493,9 +493,9 @@ def recommend_annotations(payload: dict = Body(...)):
     grouped = parse_eml_elements(payload)
     results = []
     if "ATTRIBUTE" in grouped:
-        results.extend(recommend_for_attribute(grouped["ATTRIBUTE"]))
+        results.append({"ATTRIBUTE": recommend_for_attribute(grouped["ATTRIBUTE"])})
     if "GEOGRAPHICCOVERAGE" in grouped:
-        results.extend(recommend_for_geographic_coverage(grouped["GEOGRAPHICCOVERAGE"]))
+        results.append({"GEOGRAPHICCOVERAGE": recommend_for_geographic_coverage(grouped["GEOGRAPHICCOVERAGE"])})
     # Add more types as needed
 
     if USE_MOCK_RECOMMENDATIONS:
