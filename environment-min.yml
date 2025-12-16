@@ -9,3 +9,4 @@ dependencies:
   - httpx
   - pytest
   - black
+  - requests

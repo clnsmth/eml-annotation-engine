@@ -3,6 +3,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from typing import Optional
 
+import requests
 from fastapi import FastAPI, BackgroundTasks, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
@@ -398,10 +399,35 @@ def recommend_for_attribute(attributes):
     """
     Stub recommender for attribute elements.
     """
+    # Security Note:
+    # The API only accepts requests from computers on the UW-Madison network
+    # or connected to the UW-Madison VPN. If you are not on this network,
+    # you will need to contact Mark Tervo (mtervo@wisc.edu) for an exception.
+
     if USE_MOCK_RECOMMENDATIONS:
         return MOCK_ATTRIBUTE_RECOMMENDATIONS
-    # Real logic would go here
-    return []
+
+    BASE_URL = 'http://98.88.80.17:5000'
+    ANNOTATE_ENDPOINT = '/api/annotate'
+    API_URL = f"{BASE_URL}{ANNOTATE_ENDPOINT}"
+
+    try:
+        # Send the POST request to the API.
+        response = requests.post(API_URL, json=payload)
+        response.raise_for_status()
+
+        matches = response.json()
+
+        # Get the top 5 matches for each attribute
+        combined_results = {}
+        for attribute, results in matches.items():
+            combined_results[attribute] = results[:5]
+
+        return combined_results
+
+    except requests.exceptions.RequestException as e:
+        print(f"An error occurred: {e}")
+
 
 def recommend_for_geographic_coverage(geos):
     """
