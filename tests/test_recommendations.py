@@ -1,3 +1,4 @@
+import json
 from webapp.run import (
     recommend_for_attribute,
     recommend_for_geographic_coverage,
@@ -5,7 +6,6 @@ from webapp.run import (
     reformat_geographic_coverage_elements,
     parse_eml_elements,
     app,
-    MOCK_ATTRIBUTE_RECOMMENDATIONS,
     MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS,
 )
 from fastapi.testclient import TestClient
@@ -18,11 +18,11 @@ def test_recommend_for_attribute_unit():
     """
     Unit test for recommend_for_attribute.
     """
-    attributes = [
-        {"name": "SurveyID", "type": "string"},
-        {"name": "SampleID", "type": "int"},
-    ]
+    attributes = MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"]
     results = recommend_for_attribute(attributes)
+    # print results as json
+    print(json.dumps(results, indent=2))
+
     assert isinstance(results, list)
     assert len(results) == 9
     for i, item in enumerate(results):
