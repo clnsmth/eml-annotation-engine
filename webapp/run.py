@@ -215,91 +215,101 @@ ORIGINAL_MOCK_RESPONSE = [
     },
 ]
 
-MOCK_ATTRIBUTE_RECOMMENDATIONS = [
-    {
-        "column_name": "SurveyID",
-        "concept_name": "Identifier",
-        "concept_definition": "An information content entity that identifies something.",
-        "concept_id": "http://purl.obolibrary.org/obo/IAO_0000578",
-        "confidence": 0.95
-    },
-    {
-        "column_name": "Latitude",
-        "concept_name": "Latitude",
-        "concept_definition": "The angular distance of a place north or south of the earth's equator.",
-        "concept_id": "http://purl.obolibrary.org/obo/GEO_00000016",
-        "confidence": 0.99
-    },
-    {
-        "column_name": "AirTemperature_F",
-        "concept_name": "Air Temperature",
-        "concept_definition": "The temperature of the air.",
-        "concept_id": "http://purl.obolibrary.org/obo/ENVO_00002006",
-        "confidence": 0.9
-    },
-    {
-        "column_name": "AirTemperature_F",
-        "concept_name": "Temperature",
-        "concept_definition": "A physical quality of the thermal energy of a system.",
-        "concept_id": "http://purl.obolibrary.org/obo/PATO_0000146",
-        "confidence": 0.85
-    },
-    {
-        "column_name": "WaterTemperature_F",
-        "concept_name": "Water Temperature",
-        "concept_definition": "The temperature of water.",
-        "concept_id": "http://purl.obolibrary.org/obo/ENVO_00002010",
-        "confidence": 0.95
-    },
-    {
-        "column_name": "Lake",
-        "concept_name": "Lake",
-        "concept_definition": "A large body of water surrounded by land.",
-        "concept_id": "http://purl.obolibrary.org/obo/ENVO_00000020",
-        "confidence": 0.92
-    },
-    {
-        "column_name": "SpeciesCode",
-        "concept_name": "Taxon",
-        "concept_definition": "A group of one or more populations of an organism.",
-        "concept_id": "http://rs.tdwg.org/dwc/terms/Taxon",
-        "confidence": 0.88
-    },
-    {
-        "column_name": "SpeciesCode",
-        "concept_name": "Scientific Name",
-        "concept_definition": "The full scientific name.",
-        "concept_id": "http://rs.tdwg.org/dwc/terms/scientificName",
-        "confidence": 0.8
-    },
-    {
-        "column_name": "EggMassSubstrate",
-        "concept_name": "Surface Layer",
-        "concept_definition": "The layer of a material that is in contact with the surrounding medium.",
-        "concept_id": "http://purl.obolibrary.org/obo/ENVO_00002005",
-        "confidence": 0.7
-    }
-]
+# Changed to a Dictionary keyed by ObjectName
+MOCK_ATTRIBUTE_RECOMMENDATIONS_BY_FILE = {
+    "SurveyResults.csv": [
+        {
+            "column_name": "SurveyID",
+            "concept_name": "Identifier",
+            "concept_definition": "An information content entity that identifies something.",
+            "concept_id": "http://purl.obolibrary.org/obo/IAO_0000578",
+            "confidence": 0.95
+        },
+        {
+            "column_name": "Latitude",
+            "concept_name": "Latitude",
+            "concept_definition": "The angular distance of a place north or south of the earth's equator.",
+            "concept_id": "http://purl.obolibrary.org/obo/GEO_00000016",
+            "confidence": 0.99
+        },
+        {
+            "column_name": "AirTemperature_F",
+            "concept_name": "Air Temperature",
+            "concept_definition": "The temperature of the air.",
+            "concept_id": "http://purl.obolibrary.org/obo/ENVO_00002006",
+            "confidence": 0.9
+        },
+        {
+            "column_name": "AirTemperature_F",
+            "concept_name": "Temperature",
+            "concept_definition": "A physical quality of the thermal energy of a system.",
+            "concept_id": "http://purl.obolibrary.org/obo/PATO_0000146",
+            "confidence": 0.85
+        },
+        {
+            "column_name": "WaterTemperature_F",
+            "concept_name": "Water Temperature",
+            "concept_definition": "The temperature of water.",
+            "concept_id": "http://purl.obolibrary.org/obo/ENVO_00002010",
+            "confidence": 0.95
+        },
+        {
+            "column_name": "Lake",
+            "concept_name": "Lake",
+            "concept_definition": "A large body of water surrounded by land.",
+            "concept_id": "http://purl.obolibrary.org/obo/ENVO_00000020",
+            "confidence": 0.92
+        },
+        {
+            "column_name": "SpeciesCode",
+            "concept_name": "Taxon",
+            "concept_definition": "A group of one or more populations of an organism.",
+            "concept_id": "http://rs.tdwg.org/dwc/terms/Taxon",
+            "confidence": 0.88
+        },
+        {
+            "column_name": "SpeciesCode",
+            "concept_name": "Scientific Name",
+            "concept_definition": "The full scientific name.",
+            "concept_id": "http://rs.tdwg.org/dwc/terms/scientificName",
+            "confidence": 0.8
+        },
+    ],
+    "EggMasses.csv": [
+        {
+            "column_name": "EggMassSubstrate",
+            "concept_name": "Surface Layer",
+            "concept_definition": "The layer of a material that is in contact with the surrounding medium.",
+            "concept_id": "http://purl.obolibrary.org/obo/ENVO_00002005",
+            "confidence": 0.7
+        }
+    ]
+}
 
 MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS = [
     {
-        "label": "Freshwater Lake Ecosystem",
-        "uri": "http://purl.obolibrary.org/obo/ENVO_01000021",
-        "ontology": "ENVO",
-        "confidence": 0.75,
-        "description": "An aquatic ecosystem that is part of a lake.",
-        "propertyLabel": "contains",
-        "propertyUri": "http://www.w3.org/ns/oa#hasBody",
-    },
-    {
-        "label": "Temperate Climate",
-        "uri": "http://purl.obolibrary.org/obo/ENVO_01000000",
-        "ontology": "ENVO",
-        "confidence": 0.80,
-        "description": "A climate with moderate conditions",
-        "propertyLabel": "contains",
-        "propertyUri": "http://www.w3.org/ns/oa#hasBody",
-    },
+        "id": "geo-1",
+        "recommendations": [
+            {
+                "label": "Freshwater Lake Ecosystem",
+                "uri": "http://purl.obolibrary.org/obo/ENVO_01000021",
+                "ontology": "ENVO",
+                "confidence": 0.75,
+                "description": "An aquatic ecosystem that is part of a lake.",
+                "propertyLabel": "contains",
+                "propertyUri": "http://www.w3.org/ns/oa#hasBody",
+            },
+            {
+                "label": "Temperate Climate",
+                "uri": "http://purl.obolibrary.org/obo/ENVO_01000000",
+                "ontology": "ENVO",
+                "confidence": 0.80,
+                "description": "A climate with moderate conditions",
+                "propertyLabel": "contains",
+                "propertyUri": "http://www.w3.org/ns/oa#hasBody",
+            },
+        ],
+    }
 ]
 
 # --- Mock Switch ---
@@ -465,58 +475,61 @@ def merge_recommender_results(source_items, recommender_items, eml_type="ATTRIBU
 
 def recommend_for_attribute(attributes):
     """
-    Groups attributes by objectName, sends to API, and merges results.
+    Groups attributes by objectName, sends to API (or gets mock per file), and merges results.
     """
-    # Security Note:
-    # The API only accepts requests from computers on the UW-Madison network...
-
-    if USE_MOCK_RECOMMENDATIONS:
-        # Note: In mock mode, we usually rely on the top-level override in
-        # recommend_annotations, but if called directly, we use the attribute mock.
-        return merge_recommender_results(attributes, MOCK_ATTRIBUTE_RECOMMENDATIONS, "ATTRIBUTE")
 
     BASE_URL = 'http://98.88.80.17:5000'
     ANNOTATE_ENDPOINT = '/api/annotate'
     API_URL = f"{BASE_URL}{ANNOTATE_ENDPOINT}"
 
     # Sort for groupby
-    attributes.sort(key=lambda x: x.get("object_name", "unknown"))
+    attributes.sort(key=lambda x: x.get("objectName", "unknown"))
 
     final_output = []
 
     # Group by File (object_name)
-    for object_name, group_iter in groupby(attributes, key=lambda x: x.get("object_name", "unknown")):
+    for object_name, group_iter in groupby(attributes, key=lambda x: x.get("objectName", "unknown")):
         file_attributes = list(group_iter)
+        recommender_response = []
 
-        # Prepare payload (exclude ID if API is strict, otherwise just pass file_attributes)
-        # Assuming API expects specific structure without ID:
-        api_payload = [{k: v for k, v in i.items() if k != 'id'} for i in file_attributes]
+        if USE_MOCK_RECOMMENDATIONS:
+            # LOOK UP MOCK DATA BY FILENAME
+            # Default to empty list if filename not found in mock
+            recommender_response = MOCK_ATTRIBUTE_RECOMMENDATIONS_BY_FILE.get(object_name, [])
 
-        try:
-            # Send the POST request to the API.
-            response = requests.post(API_URL, json=api_payload)
-            response.raise_for_status()
-
-            raw_response = response.json()
-            recommender_response = []
-
-            # Normalize response (Dict[col, list] -> List[dict])
-            if isinstance(raw_response, dict):
-                for col_name, recs in raw_response.items():
-                    # Take top 5
-                    for r in recs[:5]:
-                        if 'column_name' not in r: r['column_name'] = col_name
-                        recommender_response.append(r)
-            elif isinstance(raw_response, list):
-                recommender_response = raw_response
-
-            # Merge results for this file group
+            # Merge results for this file group using the retrieved mock data
             file_results = merge_recommender_results(file_attributes, recommender_response, "ATTRIBUTE")
             final_output.extend(file_results)
 
-        except requests.exceptions.RequestException as e:
-            print(f"An error occurred for {object_name}: {e}")
-            continue
+        else:
+            # REAL API LOGIC
+            # Prepare payload (exclude ID if API is strict, otherwise just pass file_attributes)
+            api_payload = [{k: v for k, v in i.items() if k != 'id'} for i in file_attributes]
+
+            try:
+                # Send the POST request to the API.
+                response = requests.post(API_URL, json=api_payload)
+                response.raise_for_status()
+
+                raw_response = response.json()
+
+                # Normalize response (Dict[col, list] -> List[dict])
+                if isinstance(raw_response, dict):
+                    for col_name, recs in raw_response.items():
+                        # Take top 5
+                        for r in recs[:5]:
+                            if 'column_name' not in r: r['column_name'] = col_name
+                            recommender_response.append(r)
+                elif isinstance(raw_response, list):
+                    recommender_response = raw_response
+
+                # Merge results for this file group
+                file_results = merge_recommender_results(file_attributes, recommender_response, "ATTRIBUTE")
+                final_output.extend(file_results)
+
+            except requests.exceptions.RequestException as e:
+                print(f"An error occurred for {object_name}: {e}")
+                continue
 
     return final_output
 
@@ -529,23 +542,6 @@ def recommend_for_geographic_coverage(geos):
         return MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
     # Real logic would go here
     return []
-
-
-def parse_recommended_attributes(recommended_attributes):
-    """
-    Stub: Parse or transform the recommended_attributes object as needed before returning to the client.
-    For now, returns input unchanged.
-    """
-    return recommended_attributes
-
-
-def parse_recommended_geographic_coverage(recommended_geographic_coverage):
-    """
-    Stub: Parse or transform the recommended_geographic_coverage object as needed before returning to the client.
-    For now, returns input unchanged.
-    """
-
-    return recommended_geographic_coverage
 
 
 # --- Endpoints ---
@@ -598,24 +594,18 @@ def recommend_annotations(payload: dict = Body(...)):
     Implements a gateway aggregation pattern for annotation recommendations.
     If no recognized types are present, returns the original mock response for backward compatibility.
     """
-    import json
-    print("Received payload for recommendations: " + json.dumps(payload, indent=2, default=str))
 
-    # --- MOCK BYPASS ---
-    # As requested, if mocks are on, ignore logic and return original mock
-    if USE_MOCK_RECOMMENDATIONS:
-        return ORIGINAL_MOCK_RESPONSE
+    # To visualize post by front end
+    # import json
+    # print("Received payload for recommendations: " + json.dumps(payload, indent=2, default=str))
 
-    grouped = parse_eml_elements(payload)
     results = []
-    if "ATTRIBUTE" in grouped:
-        recommended_attributes = recommend_for_attribute(grouped["ATTRIBUTE"])
-        parsed_recommended_attributes = parse_recommended_attributes(recommended_attributes)
-        results.append(parsed_recommended_attributes)
-    if "GEOGRAPHICCOVERAGE" in grouped:
-        recommended_geographic_coverage = recommend_for_geographic_coverage(grouped["GEOGRAPHICCOVERAGE"])
-        parsed_recommended_geographic_coverage = parse_recommended_geographic_coverage(recommended_geographic_coverage)
-        results.append(parsed_recommended_geographic_coverage)
+    if "ATTRIBUTE" in payload:
+        recommended_attributes = recommend_for_attribute(payload["ATTRIBUTE"])
+        results.append(recommended_attributes)
+    if "GEOGRAPHICCOVERAGE" in payload:
+        recommended_geographic_coverage = recommend_for_geographic_coverage(payload["GEOGRAPHICCOVERAGE"])
+        results.append(recommended_geographic_coverage)
     # Add more types as needed
 
     if results:
@@ -632,7 +622,6 @@ def reformat_attribute_elements(attributes):
     Transform attribute elements to the format expected by the attribute recommender.
     Converts each input dict to the output format:
     {
-        "id": <id>,  <-- ADDED THIS so we can merge later
         "entity_name": <objectName>,
         "entity_description": <entityDescription>,
         "object_name": <objectName>,
@@ -643,7 +632,6 @@ def reformat_attribute_elements(attributes):
     reformatted = []
     for attr in attributes:
         reformatted.append({
-            "id": attr.get("id"),  # <--- Preserving ID for merge
             "entity_name": attr.get("objectName"),
             "entity_description": attr.get("entityDescription"),
             "object_name": attr.get("objectName"),

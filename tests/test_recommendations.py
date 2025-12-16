@@ -24,13 +24,19 @@ def test_recommend_for_attribute_unit():
     print(json.dumps(results, indent=2))
 
     assert isinstance(results, list)
-    assert len(results) == 9
+    assert len(results) == 7
     for i, item in enumerate(results):
-        assert "column_name" in item
-        assert "concept_name" in item
-        assert "concept_definition" in item
-        assert "concept_id" in item
-        assert "confidence" in item
+        assert "id" in item
+        assert "recommendations" in item
+        for rec in item["recommendations"]:
+            assert "attributeName" in rec
+            assert "objectName" in rec
+            assert "uri" in rec
+            assert "ontology" in rec
+            assert "confidence" in rec
+            assert "description" in rec
+            assert "propertyLabel" in rec
+            assert "propertyUri" in rec
 
 
 def test_recommend_for_geographic_coverage_unit():
@@ -119,7 +125,7 @@ def test_recommend_annotations_endpoint_with_full_mock_frontend_payload():
     Integration test for the /api/recommendations endpoint with the full mock frontend payload as input (as-is).
     Checks that the response is a list and that the number of items matches the number of attributes and coverages.
     """
-    payload = {"ATTRIBUTE": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"], "GEOGRAPHICCOVERAGE": MOCK_FRONTEND_PAYLOAD["GEOGRAPHICCOVERAGE"]}
+    payload = MOCK_FRONTEND_PAYLOAD
     response = client.post("/api/recommendations", json=payload)
     assert response.status_code == 200
     data = response.json()
