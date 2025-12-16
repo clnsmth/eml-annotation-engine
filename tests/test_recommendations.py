@@ -104,6 +104,22 @@ def test_recommend_annotations_endpoint_with_full_mock_frontend_payload():
             assert "propertyUri" in rec
 
 
+def test_recommendations_endpoint_snapshot():
+    """
+    Integration test: POST to /api/recommendations with MOCK_FRONTEND_PAYLOAD and compare response to stored snapshot.
+    Sorts both lists by 'id' to ensure order does not affect the test.
+    """
+    payload = MOCK_FRONTEND_PAYLOAD
+    response = client.post("/api/recommendations", json=payload)
+    assert response.status_code == 200
+    data = response.json()
+    with open("tests/snapshot_recommendations_response.json", "r") as f:
+        expected = json.load(f)
+    data_sorted = sorted(data, key=lambda x: x["id"])
+    expected_sorted = sorted(expected, key=lambda x: x["id"])
+    assert data_sorted == expected_sorted
+
+
 # --- Example mock POST JSON payload from frontend (to be filled in by user) ---
 MOCK_FRONTEND_PAYLOAD = {
   "DATATABLE": [

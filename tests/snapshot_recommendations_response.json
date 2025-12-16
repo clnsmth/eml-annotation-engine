@@ -1,0 +1,160 @@
+[
+  {
+    "id": "3220828d-a9a3-4c98-89a6-36f4a740a57e",
+    "recommendations": [
+      {
+        "attributeName": "EggMassSubstrate",
+        "confidence": 0.7,
+        "description": "The layer of a material that is in contact with the surrounding medium.",
+        "label": "Surface Layer",
+        "objectName": "EggMasses.csv",
+        "ontology": "ENVO",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "uri": "http://purl.obolibrary.org/obo/ENVO_00002005"
+      }
+    ]
+  },
+  {
+    "id": "24b4badd-56b7-4dbf-8848-f6531f20c024",
+    "recommendations": [
+      {
+        "attributeName": "SpeciesCode",
+        "confidence": 0.88,
+        "description": "A group of one or more populations of an organism.",
+        "label": "Taxon",
+        "objectName": "SurveyResults.csv",
+        "ontology": "DWC",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "uri": "http://rs.tdwg.org/dwc/terms/Taxon"
+      },
+      {
+        "attributeName": "SpeciesCode",
+        "confidence": 0.8,
+        "description": "The full scientific name.",
+        "label": "Scientific Name",
+        "objectName": "SurveyResults.csv",
+        "ontology": "DWC",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "uri": "http://rs.tdwg.org/dwc/terms/scientificName"
+      }
+    ]
+  },
+  {
+    "id": "66c5e93d-7a8b-4dbf-989f-9294db3ec7b9",
+    "recommendations": [
+      {
+        "attributeName": "Lake",
+        "confidence": 0.92,
+        "description": "A large body of water surrounded by land.",
+        "label": "Lake",
+        "objectName": "SurveyResults.csv",
+        "ontology": "ENVO",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "uri": "http://purl.obolibrary.org/obo/ENVO_00000020"
+      }
+    ]
+  },
+  {
+    "id": "dca8c4a4-472b-4998-bf35-82b9e4fb8f22",
+    "recommendations": [
+      {
+        "attributeName": "WaterTemperature_F",
+        "confidence": 0.95,
+        "description": "The temperature of water.",
+        "label": "Water Temperature",
+        "objectName": "SurveyResults.csv",
+        "ontology": "ENVO",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "uri": "http://purl.obolibrary.org/obo/ENVO_00002010"
+      }
+    ]
+  },
+  {
+    "id": "0673eb41-1b47-4d32-9d87-bf10e17c69b6",
+    "recommendations": [
+      {
+        "attributeName": "AirTemperature_F",
+        "confidence": 0.9,
+        "description": "The temperature of the air.",
+        "label": "Air Temperature",
+        "objectName": "SurveyResults.csv",
+        "ontology": "ENVO",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "uri": "http://purl.obolibrary.org/obo/ENVO_00002006"
+      },
+      {
+        "attributeName": "AirTemperature_F",
+        "confidence": 0.85,
+        "description": "A physical quality of the thermal energy of a system.",
+        "label": "Temperature",
+        "objectName": "SurveyResults.csv",
+        "ontology": "PATO",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "uri": "http://purl.obolibrary.org/obo/PATO_0000146"
+      }
+    ]
+  },
+  {
+    "id": "d49be2c0-7b9e-41f4-ae07-387d3e1f14c8",
+    "recommendations": [
+      {
+        "attributeName": "Latitude",
+        "confidence": 0.99,
+        "description": "The angular distance of a place north or south of the earth's equator.",
+        "label": "Latitude",
+        "objectName": "SurveyResults.csv",
+        "ontology": "GEO",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "uri": "http://purl.obolibrary.org/obo/GEO_00000016"
+      }
+    ]
+  },
+  {
+    "id": "cfe0601b-e76b-4f34-8a5a-655db3b0491c",
+    "recommendations": [
+      {
+        "attributeName": "SurveyID",
+        "confidence": 0.95,
+        "description": "An information content entity that identifies something.",
+        "label": "Identifier",
+        "objectName": "SurveyResults.csv",
+        "ontology": "IAO",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "uri": "http://purl.obolibrary.org/obo/IAO_0000578"
+      }
+    ]
+  },
+  {
+    "id": "geo-1",
+    "recommendations": [
+      {
+        "confidence": 0.75,
+        "description": "An aquatic ecosystem that is part of a lake.",
+        "label": "Freshwater Lake Ecosystem",
+        "ontology": "ENVO",
+        "propertyLabel": "contains",
+        "propertyUri": "http://www.w3.org/ns/oa#hasBody",
+        "uri": "http://purl.obolibrary.org/obo/ENVO_01000021"
+      },
+      {
+        "confidence": 0.8,
+        "description": "A climate with moderate conditions",
+        "label": "Temperate Climate",
+        "ontology": "ENVO",
+        "propertyLabel": "contains",
+        "propertyUri": "http://www.w3.org/ns/oa#hasBody",
+        "uri": "http://purl.obolibrary.org/obo/ENVO_01000000"
+      }
+    ]
+  }
+]
+
