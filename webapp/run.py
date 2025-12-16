@@ -10,6 +10,7 @@ from typing import Optional
 import requests
 from fastapi import FastAPI, BackgroundTasks, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
 
 from webapp.config import Config
@@ -577,10 +578,6 @@ def recommend_annotations(payload: dict = Body(...)):
     If no recognized types are present, returns the original mock response for backward compatibility.
     """
 
-    # To visualize post by front end
-    # import json
-    # print("Received payload for recommendations: " + json.dumps(payload, indent=2, default=str))
-
     results = []
     if "ATTRIBUTE" in payload:
         recommended_attributes = recommend_for_attribute(payload["ATTRIBUTE"])
@@ -591,12 +588,10 @@ def recommend_annotations(payload: dict = Body(...)):
     # Add more types as needed
 
     if results:
-        # Results is a list of lists (one per type). Flatten if your frontend expects a flat list,
-        # or keep as is. Based on ORIGINAL_MOCK_RESPONSE, frontend expects a flat list of objects.
         flat_results = [item for sublist in results for item in sublist]
-        return flat_results
+        return JSONResponse(content=flat_results, status_code=200)
     else:
-        return []
+        return JSONResponse(content=[], status_code=200)
 
 
 def reformat_attribute_elements(attributes):
