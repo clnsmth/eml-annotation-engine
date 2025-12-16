@@ -24,11 +24,13 @@ def test_recommend_for_attribute_unit():
     ]
     results = recommend_for_attribute(attributes)
     assert isinstance(results, list)
-    assert len(results) == 1
+    assert len(results) == 9
     for i, item in enumerate(results):
-        assert "recommendations" in item
-        # Compare to the module-level mock constant
-        assert item["recommendations"] == MOCK_ATTRIBUTE_RECOMMENDATIONS[0]["recommendations"]
+        assert "column_name" in item
+        assert "concept_name" in item
+        assert "concept_definition" in item
+        assert "concept_id" in item
+        assert "confidence" in item
 
 
 def test_recommend_for_geographic_coverage_unit():

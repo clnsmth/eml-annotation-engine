@@ -212,22 +212,69 @@ ORIGINAL_MOCK_RESPONSE = [
 ]
 
 MOCK_ATTRIBUTE_RECOMMENDATIONS = [
-    {
-        "id": f"attribute-0",
-        "recommendations": [
-            {
-                "label": "Identifier",
-                "uri": "http://purl.obolibrary.org/obo/IAO_0000578",
-                "ontology": "IAO",
-                "confidence": 0.95,
-                "description": "An information content entity that identifies something.",
-                "propertyLabel": "contains measurements of type",
-                "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-                "attributeName": "SurveyID",
-                "objectName": "SurveyResults.csv",
-            }
-        ]
-    }
+  {
+    "column_name": "SurveyID",
+    "concept_name": "Identifier",
+    "concept_definition": "An information content entity that identifies something.",
+    "concept_id": "http://purl.obolibrary.org/obo/IAO_0000578",
+    "confidence": 0.95
+  },
+  {
+    "column_name": "Latitude",
+    "concept_name": "Latitude",
+    "concept_definition": "The angular distance of a place north or south of the earth's equator.",
+    "concept_id": "http://purl.obolibrary.org/obo/GEO_00000016",
+    "confidence": 0.99
+  },
+  {
+    "column_name": "AirTemperature_F",
+    "concept_name": "Air Temperature",
+    "concept_definition": "The temperature of the air.",
+    "concept_id": "http://purl.obolibrary.org/obo/ENVO_00002006",
+    "confidence": 0.9
+  },
+  {
+    "column_name": "AirTemperature_F",
+    "concept_name": "Temperature",
+    "concept_definition": "A physical quality of the thermal energy of a system.",
+    "concept_id": "http://purl.obolibrary.org/obo/PATO_0000146",
+    "confidence": 0.85
+  },
+  {
+    "column_name": "WaterTemperature_F",
+    "concept_name": "Water Temperature",
+    "concept_definition": "The temperature of water.",
+    "concept_id": "http://purl.obolibrary.org/obo/ENVO_00002010",
+    "confidence": 0.95
+  },
+  {
+    "column_name": "Lake",
+    "concept_name": "Lake",
+    "concept_definition": "A large body of water surrounded by land.",
+    "concept_id": "http://purl.obolibrary.org/obo/ENVO_00000020",
+    "confidence": 0.92
+  },
+  {
+    "column_name": "SpeciesCode",
+    "concept_name": "Taxon",
+    "concept_definition": "A group of one or more populations of an organism.",
+    "concept_id": "http://rs.tdwg.org/dwc/terms/Taxon",
+    "confidence": 0.88
+  },
+  {
+    "column_name": "SpeciesCode",
+    "concept_name": "Scientific Name",
+    "concept_definition": "The full scientific name.",
+    "concept_id": "http://rs.tdwg.org/dwc/terms/scientificName",
+    "confidence": 0.8
+  },
+  {
+    "column_name": "EggMassSubstrate",
+    "concept_name": "Surface Layer",
+    "concept_definition": "The layer of a material that is in contact with the surrounding medium.",
+    "concept_id": "http://purl.obolibrary.org/obo/ENVO_00002005",
+    "confidence": 0.7
+  }
 ]
 
 MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS = [
