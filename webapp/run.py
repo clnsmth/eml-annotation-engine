@@ -578,6 +578,9 @@ def recommend_annotations(payload: dict = Body(...)):
     If no recognized types are present, returns the original mock response for backward compatibility.
     """
 
+    # print the incoming payload for debugging
+    print("Received recommendation payload:", json.dumps(payload, indent=2))
+
     results = []
     if "ATTRIBUTE" in payload:
         recommended_attributes = recommend_for_attribute(payload["ATTRIBUTE"])
