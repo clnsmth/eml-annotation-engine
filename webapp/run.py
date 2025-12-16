@@ -568,24 +568,6 @@ async def submit_proposal(proposal: ProposalRequest, background_tasks: Backgroun
         )
 
 
-def parse_eml_elements(payload):
-    """
-    Parses the input payload and groups EML elements by type, applying reformatting for each group.
-    Accepts the raw frontend payload (capitalized keys, e.g. 'ATTRIBUTE', 'GEOGRAPHICCOVERAGE').
-    Returns a dict of group key -> list of reformatted elements.
-    """
-    grouped = {}
-    if "ATTRIBUTE" in payload:
-        items = payload["ATTRIBUTE"] if isinstance(payload["ATTRIBUTE"], list) else [payload["ATTRIBUTE"]]
-        grouped["ATTRIBUTE"] = reformat_attribute_elements(items)
-    if "GEOGRAPHICCOVERAGE" in payload:
-        items = payload["GEOGRAPHICCOVERAGE"] if isinstance(payload["GEOGRAPHICCOVERAGE"], list) else [
-            payload["GEOGRAPHICCOVERAGE"]]
-        grouped["GEOGRAPHICCOVERAGE"] = reformat_geographic_coverage_elements(items)
-    # Add more types as needed
-    return grouped
-
-
 @app.post("/api/recommendations")
 def recommend_annotations(payload: dict = Body(...)):
     """
@@ -654,7 +636,6 @@ __all__ = [
     "recommend_for_geographic_coverage",
     "reformat_attribute_elements",
     "reformat_geographic_coverage_elements",
-    "parse_eml_elements",
     "app",
 ]
 

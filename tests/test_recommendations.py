@@ -4,7 +4,6 @@ from webapp.run import (
     recommend_for_geographic_coverage,
     reformat_attribute_elements,
     reformat_geographic_coverage_elements,
-    parse_eml_elements,
     app,
     MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS,
 )
@@ -49,20 +48,6 @@ def test_recommend_for_geographic_coverage_unit():
     results = recommend_for_geographic_coverage(geos)
     assert isinstance(results, list)
     assert results == MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
-
-
-def test_parse_eml_elements_unit():
-    """
-    Unit test for parse_eml_elements, now ensures reformatting is applied using the mock frontend payload as-is (capitalized keys).
-    """
-    payload = {
-        "ATTRIBUTE": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"],
-        "GEOGRAPHICCOVERAGE": MOCK_FRONTEND_PAYLOAD["GEOGRAPHICCOVERAGE"]
-    }
-    grouped = parse_eml_elements(payload)
-    assert set(grouped.keys()) == {"ATTRIBUTE", "GEOGRAPHICCOVERAGE"}
-    assert grouped["ATTRIBUTE"] == reformat_attribute_elements(MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"])
-    assert grouped["GEOGRAPHICCOVERAGE"] == reformat_geographic_coverage_elements(MOCK_FRONTEND_PAYLOAD["GEOGRAPHICCOVERAGE"])
 
 
 def test_reformat_attribute_elements_unit():
@@ -474,36 +459,4 @@ MOCK_FRONTEND_PAYLOAD = {
     }
   ]
 }
-
-
-def test_formatters_with_mock_frontend_payload():
-    """
-    Test the formatter functions using the example mock POST JSON payload from the frontend.
-    This is a placeholder; user should fill in MOCK_FRONTEND_PAYLOAD with real data.
-    """
-    if not MOCK_FRONTEND_PAYLOAD:
-        import pytest
-        pytest.skip("No mock frontend payload provided.")
-    grouped = parse_eml_elements(MOCK_FRONTEND_PAYLOAD)
-    # For each group, call the corresponding formatter and check output type
-    for group, items in grouped.items():
-        if group == "ATTRIBUTE":
-            assert isinstance(reformat_attribute_elements(items), list)
-        elif group == "GEOGRAPHICCOVERAGE":
-            assert isinstance(reformat_geographic_coverage_elements(items), list)
-
-
-def test_parse_eml_elements_with_mock_frontend_payload():
-    """
-    Test parse_eml_elements to ensure it uses reformat_attribute_elements correctly with the mock frontend payload as-is.
-    """
-    # Use only the ATTRIBUTE group for clarity
-    payload = {"ATTRIBUTE": MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"]}
-    grouped = parse_eml_elements(payload)
-    # The 'ATTRIBUTE' group should be a list of reformatted items
-    assert "ATTRIBUTE" in grouped
-    reformatted = grouped["ATTRIBUTE"]
-    # Each item in reformatted should match the output of reformat_attribute_elements
-    expected = reformat_attribute_elements(MOCK_FRONTEND_PAYLOAD["ATTRIBUTE"])
-    assert reformatted == expected
 
