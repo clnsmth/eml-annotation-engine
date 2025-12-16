@@ -252,6 +252,10 @@ MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS = [
 ]
 
 
+# --- Mock Switch ---
+USE_MOCK_RECOMMENDATIONS = True  # Set to False to use real recommendation logic when implemented
+
+
 # --- Data Models ---
 
 
@@ -347,15 +351,19 @@ def recommend_for_attribute(attributes):
     """
     Stub recommender for attribute elements.
     """
-    # Return a list of mock recommendations, one per attribute
-    return MOCK_ATTRIBUTE_RECOMMENDATIONS
+    if USE_MOCK_RECOMMENDATIONS:
+        return MOCK_ATTRIBUTE_RECOMMENDATIONS
+    # Real logic would go here
+    return []
 
 def recommend_for_geographic_coverage(geos):
     """
     Stub recommender for geographic coverage elements.
     """
-    return MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
-
+    if USE_MOCK_RECOMMENDATIONS:
+        return MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
+    # Real logic would go here
+    return []
 
 # --- Endpoints ---
 
@@ -417,11 +425,12 @@ def recommend_annotations(payload: dict = Body(...)):
         results.extend(recommend_for_geographic_coverage(grouped["GEOGRAPHICCOVERAGE"]))
     # Add more types as needed
 
-    return ORIGINAL_MOCK_RESPONSE  # Just mocking for now
-    # if results:
-    #     return results
-    # else:
-    #     return ORIGINAL_MOCK_RESPONSE
+    if USE_MOCK_RECOMMENDATIONS:
+        return ORIGINAL_MOCK_RESPONSE  # Just mocking for now
+    if results:
+        return results
+    else:
+        return []
 
 
 def reformat_attribute_elements(attributes):
