@@ -3,21 +3,28 @@ from fastapi.responses import JSONResponse
 from webapp.core import ProposalRequest, send_email_notification, recommend_for_attribute, recommend_for_geographic_coverage
 import json
 import daiquiri
+from typing import Any, Dict
 
+# Set up daiquiri logging for this module
 daiquiri.setup()
 logger = daiquiri.getLogger(__name__)
 
 router = APIRouter()
 
 @router.get("/")
-def read_root():
+def read_root() -> Dict[str, str]:
+    """
+    Health check endpoint for the backend service.
+    Returns a simple status message.
+    """
     logger.info("Health check endpoint called.")
     return {"message": "Semantic EML Annotator Backend is running."}
 
 @router.post("/api/proposals")
-async def submit_proposal(proposal: ProposalRequest, background_tasks: BackgroundTasks):
+async def submit_proposal(proposal: ProposalRequest, background_tasks: BackgroundTasks) -> Dict[str, str]:
     """
     Receives a new term proposal and queues an email notification.
+    Returns a status message.
     """
     try:
         background_tasks.add_task(send_email_notification, proposal)
@@ -30,12 +37,13 @@ async def submit_proposal(proposal: ProposalRequest, background_tasks: Backgroun
         )
 
 @router.post("/api/recommendations")
-def recommend_annotations(payload: dict = Body(...)):
+def recommend_annotations(payload: Dict[str, Any] = Body(...)) -> JSONResponse:
     """
     Accepts a JSON payload of EML metadata elements grouped by type (e.g. ATTRIBUTE, GEOGRAPHICCOVERAGE),
     parses the types, fans out to respective recommendation engines, and combines the results.
     Implements a gateway aggregation pattern for annotation recommendations.
     If no recognized types are present, returns the original mock response for backward compatibility.
+    Returns a JSONResponse with the recommendations or an empty list.
     """
     logger.info("Received recommendation payload: %s", json.dumps(payload, indent=2))
     results = []

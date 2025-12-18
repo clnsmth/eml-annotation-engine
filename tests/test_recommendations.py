@@ -5,19 +5,19 @@ from webapp.run import (
     recommend_for_geographic_coverage,
     app,
 )
+from typing import Any, Dict, List
 
 
 # --- Unit tests for individual recommenders ---
 @pytest.mark.usefixtures("client", "mock_payload")
-def test_recommend_for_attribute_unit(mock_payload):
+def test_recommend_for_attribute_unit(mock_payload: Dict[str, Any]) -> None:
     """
     Unit test for recommend_for_attribute.
+    Checks that the output structure and content are as expected.
     """
     attributes = mock_payload["ATTRIBUTE"]
     results = recommend_for_attribute(attributes)
-    # print results as json
     print(json.dumps(results, indent=2))
-
     assert isinstance(results, list)
     assert len(results) == 35
     for item in results:
@@ -35,9 +35,10 @@ def test_recommend_for_attribute_unit(mock_payload):
 
 
 @pytest.mark.usefixtures("mock_geo_coverage")
-def test_recommend_for_geographic_coverage_unit(mock_geo_coverage):
+def test_recommend_for_geographic_coverage_unit(mock_geo_coverage: List[Dict[str, Any]]) -> None:
     """
     Unit test for recommend_for_geographic_coverage.
+    Checks that the output matches the mock_geo_coverage fixture.
     """
     geos = [
         {"description": "Lake Tahoe region", "objectName": "LakeTahoe"}
@@ -64,7 +65,10 @@ def test_recommend_for_geographic_coverage_unit(mock_geo_coverage):
         "column_description": "Latitude of collection"
     }])
 ])
-def test_reformat_attribute_elements_unit(data, expected):
+def test_reformat_attribute_elements_unit(data: List[Dict[str, Any]], expected: List[Dict[str, Any]]) -> None:
+    """
+    Test reformat_attribute_elements utility function for correct transformation.
+    """
     from webapp.utils import reformat_attribute_elements
     out = reformat_attribute_elements(data)
     assert out == expected
@@ -73,14 +77,17 @@ def test_reformat_attribute_elements_unit(data, expected):
 @pytest.mark.parametrize("data", [
     ([{"description": "D1"}, {"description": "D2"}]),
 ])
-def test_reformat_geographic_coverage_elements_unit(data):
+def test_reformat_geographic_coverage_elements_unit(data: List[Dict[str, Any]]) -> None:
+    """
+    Test reformat_geographic_coverage_elements utility function for pass-through behavior.
+    """
     from webapp.utils import reformat_geographic_coverage_elements
     out = reformat_geographic_coverage_elements(data)
     assert out == data
 
 
 @pytest.mark.usefixtures("client", "mock_payload")
-def test_recommend_annotations_endpoint_with_full_mock_frontend_payload(client, mock_payload):
+def test_recommend_annotations_endpoint_with_full_mock_frontend_payload(client: Any, mock_payload: Dict[str, Any]) -> None:
     """
     Integration test for the /api/recommendations endpoint with the full mock frontend payload as input (as-is).
     Checks that the response is a list and that the number of items matches the number of attributes and coverages.
@@ -104,7 +111,7 @@ def test_recommend_annotations_endpoint_with_full_mock_frontend_payload(client, 
 
 
 @pytest.mark.usefixtures("client", "mock_payload")
-def test_recommendations_endpoint_snapshot(client, mock_payload):
+def test_recommendations_endpoint_snapshot(client: Any, mock_payload: Dict[str, Any]) -> None:
     """
     Integration test: POST to /api/recommendations with MOCK_FRONTEND_PAYLOAD and compare response to stored snapshot.
     Sorts both lists by 'id' to ensure order does not affect the test.
@@ -129,6 +136,9 @@ def test_recommendations_endpoint_snapshot(client, mock_payload):
     (None, "UNKNOWN"),
     ("http://example.com/other/THING_12345", "UNKNOWN"),
 ])
-def test_extract_ontology(uri, expected):
+def test_extract_ontology(uri: str, expected: str) -> None:
+    """
+    Test extract_ontology utility function for correct ontology extraction from URIs.
+    """
     from webapp.utils import extract_ontology
     assert extract_ontology(uri) == expected

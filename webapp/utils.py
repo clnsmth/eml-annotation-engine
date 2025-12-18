@@ -1,13 +1,18 @@
 import re
 from collections import defaultdict
+from typing import Any, Dict, List, Optional
 from webapp.config import Config
 import daiquiri
 
+# Set up daiquiri logging for this module
 daiquiri.setup()
 logger = daiquiri.getLogger(__name__)
 
-def extract_ontology(uri):
-    """Parses the ontology code (ENVO, PATO, IAO, ECSO, DWC) from a URI."""
+def extract_ontology(uri: Optional[str]) -> str:
+    """
+    Parses the ontology code (ENVO, PATO, IAO, ECSO, DWC) from a URI string.
+    Returns the ontology code as a string, or 'UNKNOWN' if not found.
+    """
     if not uri:
         logger.warning("extract_ontology called with empty or None uri.")
         return "UNKNOWN"
@@ -22,22 +27,27 @@ def extract_ontology(uri):
     logger.warning("extract_ontology could not parse ontology from uri: %s", uri)
     return "UNKNOWN"
 
-def merge_recommender_results(source_items, recommender_items, eml_type="ATTRIBUTE"):
+def merge_recommender_results(
+    source_items: List[Dict[str, Any]],
+    recommender_items: List[Dict[str, Any]],
+    eml_type: str = "ATTRIBUTE"
+) -> List[Dict[str, Any]]:
     """
     Joins recommender response back to source items using 'column_name'.
+    Returns a list of merged result dictionaries, each with an 'id' and 'recommendations'.
     """
     config = Config.MERGE_CONFIG.get(eml_type)
     if not config:
         logger.error("No merge config found for eml_type: %s", eml_type)
         return []
 
-    rec_lookup = defaultdict(list)
+    rec_lookup: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     for rec in recommender_items:
         key = rec.get('column_name')
         if key:
             rec_lookup[key].append(rec)
 
-    merged_results = []
+    merged_results: List[Dict[str, Any]] = []
     for item in source_items:
         match_val = item.get("name")
         if match_val in rec_lookup:
@@ -65,11 +75,12 @@ def merge_recommender_results(source_items, recommender_items, eml_type="ATTRIBU
     logger.info("Merged %d source items with recommender results.", len(merged_results))
     return merged_results
 
-def reformat_attribute_elements(attributes):
+def reformat_attribute_elements(attributes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
     Transform attribute elements to the format expected by the attribute recommender.
+    Returns a list of reformatted attribute dictionaries.
     """
-    reformatted = []
+    reformatted: List[Dict[str, Any]] = []
     for attr in attributes:
         try:
             reformatted.append({
@@ -84,10 +95,11 @@ def reformat_attribute_elements(attributes):
     logger.info("Reformatted %d attribute elements.", len(reformatted))
     return reformatted
 
-def reformat_geographic_coverage_elements(geos):
+def reformat_geographic_coverage_elements(geos: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
     Stub: Transform geographic coverage elements to the format expected by the geographic coverage recommender.
     For now, returns input unchanged.
+    Returns a list of geographic coverage dictionaries.
     """
     logger.info("Reformatting %d geographic coverage elements (stub).", len(geos))
     return geos

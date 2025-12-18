@@ -1,7 +1,7 @@
 from itertools import groupby
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from typing import Optional
+from typing import Optional, List, Dict, Any
 import requests
 import smtplib
 from pydantic import BaseModel, EmailStr
@@ -9,24 +9,40 @@ from webapp.config import Config
 from webapp.utils import merge_recommender_results
 
 class TermDetails(BaseModel):
+    """
+    Data model for ontology term details.
+    """
     label: str
     description: str
     evidence_source: Optional[str] = None
 
 class SubmitterInfo(BaseModel):
+    """
+    Data model for submitter information.
+    """
     email: EmailStr
     orcid_id: Optional[str] = None
     attribution_consent: bool
 
 class ProposalRequest(BaseModel):
+    """
+    Data model for a vocabulary proposal request.
+    """
     target_vocabulary: str
     term_details: TermDetails
     submitter_info: SubmitterInfo
 
 class EMLMetadata(BaseModel):
+    """
+    Data model for EML metadata elements.
+    """
     elements: dict = {}
 
-def send_email_notification(proposal: ProposalRequest):
+def send_email_notification(proposal: ProposalRequest) -> None:
+    """
+    Sends an email with the proposal details to the configured recipient.
+    Credentials and recipient are set via config.py only.
+    """
     recipient = Config.VOCABULARY_PROPOSAL_RECIPIENT
     smtp_server = Config.SMTP_SERVER
     smtp_port = Config.SMTP_PORT
@@ -69,26 +85,34 @@ def send_email_notification(proposal: ProposalRequest):
     except Exception as e:
         print(f"Failed to send email: {e}")
 
-def recommend_for_attribute(attributes):
+def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Groups attributes by objectName, sends to API (or gets mock per file), and merges results.
+    Returns a list of merged recommendation results for attributes.
+    """
     BASE_URL = 'http://98.88.80.17:5000'
     ANNOTATE_ENDPOINT = '/api/annotate'
     API_URL = f"{BASE_URL}{ANNOTATE_ENDPOINT}"
     attributes.sort(key=lambda x: x.get("objectName", "unknown"))
-    final_output = []
+    final_output: List[Dict[str, Any]] = []
+    # Group by File (object_name)
     for object_name, group_iter in groupby(attributes, key=lambda x: x.get("objectName", "unknown")):
         file_attributes = list(group_iter)
-        recommender_response = []
+        recommender_response: List[Dict[str, Any]] = []
         if Config.USE_MOCK_RECOMMENDATIONS:
             from webapp.mock_objects import MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE
             recommender_response = MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE.get(object_name, [])
+            # Merge results for this file group using the retrieved mock data
             file_results = merge_recommender_results(file_attributes, recommender_response, "ATTRIBUTE")
             final_output.extend(file_results)
         else:
+            # REAL API LOGIC
             api_payload = [{k: v for k, v in i.items() if k != 'id'} for i in file_attributes]
             try:
                 response = requests.post(API_URL, json=api_payload)
                 response.raise_for_status()
                 raw_response = response.json()
+                # Normalize response (Dict[col, list] -> List[dict])
                 if isinstance(raw_response, dict):
                     for col_name, recs in raw_response.items():
                         for r in recs[:5]:
@@ -96,6 +120,7 @@ def recommend_for_attribute(attributes):
                             recommender_response.append(r)
                 elif isinstance(raw_response, list):
                     recommender_response = raw_response
+                # Merge results for this file group
                 file_results = merge_recommender_results(file_attributes, recommender_response, "ATTRIBUTE")
                 final_output.extend(file_results)
             except requests.exceptions.RequestException as e:
@@ -103,7 +128,11 @@ def recommend_for_attribute(attributes):
                 continue
     return final_output
 
-def recommend_for_geographic_coverage(geos):
+def recommend_for_geographic_coverage(geos: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """
+    Stub recommender for geographic coverage elements.
+    Returns mock recommendations if enabled, otherwise an empty list.
+    """
     if Config.USE_MOCK_RECOMMENDATIONS:
         from webapp.mock_objects import MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
         return MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS

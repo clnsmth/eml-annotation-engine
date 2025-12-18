@@ -4,7 +4,8 @@ from webapp.config import Config
 from webapp.api import router
 from webapp.core import ProposalRequest, TermDetails, SubmitterInfo, EMLMetadata, send_email_notification, recommend_for_attribute, recommend_for_geographic_coverage
 
-app = FastAPI(title="Semantic EML Annotator Backend")
+# Instantiate the FastAPI app
+app: FastAPI = FastAPI(title="Semantic EML Annotator Backend")
 
 # Add CORS middleware to allow all origins and methods
 app.add_middleware(
@@ -15,6 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Include the API router
 app.include_router(router)
 
 __all__ = [
@@ -25,5 +27,5 @@ __all__ = [
 
 if __name__ == "__main__":
     import uvicorn
-
+    # Run the FastAPI app with Uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -2,9 +2,10 @@ import json
 import os
 import pytest
 from webapp.mock_objects import MOCK_FRONTEND_PAYLOAD
+from typing import Any
 
 @pytest.mark.usefixtures("client")
-def test_update_snapshot_recommendations_response(client):
+def test_update_snapshot_recommendations_response(client: Any) -> None:
     """
     Utility function to update the snapshot_recommendations_response.json file with the current
     response from the /api/recommendations endpoint using MOCK_FRONTEND_PAYLOAD.
