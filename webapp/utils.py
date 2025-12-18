@@ -1,10 +1,15 @@
 import re
 from collections import defaultdict
 from webapp.config import Config
+import daiquiri
+
+daiquiri.setup()
+logger = daiquiri.getLogger(__name__)
 
 def extract_ontology(uri):
     """Parses the ontology code (ENVO, PATO, IAO, ECSO, DWC) from a URI."""
     if not uri:
+        logger.warning("extract_ontology called with empty or None uri.")
         return "UNKNOWN"
     match = re.search(r'/obo/([A-Z]+)_', uri)
     if match:
@@ -14,6 +19,7 @@ def extract_ontology(uri):
         return match_ecso.group(1)
     if "dwc/terms" in uri:
         return "DWC"
+    logger.warning("extract_ontology could not parse ontology from uri: %s", uri)
     return "UNKNOWN"
 
 def merge_recommender_results(source_items, recommender_items, eml_type="ATTRIBUTE"):
@@ -21,7 +27,9 @@ def merge_recommender_results(source_items, recommender_items, eml_type="ATTRIBU
     Joins recommender response back to source items using 'column_name'.
     """
     config = Config.MERGE_CONFIG.get(eml_type)
-    if not config: return []
+    if not config:
+        logger.error("No merge config found for eml_type: %s", eml_type)
+        return []
 
     rec_lookup = defaultdict(list)
     for rec in recommender_items:
@@ -38,19 +46,23 @@ def merge_recommender_results(source_items, recommender_items, eml_type="ATTRIBU
                 "recommendations": []
             }
             for rec_data in rec_lookup[match_val]:
-                annot = {
-                    "label": rec_data['concept_name'],
-                    "uri": rec_data['concept_id'],
-                    "ontology": extract_ontology(rec_data['concept_id']),
-                    "confidence": rec_data['confidence'],
-                    "description": rec_data['concept_definition'],
-                    "propertyLabel": config['property_label'],
-                    "propertyUri": config['property_uri'],
-                    "attributeName": item.get('name'),
-                    "objectName": item.get('objectName')
-                }
-                entry["recommendations"].append(annot)
+                try:
+                    annot = {
+                        "label": rec_data['concept_name'],
+                        "uri": rec_data['concept_id'],
+                        "ontology": extract_ontology(rec_data['concept_id']),
+                        "confidence": rec_data['confidence'],
+                        "description": rec_data['concept_definition'],
+                        "propertyLabel": config['property_label'],
+                        "propertyUri": config['property_uri'],
+                        "attributeName": item.get('name'),
+                        "objectName": item.get('objectName')
+                    }
+                    entry["recommendations"].append(annot)
+                except Exception as e:
+                    logger.exception("Error merging recommender result for item %s: %s", item.get('id'), e)
             merged_results.append(entry)
+    logger.info("Merged %d source items with recommender results.", len(merged_results))
     return merged_results
 
 def reformat_attribute_elements(attributes):
@@ -59,13 +71,17 @@ def reformat_attribute_elements(attributes):
     """
     reformatted = []
     for attr in attributes:
-        reformatted.append({
-            "entity_name": attr.get("objectName"),
-            "entity_description": attr.get("entityDescription"),
-            "object_name": attr.get("objectName"),
-            "column_name": attr.get("name"),
-            "column_description": attr.get("description"),
-        })
+        try:
+            reformatted.append({
+                "entity_name": attr.get("objectName"),
+                "entity_description": attr.get("entityDescription"),
+                "object_name": attr.get("objectName"),
+                "column_name": attr.get("name"),
+                "column_description": attr.get("description"),
+            })
+        except Exception as e:
+            logger.exception("Error reformatting attribute element: %s", e)
+    logger.info("Reformatted %d attribute elements.", len(reformatted))
     return reformatted
 
 def reformat_geographic_coverage_elements(geos):
@@ -73,4 +89,5 @@ def reformat_geographic_coverage_elements(geos):
     Stub: Transform geographic coverage elements to the format expected by the geographic coverage recommender.
     For now, returns input unchanged.
     """
+    logger.info("Reformatting %d geographic coverage elements (stub).", len(geos))
     return geos

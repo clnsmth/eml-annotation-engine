@@ -2,11 +2,16 @@ from fastapi import APIRouter, BackgroundTasks, HTTPException, Body
 from fastapi.responses import JSONResponse
 from webapp.core import ProposalRequest, send_email_notification, recommend_for_attribute, recommend_for_geographic_coverage
 import json
+import daiquiri
+
+daiquiri.setup()
+logger = daiquiri.getLogger(__name__)
 
 router = APIRouter()
 
 @router.get("/")
 def read_root():
+    logger.info("Health check endpoint called.")
     return {"message": "Semantic EML Annotator Backend is running."}
 
 @router.post("/api/proposals")
@@ -16,9 +21,10 @@ async def submit_proposal(proposal: ProposalRequest, background_tasks: Backgroun
     """
     try:
         background_tasks.add_task(send_email_notification, proposal)
+        logger.info("Proposal received and email notification queued.")
         return {"status": "success", "message": "Proposal received and processing."}
     except Exception as e:
-        print(f"Error processing proposal: {e}")
+        logger.exception("Error processing proposal: %s", e)
         raise HTTPException(
             status_code=500, detail="Internal server error processing proposal."
         )
@@ -31,18 +37,24 @@ def recommend_annotations(payload: dict = Body(...)):
     Implements a gateway aggregation pattern for annotation recommendations.
     If no recognized types are present, returns the original mock response for backward compatibility.
     """
-    print("Received recommendation payload:", json.dumps(payload, indent=2))
+    logger.info("Received recommendation payload: %s", json.dumps(payload, indent=2))
     results = []
-    if "ATTRIBUTE" in payload:
-        recommended_attributes = recommend_for_attribute(payload["ATTRIBUTE"])
-        results.append(recommended_attributes)
-    if "GEOGRAPHICCOVERAGE" in payload:
-        recommended_geographic_coverage = recommend_for_geographic_coverage(payload["GEOGRAPHICCOVERAGE"])
-        results.append(recommended_geographic_coverage)
-    if results:
-        flat_results = [item for sublist in results for item in sublist]
-        return JSONResponse(content=flat_results, status_code=200)
-    else:
-        return JSONResponse(content=[], status_code=200)
+    try:
+        if "ATTRIBUTE" in payload:
+            recommended_attributes = recommend_for_attribute(payload["ATTRIBUTE"])
+            results.append(recommended_attributes)
+        if "GEOGRAPHICCOVERAGE" in payload:
+            recommended_geographic_coverage = recommend_for_geographic_coverage(payload["GEOGRAPHICCOVERAGE"])
+            results.append(recommended_geographic_coverage)
+        if results:
+            flat_results = [item for sublist in results for item in sublist]
+            logger.info("Returning %d recommendation results.", len(flat_results))
+            return JSONResponse(content=flat_results, status_code=200)
+        else:
+            logger.warning("No recognized types in payload. Returning empty list.")
+            return JSONResponse(content=[], status_code=200)
+    except Exception as e:
+        logger.exception("Error in /api/recommendations: %s", e)
+        raise HTTPException(status_code=500, detail="Internal server error processing recommendations.")
 
 __all__ = ["router"]
