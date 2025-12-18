@@ -49,7 +49,7 @@ def test_recommend_for_geographic_coverage_unit():
 
 
 def test_reformat_attribute_elements_unit():
-    from webapp.run import reformat_attribute_elements
+    from webapp.utils import reformat_attribute_elements
     data = [
         {
             "id": "d49be2c0-7b9e-41f4-ae07-387d3e1f14c8",
@@ -74,7 +74,7 @@ def test_reformat_attribute_elements_unit():
 
 
 def test_reformat_geographic_coverage_elements_unit():
-    from webapp.run import reformat_geographic_coverage_elements
+    from webapp.utils import reformat_geographic_coverage_elements
     data = [{"description": "D1"}, {"description": "D2"}]
     out = reformat_geographic_coverage_elements(data)
     assert out == data
@@ -121,7 +121,7 @@ def test_recommendations_endpoint_snapshot():
 
 
 def test_extract_ontology():
-    from webapp.run import extract_ontology
+    from webapp.utils import extract_ontology
     # Standard cases
     assert extract_ontology("http://purl.obolibrary.org/obo/ENVO_00002006") == "ENVO"
     assert extract_ontology("http://purl.obolibrary.org/obo/PATO_0000146") == "PATO"
