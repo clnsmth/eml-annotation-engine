@@ -1,5 +1,6 @@
 import re
 from collections import defaultdict
+from webapp.config import Config
 
 def extract_ontology(uri):
     """Parses the ontology code (ENVO, PATO, IAO, ECSO, DWC) from a URI."""
@@ -15,19 +16,11 @@ def extract_ontology(uri):
         return "DWC"
     return "UNKNOWN"
 
-MERGE_CONFIG = {
-    "ATTRIBUTE": {
-        "property_label": "contains measurements of type",
-        "property_uri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-        "join_key": "column_name"
-    }
-}
-
 def merge_recommender_results(source_items, recommender_items, eml_type="ATTRIBUTE"):
     """
     Joins recommender response back to source items using 'column_name'.
     """
-    config = MERGE_CONFIG.get(eml_type)
+    config = Config.MERGE_CONFIG.get(eml_type)
     if not config: return []
 
     rec_lookup = defaultdict(list)

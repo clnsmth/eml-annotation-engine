@@ -15,6 +15,7 @@ from webapp.config import Config
 from webapp.mock_objects import MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE, MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
 from webapp.utils import merge_recommender_results
 
+
 app = FastAPI(title="Semantic EML Annotator Backend")
 
 # Configure CORS
@@ -25,19 +26,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-# --- Mock Switch ---
-USE_MOCK_RECOMMENDATIONS = True  # Set to False to use real recommendation logic when implemented
-
-# --- Helper Configuration ---
-MERGE_CONFIG = {
-    "ATTRIBUTE": {
-        "property_label": "contains measurements of type",
-        "property_uri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-        "join_key": "column_name"  # Field in Source to match Recommender's 'column_name'
-    }
-}
 
 
 # --- Data Models ---
@@ -150,7 +138,7 @@ def recommend_for_attribute(attributes):
         file_attributes = list(group_iter)
         recommender_response = []
 
-        if USE_MOCK_RECOMMENDATIONS:
+        if Config.USE_MOCK_RECOMMENDATIONS:
             # LOOK UP MOCK DATA BY FILENAME
             # Default to empty list if filename not found in mock
             recommender_response = MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE.get(object_name, [])
@@ -196,7 +184,7 @@ def recommend_for_geographic_coverage(geos):
     """
     Stub recommender for geographic coverage elements.
     """
-    if USE_MOCK_RECOMMENDATIONS:
+    if Config.USE_MOCK_RECOMMENDATIONS:
         return MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
     # Real logic would go here
     return []
