@@ -1,0 +1,48 @@
+from fastapi import APIRouter, BackgroundTasks, HTTPException, Body
+from fastapi.responses import JSONResponse
+from webapp.core import ProposalRequest, send_email_notification, recommend_for_attribute, recommend_for_geographic_coverage
+import json
+
+router = APIRouter()
+
+@router.get("/")
+def read_root():
+    return {"message": "Semantic EML Annotator Backend is running."}
+
+@router.post("/api/proposals")
+async def submit_proposal(proposal: ProposalRequest, background_tasks: BackgroundTasks):
+    """
+    Receives a new term proposal and queues an email notification.
+    """
+    try:
+        background_tasks.add_task(send_email_notification, proposal)
+        return {"status": "success", "message": "Proposal received and processing."}
+    except Exception as e:
+        print(f"Error processing proposal: {e}")
+        raise HTTPException(
+            status_code=500, detail="Internal server error processing proposal."
+        )
+
+@router.post("/api/recommendations")
+def recommend_annotations(payload: dict = Body(...)):
+    """
+    Accepts a JSON payload of EML metadata elements grouped by type (e.g. ATTRIBUTE, GEOGRAPHICCOVERAGE),
+    parses the types, fans out to respective recommendation engines, and combines the results.
+    Implements a gateway aggregation pattern for annotation recommendations.
+    If no recognized types are present, returns the original mock response for backward compatibility.
+    """
+    print("Received recommendation payload:", json.dumps(payload, indent=2))
+    results = []
+    if "ATTRIBUTE" in payload:
+        recommended_attributes = recommend_for_attribute(payload["ATTRIBUTE"])
+        results.append(recommended_attributes)
+    if "GEOGRAPHICCOVERAGE" in payload:
+        recommended_geographic_coverage = recommend_for_geographic_coverage(payload["GEOGRAPHICCOVERAGE"])
+        results.append(recommended_geographic_coverage)
+    if results:
+        flat_results = [item for sublist in results for item in sublist]
+        return JSONResponse(content=flat_results, status_code=200)
+    else:
+        return JSONResponse(content=[], status_code=200)
+
+__all__ = ["router"]
