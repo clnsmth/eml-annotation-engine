@@ -15,7 +15,8 @@ router = APIRouter()
 def read_root() -> Dict[str, str]:
     """
     Health check endpoint for the backend service.
-    Returns a simple status message.
+
+    :return: A status message indicating the backend is running
     """
     logger.info("Health check endpoint called.")
     return {"message": "Semantic EML Annotator Backend is running."}
@@ -24,7 +25,11 @@ def read_root() -> Dict[str, str]:
 async def submit_proposal(proposal: ProposalRequest, background_tasks: BackgroundTasks) -> Dict[str, str]:
     """
     Receives a new term proposal and queues an email notification.
-    Returns a status message.
+
+    :param proposal: The proposal request payload
+    :param background_tasks: FastAPI background task manager
+    :return: Status message
+    :raises HTTPException: If an error occurs during processing
     """
     try:
         background_tasks.add_task(send_email_notification, proposal)
@@ -43,7 +48,10 @@ def recommend_annotations(payload: Dict[str, Any] = Body(...)) -> JSONResponse:
     parses the types, fans out to respective recommendation engines, and combines the results.
     Implements a gateway aggregation pattern for annotation recommendations.
     If no recognized types are present, returns the original mock response for backward compatibility.
-    Returns a JSONResponse with the recommendations or an empty list.
+
+    :param payload: The request payload containing EML metadata elements
+    :return: JSONResponse with the recommendations or an empty list
+    :raises HTTPException: If an error occurs during processing
     """
     logger.info("Received recommendation payload: %s", json.dumps(payload, indent=2))
     results = []

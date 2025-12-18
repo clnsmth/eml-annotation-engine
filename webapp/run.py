@@ -1,3 +1,12 @@
+"""
+Entrypoint for the Semantic EML Annotator Backend.
+
+- Instantiates the FastAPI app
+- Adds CORS middleware
+- Includes the API router
+- Runs the app with Uvicorn if executed as main
+"""
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from webapp.config import Config

@@ -11,7 +11,9 @@ logger = daiquiri.getLogger(__name__)
 def extract_ontology(uri: Optional[str]) -> str:
     """
     Parses the ontology code (ENVO, PATO, IAO, ECSO, DWC) from a URI string.
-    Returns the ontology code as a string, or 'UNKNOWN' if not found.
+
+    :param uri: The URI string to parse
+    :return: The ontology code as a string, or 'UNKNOWN' if not found
     """
     if not uri:
         logger.warning("extract_ontology called with empty or None uri.")
@@ -34,7 +36,11 @@ def merge_recommender_results(
 ) -> List[Dict[str, Any]]:
     """
     Joins recommender response back to source items using 'column_name'.
-    Returns a list of merged result dictionaries, each with an 'id' and 'recommendations'.
+
+    :param source_items: List of source item dictionaries
+    :param recommender_items: List of recommender result dictionaries
+    :param eml_type: EML type (e.g., 'ATTRIBUTE')
+    :return: List of merged result dictionaries, each with an 'id' and 'recommendations'
     """
     config = Config.MERGE_CONFIG.get(eml_type)
     if not config:
@@ -78,7 +84,9 @@ def merge_recommender_results(
 def reformat_attribute_elements(attributes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
     Transform attribute elements to the format expected by the attribute recommender.
-    Returns a list of reformatted attribute dictionaries.
+
+    :param attributes: List of attribute dictionaries
+    :return: List of reformatted attribute dictionaries
     """
     reformatted: List[Dict[str, Any]] = []
     for attr in attributes:
@@ -99,7 +107,9 @@ def reformat_geographic_coverage_elements(geos: List[Dict[str, Any]]) -> List[Di
     """
     Stub: Transform geographic coverage elements to the format expected by the geographic coverage recommender.
     For now, returns input unchanged.
-    Returns a list of geographic coverage dictionaries.
+
+    :param geos: List of geographic coverage dictionaries
+    :return: List of geographic coverage dictionaries (unchanged)
     """
     logger.info("Reformatting %d geographic coverage elements (stub).", len(geos))
     return geos

@@ -7,9 +7,12 @@ from typing import Any
 @pytest.mark.usefixtures("client")
 def test_update_snapshot_recommendations_response(client: Any) -> None:
     """
-    Utility function to update the snapshot_recommendations_response.json file with the current
+    Update the snapshot_recommendations_response.json file with the current
     response from the /api/recommendations endpoint using MOCK_FRONTEND_PAYLOAD.
-    Run manually when you want to refresh the snapshot.
+
+    :param client: The FastAPI test client fixture
+    :raises AssertionError: If the response status code is not 200
+    :raises Exception: If writing the snapshot file fails
     """
     payload = MOCK_FRONTEND_PAYLOAD
     response = client.post("/api/recommendations", json=payload)

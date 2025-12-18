@@ -11,6 +11,10 @@ from webapp.utils import merge_recommender_results
 class TermDetails(BaseModel):
     """
     Data model for ontology term details.
+
+    :ivar label: The term label
+    :ivar description: The term description
+    :ivar evidence_source: Optional evidence source
     """
     label: str
     description: str
@@ -19,6 +23,10 @@ class TermDetails(BaseModel):
 class SubmitterInfo(BaseModel):
     """
     Data model for submitter information.
+
+    :ivar email: Submitter's email address
+    :ivar orcid_id: Optional ORCID identifier
+    :ivar attribution_consent: Whether submitter consents to attribution
     """
     email: EmailStr
     orcid_id: Optional[str] = None
@@ -27,6 +35,10 @@ class SubmitterInfo(BaseModel):
 class ProposalRequest(BaseModel):
     """
     Data model for a vocabulary proposal request.
+
+    :ivar target_vocabulary: Target vocabulary/category
+    :ivar term_details: Details of the proposed term
+    :ivar submitter_info: Information about the submitter
     """
     target_vocabulary: str
     term_details: TermDetails
@@ -35,6 +47,8 @@ class ProposalRequest(BaseModel):
 class EMLMetadata(BaseModel):
     """
     Data model for EML metadata elements.
+
+    :ivar elements: Dictionary of EML elements
     """
     elements: dict = {}
 
@@ -42,6 +56,9 @@ def send_email_notification(proposal: ProposalRequest) -> None:
     """
     Sends an email with the proposal details to the configured recipient.
     Credentials and recipient are set via config.py only.
+
+    :param proposal: The proposal request payload
+    :return: None
     """
     recipient = Config.VOCABULARY_PROPOSAL_RECIPIENT
     smtp_server = Config.SMTP_SERVER
@@ -88,7 +105,9 @@ def send_email_notification(proposal: ProposalRequest) -> None:
 def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
     Groups attributes by objectName, sends to API (or gets mock per file), and merges results.
-    Returns a list of merged recommendation results for attributes.
+
+    :param attributes: List of attribute dictionaries
+    :return: List of merged recommendation results for attributes
     """
     BASE_URL = 'http://98.88.80.17:5000'
     ANNOTATE_ENDPOINT = '/api/annotate'
@@ -131,7 +150,9 @@ def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, 
 def recommend_for_geographic_coverage(geos: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
     Stub recommender for geographic coverage elements.
-    Returns mock recommendations if enabled, otherwise an empty list.
+
+    :param geos: List of geographic coverage dictionaries
+    :return: Mock recommendations if enabled, otherwise an empty list
     """
     if Config.USE_MOCK_RECOMMENDATIONS:
         from webapp.mock_objects import MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
