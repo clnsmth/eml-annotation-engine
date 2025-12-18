@@ -14,7 +14,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, EmailStr
 
 from webapp.config import Config
-from webapp.mock_objects import ORIGINAL_MOCK_RESPONSE, MOCK_ATTRIBUTE_RECOMMENDATIONS_BY_FILE, MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
+from webapp.mock_objects import MOCK_RESPONSE, MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE, MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
 
 app = FastAPI(title="Semantic EML Annotator Backend")
 
@@ -133,11 +133,17 @@ def send_email_notification(proposal: ProposalRequest):
 # --- Helper Logic for Merging ---
 
 def extract_ontology(uri):
-    """Parses the ontology code (ENVO, PATO, IAO) from a URI."""
-    if not uri: return "UNKNOWN"
+    """Parses the ontology code (ENVO, PATO, IAO, ECSO, DWC) from a URI."""
+    if not uri:
+        return "UNKNOWN"
     match = re.search(r'/obo/([A-Z]+)_', uri)
-    if match: return match.group(1)
-    if "dwc/terms" in uri: return "DWC"
+    if match:
+        return match.group(1)
+    match_ecso = re.search(r'/odo/(ECSO)_', uri)
+    if match_ecso:
+        return match_ecso.group(1)
+    if "dwc/terms" in uri:
+        return "DWC"
     return "UNKNOWN"
 
 
@@ -211,7 +217,7 @@ def recommend_for_attribute(attributes):
         if USE_MOCK_RECOMMENDATIONS:
             # LOOK UP MOCK DATA BY FILENAME
             # Default to empty list if filename not found in mock
-            recommender_response = MOCK_ATTRIBUTE_RECOMMENDATIONS_BY_FILE.get(object_name, [])
+            recommender_response = MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE.get(object_name, [])
 
             # Merge results for this file group using the retrieved mock data
             file_results = merge_recommender_results(file_attributes, recommender_response, "ATTRIBUTE")

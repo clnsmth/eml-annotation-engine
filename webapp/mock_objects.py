@@ -1,258 +1,2125 @@
-ORIGINAL_MOCK_RESPONSE = [
-    {
-        "id": "24632bb8dbdace8be4693baf5c9e4b97",
-        "recommendations": [
-            {
-                "label": "Survey Dataset",
-                "uri": "http://purl.obolibrary.org/obo/IAO_0000100",
-                "ontology": "IAO",
-                "confidence": 0.90,
-                "description": "A data set that is a collection of data about a survey.",
-                "propertyLabel": "contains",
-                "propertyUri": "http://www.w3.org/ns/oa#hasBody",
-            }
-        ],
-    },
-    {
-        "id": "cfe0601b-e76b-4f34-8a5a-655db3b0491c",
-        "recommendations": [
-            {
-                "label": "Identifier",
-                "uri": "http://purl.obolibrary.org/obo/IAO_0000578",
-                "ontology": "IAO",
-                "confidence": 0.95,
-                "description": "An information content entity that identifies something.",
-                "propertyLabel": "contains measurements of type",
-                "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-                "attributeName": "SurveyID",
-                "objectName": "SurveyResults.csv",
-            }
-        ],
-    },
-    {
-        "id": "d49be2c0-7b9e-41f4-ae07-387d3e1f14c8",
-        "recommendations": [
-            {
-                "label": "Latitude",
-                "uri": "http://purl.obolibrary.org/obo/GEO_00000016",
-                "ontology": "GEO",
-                "confidence": 0.99,
-                "description": "The angular distance of a place north or south of the earth's equator.",
-                "propertyLabel": "contains measurements of type",
-                "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-                "attributeName": "Latitude",
-                "objectName": "SurveyResults.csv",
-            }
-        ],
-    },
-    {
-        "id": "0673eb41-1b47-4d32-9d87-bf10e17c69b6",
-        "recommendations": [
-            {
-                "label": "Air Temperature",
-                "uri": "http://purl.obolibrary.org/obo/ENVO_00002006",
-                "ontology": "ENVO",
-                "confidence": 0.90,
-                "description": "The temperature of the air.",
-                "propertyLabel": "contains measurements of type",
-                "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-                "attributeName": "AirTemperature_F",
-                "objectName": "SurveyResults.csv",
-            },
-            {
-                "label": "Temperature",
-                "uri": "http://purl.obolibrary.org/obo/PATO_0000146",
-                "ontology": "PATO",
-                "confidence": 0.85,
-                "description": "A physical quality of the thermal energy of a system.",
-                "propertyLabel": "contains measurements of type",
-                "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-                "attributeName": "AirTemperature_F",
-                "objectName": "SurveyResults.csv",
-            },
-        ],
-    },
-    {
-        "id": "dca8c4a4-472b-4998-bf35-82b9e4fb8f22",
-        "recommendations": [
-            {
-                "label": "Water Temperature",
-                "uri": "http://purl.obolibrary.org/obo/ENVO_00002010",
-                "ontology": "ENVO",
-                "confidence": 0.95,
-                "description": "The temperature of water.",
-                "propertyLabel": "contains measurements of type",
-                "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-                "attributeName": "WaterTemperature_F",
-                "objectName": "SurveyResults.csv",
-            }
-        ],
-    },
-    {
-        "id": "66c5e93d-7a8b-4dbf-989f-9294db3ec7b9",
-        "recommendations": [
-            {
-                "label": "Lake",
-                "uri": "http://purl.obolibrary.org/obo/ENVO_00000020",
-                "ontology": "ENVO",
-                "confidence": 0.92,
-                "description": "A large body of water surrounded by land.",
-                "propertyLabel": "contains measurements of type",
-                "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-                "attributeName": "Lake",
-                "objectName": "SurveyResults.csv",
-            }
-        ],
-    },
-    {
-        "id": "24b4badd-56b7-4dbf-8848-f6531f20c024",
-        "recommendations": [
-            {
-                "label": "Taxon",
-                "uri": "http://rs.tdwg.org/dwc/terms/Taxon",
-                "ontology": "DWC",
-                "confidence": 0.88,
-                "description": "A group of one or more populations of an organism.",
-                "propertyLabel": "contains measurements of type",
-                "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-                "attributeName": "SpeciesCode",
-                "objectName": "SurveyResults.csv",
-            },
-            {
-                "label": "Scientific Name",
-                "uri": "http://rs.tdwg.org/dwc/terms/scientificName",
-                "ontology": "DWC",
-                "confidence": 0.80,
-                "description": "The full scientific name.",
-                "propertyLabel": "contains measurements of type",
-                "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-                "attributeName": "SpeciesCode",
-                "objectName": "SurveyResults.csv",
-            },
-        ],
-    },
-    {
-        "id": "3220828d-a9a3-4c98-89a6-36f4a740a57e",
-        "recommendations": [
-            {
-                "label": "Surface Layer",
-                "uri": "http://purl.obolibrary.org/obo/ENVO_00002005",
-                "ontology": "ENVO",
-                "confidence": 0.70,
-                "description": "The layer of a material that is in contact with the surrounding medium.",
-                "propertyLabel": "contains measurements of type",
-                "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
-                "attributeName": "EggMassSubstrate",
-                "objectName": "EggMasses.csv",
-            }
-        ],
-    },
-    {
-        "id": "geo-1",
-        "recommendations": [
-            {
-                "label": "Freshwater Lake Ecosystem",
-                "uri": "http://purl.obolibrary.org/obo/ENVO_01000021",
-                "ontology": "ENVO",
-                "confidence": 0.75,
-                "description": "An aquatic ecosystem that is part of a lake.",
-                "propertyLabel": "contains",
-                "propertyUri": "http://www.w3.org/ns/oa#hasBody",
-            },
-            {
-                "label": "Temperate Climate",
-                "uri": "http://purl.obolibrary.org/obo/ENVO_01000000",
-                "ontology": "ENVO",
-                "confidence": 0.80,
-                "description": "A climate with moderate conditions",
-                "propertyLabel": "contains",
-                "propertyUri": "http://www.w3.org/ns/oa#hasBody",
-            },
-        ],
-    },
-    {
-        "id": "befe3d845aea4510048251bd0079e3de",
-        "recommendations": [
-            {
-                "label": "Technical Report",
-                "uri": "http://purl.obolibrary.org/obo/IAO_0000088",
-                "ontology": "IAO",
-                "confidence": 0.85,
-                "description": "A report concerning the results of a scientific investigation or technical development.",
-                "propertyLabel": "contains",
-                "propertyUri": "http://www.w3.org/ns/oa#hasBody",
-            }
-        ],
-    },
+MOCK_RESPONSE = [
+  {
+    "id": "cfe0601b-e76b-4f34-8a5a-655db3b0491c",
+    "recommendations": [
+      {
+        "label": "Identity",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001157",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "An identifier is a name that identifies (that is, labels the identity of) either a unique object or a unique class of objects, where the \"object\" or class may be an idea, physical [countable] object (or class thereof), or physical [noncountable] substance (or class thereof). The abbreviation ID often refers to identity, identification (the process of identifying), or an identifier (that is, an instance of identification). An identifier may be a word, number, letter, symbol, or any combination of those.",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyID",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "sampling occasion",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002620",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyID",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "lake identifier",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002565",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyID",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "d49be2c0-7b9e-41f4-ae07-387d3e1f14c8",
+    "recommendations": [
+      {
+        "label": "latitude coordinate",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002130",
+        "ontology": "ECSO",
+        "confidence": 0.99,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Latitude",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "latitude degree component",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002247",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Latitude",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "latitude second component",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002243",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Latitude",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "d2569832-42ec-4532-b333-bf68e84598da",
+    "recommendations": [
+      {
+        "label": "longitude coordinate",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002132",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Longitude",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "longitude degree component",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002239",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Longitude",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "longitude minute component",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002151",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Longitude",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "81506c28-3ae9-473a-8426-70117c4a84ac",
+    "recommendations": [
+      {
+        "label": "GPS waypoint identifier",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002982",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Accuracy_m",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "error MeasurementType",
+        "uri": "http://purl.dataone.org/odo/ECSO_00000667",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Accuracy_m",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "location standard deviation",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002957",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Accuracy_m",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "6778d3cd-77e3-4b7b-9844-31248310479d",
+    "recommendations": [
+      {
+        "label": "date",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002051",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Date",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "date and time of measurement",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002043",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Date",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "day of year",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002058",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Date",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "6464d56e-8a40-4962-ae4c-1cbc7795250e",
+    "recommendations": [
+      {
+        "label": "measurement start time",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002044",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "StartTime",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "time of measurement",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002040",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "StartTime",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "hour of measurement time",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002048",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "StartTime",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "be22b649-5e4e-43bd-ad37-1965f3d23bdc",
+    "recommendations": [
+      {
+        "label": "measurement end time",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002045",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "EndTime",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "time of measurement",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002040",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "EndTime",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "ending scan identifier",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002599",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "EndTime",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "3132391c-2f62-4aac-a208-549c2cbff735",
+    "recommendations": [
+      {
+        "label": "Time Step",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001183",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyLength",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "elapsed time",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002068",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyLength",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "elapsed time after treatment",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002049",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyLength",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "e58a1ac7-066f-45f9-a4b8-9b596c60eb07",
+    "recommendations": [
+      {
+        "label": "Time Step",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001183",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyLengthCalc",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "elapsed time",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002068",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyLengthCalc",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "elapsed time after treatment",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002049",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyLengthCalc",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "f31e76c5-3359-4b21-af25-9e09634ab47f",
+    "recommendations": [
+      {
+        "label": "measurement end time",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002045",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "latest_observation_time",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "egg count",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001692",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "latest_observation_time",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "measurement end time",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002045",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "latest_observation_time",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "66c5e93d-7a8b-4dbf-989f-9294db3ec7b9",
+    "recommendations": [
+      {
+        "label": "lake name",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002566",
+        "ontology": "ECSO",
+        "confidence": 0.92,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Lake",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "lake identifier",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002565",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Lake",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "lake classification",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002742",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Lake",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "398be849-a3d4-4c61-9013-ae41cb6d6d59",
+    "recommendations": [
+      {
+        "label": "observer name",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002451",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Observer",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "name of person",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002998",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Observer",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "observer initials",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002738",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Observer",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "88da6649-63cf-4b6f-a3c8-6a37a6155833",
+    "recommendations": [
+      {
+        "label": "cloud cover percentage",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002310",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Sky",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "type of cloud",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002591",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Sky",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "sampling occasion",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002620",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Sky",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "56fb8aad-a34a-4ebb-9175-bf80b2f6840f",
+    "recommendations": [
+      {
+        "label": "Precipitation Rate",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001162",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Precip",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "rainfall rate",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002087",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Precip",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "Rainfall Rate MOV",
+        "uri": "http://purl.dataone.org/odo/ECSO_00000062",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Precip",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "3357918a-e3b9-4829-97cc-f44b1aa6b51e",
+    "recommendations": [
+      {
+        "label": "wind velocity",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001544",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Wind",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "wind exposure scale",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002619",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Wind",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "wind direction standard deviation",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001715",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Wind",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "71c4f9e8-5448-4d5b-859a-1b6b6bc2dd46",
+    "recommendations": [
+      {
+        "label": "Air Temperature",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001225",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "AirThermometer",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "sensor identifier",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002477",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "AirThermometer",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "type of sensor",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001592",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "AirThermometer",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "0673eb41-1b47-4d32-9d87-bf10e17c69b6",
+    "recommendations": [
+      {
+        "label": "Air Temperature",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001225",
+        "ontology": "ECSO",
+        "confidence": 0.90,
+        "description": "Objective comparative measure of hot or cold of air",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "AirTemperature_F",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "dew point temperature",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001657",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "A temperature to which air must be cooled to become saturated with water vapor.",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "AirTemperature_F",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "dry bulb temperature",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001521",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "An air temperature which is measured by a thermometer freely exposed to the air but shielded from radiation and moisture.",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "AirTemperature_F",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "0ade98ad-add4-4ce5-afcb-6c703b12cf1e",
+    "recommendations": [
+      {
+        "label": "type of sensor",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001592",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "WaterThermometer",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "Water Temperature",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001227",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "WaterThermometer",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "thermokarst activity",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002429",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "WaterThermometer",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "dca8c4a4-472b-4998-bf35-82b9e4fb8f22",
+    "recommendations": [
+      {
+        "label": "Water Temperature",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001227",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "Objective comparative measure of hot or cold of water",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "WaterTemperature_F",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "Lake Temperature",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001231",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "Objective comparative measure of hot or cold of water in lake",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "WaterTemperature_F",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "river water temperature",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001528",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "WaterTemperature_F",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "7713a0b2-d5b2-4378-8d6d-6c74baae6971",
+    "recommendations": [
+      {
+        "label": "chromophoric dissolved organic matter absorbance",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001500",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "An absorbance measurement of the optically measurable component of dissolved organic matter in water.",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "WaterColor",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "turbidity",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002359",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "WaterColor",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "water band index",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002205",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "WaterColor",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "62090101-5cc1-463c-a63d-843616d148cb",
+    "recommendations": [
+      {
+        "label": "Field Method",
+        "uri": "http://purl.dataone.org/odo/ECSO_00000082",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "strawman definition from margaret: a Field_Method is a method for determining a component of primary production that involves observations or measurements of the real world. A field method may have steps which could be considered \'modeling\' (such as development of an allometric model of tree growth based on height), but measurements \"in the field\" (eg, of trees) are always involved. compare to Modeled_Method.",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyType",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "method of capture",
+        "uri": "http://purl.dataone.org/odo/ECSO_00003074",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyType",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "nest or den observed",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002523",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyType",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "0c944fd1-915e-40fb-82f1-b2da8a5da74e",
+    "recommendations": [
+      {
+        "label": "observer confidence",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002450",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Comments",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "data quality flag",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001720",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Comments",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "confidence in taxonomic identification",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002438",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Comments",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "24b4badd-56b7-4dbf-8848-f6531f20c024",
+    "recommendations": [
+      {
+        "label": "species code",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002490",
+        "ontology": "ECSO",
+        "confidence": 0.90,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SpeciesCode",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "taxon code",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002608",
+        "ontology": "ECSO",
+        "confidence": 0.80,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SpeciesCode",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "species name",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002735",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SpeciesCode",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "60ffc8a2-c42f-40ab-89fa-db294f256e50",
+    "recommendations": [
+      {
+        "label": "Count Density",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001160",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "Number density is an intensive quantity used to describe the degree of concentration of countable objects in a given physical space. Confirm: if OBOE class ArealDensity is for physical (material) measuements, then we need a different characteristics for this class, eg, analogous to biomass_density.",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "NumberOfEggMasses",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "Entity Count",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001189",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "Counting entities is the action of finding the number of elements of a finite set of entities.",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "NumberOfEggMasses",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "Sample Count",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001188",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "Counting entities within a sample is the action of finding the number of elements of a finite set of entities constrained within a sample.",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "NumberOfEggMasses",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "6630e2e6-ed6e-4d50-8fdb-b9eff7e905cf",
+    "recommendations": [
+      {
+        "label": "Entity Count",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001189",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "Counting entities is the action of finding the number of elements of a finite set of entities.",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "NumberOfAdults",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "Count Measurement Type",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001141",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "Counting is the action of finding the number of elements of a finite set of objects. The traditional way of counting consists of continually increasing a (mental or spoken) counter by a unit for every element of the set, in some order, while marking (or displacing) those elements to avoid visiting the same element more than once, until no unmarked elements are left; if the counter was set to one after the first object, the value after visiting the final object gives the desired number of elements. The related term enumeration refers to uniquely identifying the elements of a finite (combinatorial) set or infinite set by assigning a number to each element. Count count dimensionless doi:10.5063/AA/gtg488d.4.1",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "NumberOfAdults",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "Count Density",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001160",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "Number density is an intensive quantity used to describe the degree of concentration of countable objects in a given physical space. Confirm: if OBOE class ArealDensity is for physical (material) measuements, then we need a different characteristics for this class, eg, analogous to biomass_density.",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "NumberOfAdults",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "4403ca82-f7e0-48c8-8cef-ca07017f4d2b",
+    "recommendations": [
+      {
+        "label": "observer confidence",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002450",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Weather",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "cloud cover percentage",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002310",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Weather",
+        "objectName": "SurveyResults.csv"
+      },
+      {
+        "label": "light intensity",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002236",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Weather",
+        "objectName": "SurveyResults.csv"
+      }
+    ]
+  },
+  {
+    "id": "8a90023e-72cc-4540-a4b2-d4532ea86c38",
+    "recommendations": [
+      {
+        "label": "lake identifier",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002565",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyID",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "plot identifier",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002432",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyID",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "study location identifier",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002767",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SurveyID",
+        "objectName": "EggMasses.csv"
+      }
+    ]
+  },
+  {
+    "id": "c36d17e7-89b2-4722-b586-49d9934a398e",
+    "recommendations": [
+      {
+        "label": "date and time of measurement",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002043",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "DateTime",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "hour and minute of measurement time",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002066",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "DateTime",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "measurement start time",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002044",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "DateTime",
+        "objectName": "EggMasses.csv"
+      }
+    ]
+  },
+  {
+    "id": "2a325933-956f-485f-b0be-2817f7b7462c",
+    "recommendations": [
+      {
+        "label": "latitude coordinate",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002130",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Latitude",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "latitude degree component",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002247",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Latitude",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "latitude minute component",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002137",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Latitude",
+        "objectName": "EggMasses.csv"
+      }
+    ]
+  },
+  {
+    "id": "d9a40fb9-4210-4527-9f4f-219c3583ef1c",
+    "recommendations": [
+      {
+        "label": "longitude coordinate",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002132",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Longitude",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "longitude degree component",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002239",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Longitude",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "longitude minute component",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002151",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Longitude",
+        "objectName": "EggMasses.csv"
+      }
+    ]
+  },
+  {
+    "id": "1e536558-938d-45a8-b83d-5d178cfd7d18",
+    "recommendations": [
+      {
+        "label": "GPS waypoint identifier",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002982",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Accuracy_m",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "error MeasurementType",
+        "uri": "http://purl.dataone.org/odo/ECSO_00000667",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Accuracy_m",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "location standard deviation",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002957",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Accuracy_m",
+        "objectName": "EggMasses.csv"
+      }
+    ]
+  },
+  {
+    "id": "85b6fa31-21ce-4e3a-a8f7-404c669a9cc7",
+    "recommendations": [
+      {
+        "label": "Count Density",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001160",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "Number density is an intensive quantity used to describe the degree of concentration of countable objects in a given physical space. Confirm: if OBOE class ArealDensity is for physical (material) measuements, then we need a different characteristics for this class, eg, analogous to biomass_density.",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "NumberOfEggMasses",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "Entity Count",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001189",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "Counting entities is the action of finding the number of elements of a finite set of entities.",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "NumberOfEggMasses",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "Sample Count",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001188",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "Counting entities within a sample is the action of finding the number of elements of a finite set of entities constrained within a sample.",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "NumberOfEggMasses",
+        "objectName": "EggMasses.csv"
+      }
+    ]
+  },
+  {
+    "id": "f838b7b8-2468-47bd-9717-56ea091e4780",
+    "recommendations": [
+      {
+        "label": "species code",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002490",
+        "ontology": "ECSO",
+        "confidence": 0.90,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SpeciesCode",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "taxon code",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002608",
+        "ontology": "ECSO",
+        "confidence": 0.80,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SpeciesCode",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "species name",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002735",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "SpeciesCode",
+        "objectName": "EggMasses.csv"
+      }
+    ]
+  },
+  {
+    "id": "3220828d-a9a3-4c98-89a6-36f4a740a57e",
+    "recommendations": [
+      {
+        "label": "basal mineral substrate depth",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001864",
+        "ontology": "ECSO",
+        "confidence": 0.90,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "EggMassSubstrate",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "surface type",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002640",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "EggMassSubstrate",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "particle detection rate",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002179",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "EggMassSubstrate",
+        "objectName": "EggMasses.csv"
+      }
+    ]
+  },
+  {
+    "id": "8854db34-3d6e-481a-81d4-a73a6b3eb8b1",
+    "recommendations": [
+      {
+        "label": "data quality assessment measurement type",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001719",
+        "ontology": "ECSO",
+        "confidence": 0.95,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Comments",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "data quality flag",
+        "uri": "http://purl.dataone.org/odo/ECSO_00001720",
+        "ontology": "ECSO",
+        "confidence": 0.85,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Comments",
+        "objectName": "EggMasses.csv"
+      },
+      {
+        "label": "observer confidence",
+        "uri": "http://purl.dataone.org/odo/ECSO_00002450",
+        "ontology": "ECSO",
+        "confidence": 0.75,
+        "description": "",
+        "propertyLabel": "contains measurements of type",
+        "propertyUri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#containsMeasurementsOfType",
+        "attributeName": "Comments",
+        "objectName": "EggMasses.csv"
+      }
+    ]
+  },
+  {
+    "id": "geo-1",
+    "recommendations": [
+      {
+        "label": "lake",
+        "uri": "http://purl.obolibrary.org/obo/ENVO_00000020",
+        "ontology": "ENVO",
+        "confidence": 0.90,
+        "description": "A body of water or other liquid of considerable size contained in a depression on a landmass.",
+        "propertyLabel": "broad-scale environmental context",
+        "propertyUri": "https://genomicsstandardsconsortium.github.io/mixs/0000012/"
+      },
+      {
+        "label": "temperate",
+        "uri": "http://purl.obolibrary.org/obo/ENVO_01000206",
+        "ontology": "ENVO",
+        "confidence": 0.90,
+        "description": "A temperate condition is an environmental condition in which an environmental system receives less solar irradiance than those with subpolar conditions, but greater than those with subtropical conditions.",
+        "propertyLabel": "broad-scale environmental context",
+        "propertyUri": "https://genomicsstandardsconsortium.github.io/mixs/0000012/"
+      },
+      {
+        "label": "humid air",
+        "uri": "http://purl.obolibrary.org/obo/ENVO_01000828",
+        "ontology": "ENVO",
+        "confidence": 0.90,
+        "description": "Air which has increased levels of water vapour.",
+        "propertyLabel": "broad-scale environmental context",
+        "propertyUri": "https://genomicsstandardsconsortium.github.io/mixs/0000012/"
+      },
+      {
+        "label": "forested area",
+        "uri": "http://purl.obolibrary.org/obo/ENVO_00000111",
+        "ontology": "ENVO",
+        "confidence": 0.90,
+        "description": "An area with a high density of trees. A small forest may be called a wood.",
+        "propertyLabel": "broad-scale environmental context",
+        "propertyUri": "https://genomicsstandardsconsortium.github.io/mixs/0000012/"
+      },
+      {
+        "label": "mountain range",
+        "uri": "http://purl.obolibrary.org/obo/ENVO_00000080",
+        "ontology": "ENVO",
+        "confidence": 0.90,
+        "description": "A range of mounts which is dominated by mountains.",
+        "propertyLabel": "broad-scale environmental context",
+        "propertyUri": "https://genomicsstandardsconsortium.github.io/mixs/0000012/"
+      }
+    ]
+  }
 ]
 
 # Changed to a Dictionary keyed by ObjectName
-MOCK_ATTRIBUTE_RECOMMENDATIONS_BY_FILE = {
+MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE = {
     "SurveyResults.csv": [
         {
-            "column_name": "SurveyID",
-            "concept_name": "Identifier",
-            "concept_definition": "An information content entity that identifies something.",
-            "concept_id": "http://purl.obolibrary.org/obo/IAO_0000578",
-            "confidence": 0.95
+            "concept_name": "Identity",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001157",
+            "confidence": 0.95,
+            "concept_definition": "An identifier is a name that identifies (that is, concept_names the identity of) either a unique object or a unique class of objects, where the \"object\" or class may be an idea, physical [countable] object (or class thereof), or physical [noncountable] substance (or class thereof). The abbreviation ID often refers to identity, identification (the process of identifying), or an identifier (that is, an instance of identification). An identifier may be a word, number, letter, symbol, or any combination of those.",
+            "column_name": "SurveyID"
         },
         {
-            "column_name": "Latitude",
-            "concept_name": "Latitude",
-            "concept_definition": "The angular distance of a place north or south of the earth's equator.",
-            "concept_id": "http://purl.obolibrary.org/obo/GEO_00000016",
-            "confidence": 0.99
+            "concept_name": "sampling occasion",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002620",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "SurveyID"
         },
         {
-            "column_name": "AirTemperature_F",
+            "concept_name": "lake identifier",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002565",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "SurveyID"
+        },
+        {
+            "concept_name": "latitude coordinate",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002130",
+            "confidence": 0.99,
+            "concept_definition": "",
+            "column_name": "Latitude"
+        },
+        {
+            "concept_name": "latitude degree component",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002247",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Latitude"
+        },
+        {
+            "concept_name": "latitude second component",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002243",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Latitude"
+        },
+        {
+            "concept_name": "longitude coordinate",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002132",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "Longitude"
+        },
+        {
+            "concept_name": "longitude degree component",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002239",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Longitude"
+        },
+        {
+            "concept_name": "longitude minute component",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002151",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Longitude"
+        },
+        {
+            "concept_name": "GPS waypoint identifier",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002982",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "Accuracy_m"
+        },
+        {
+            "concept_name": "error MeasurementType",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00000667",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Accuracy_m"
+        },
+        {
+            "concept_name": "location standard deviation",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002957",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Accuracy_m"
+        },
+        {
+            "concept_name": "date",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002051",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "Date"
+        },
+        {
+            "concept_name": "date and time of measurement",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002043",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Date"
+        },
+        {
+            "concept_name": "day of year",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002058",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Date"
+        },
+        {
+            "concept_name": "measurement start time",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002044",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "StartTime"
+        },
+        {
+            "concept_name": "time of measurement",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002040",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "StartTime"
+        },
+        {
+            "concept_name": "hour of measurement time",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002048",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "StartTime"
+        },
+        {
+            "concept_name": "measurement end time",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002045",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "EndTime"
+        },
+        {
+            "concept_name": "time of measurement",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002040",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "EndTime"
+        },
+        {
+            "concept_name": "ending scan identifier",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002599",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "EndTime"
+        },
+        {
+            "concept_name": "Time Step",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001183",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "SurveyLength"
+        },
+        {
+            "concept_name": "elapsed time",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002068",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "SurveyLength"
+        },
+        {
+            "concept_name": "elapsed time after treatment",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002049",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "SurveyLength"
+        },
+        {
+            "concept_name": "Time Step",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001183",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "SurveyLengthCalc"
+        },
+        {
+            "concept_name": "elapsed time",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002068",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "SurveyLengthCalc"
+        },
+        {
+            "concept_name": "elapsed time after treatment",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002049",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "SurveyLengthCalc"
+        },
+        {
+            "concept_name": "measurement end time",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002045",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "latest_observation_time"
+        },
+        {
+            "concept_name": "egg count",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001692",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "latest_observation_time"
+        },
+        {
+            "concept_name": "measurement end time",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002045",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "latest_observation_time"
+        },
+        {
+            "concept_name": "lake name",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002566",
+            "confidence": 0.92,
+            "concept_definition": "",
+            "column_name": "Lake"
+        },
+        {
+            "concept_name": "lake identifier",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002565",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Lake"
+        },
+        {
+            "concept_name": "lake classification",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002742",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Lake"
+        },
+        {
+            "concept_name": "observer name",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002451",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "Observer"
+        },
+        {
+            "concept_name": "name of person",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002998",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Observer"
+        },
+        {
+            "concept_name": "observer initials",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002738",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Observer"
+        },
+        {
+            "concept_name": "cloud cover percentage",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002310",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "Sky"
+        },
+        {
+            "concept_name": "type of cloud",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002591",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Sky"
+        },
+        {
+            "concept_name": "sampling occasion",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002620",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Sky"
+        },
+        {
+            "concept_name": "Precipitation Rate",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001162",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "Precip"
+        },
+        {
+            "concept_name": "rainfall rate",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002087",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Precip"
+        },
+        {
+            "concept_name": "Rainfall Rate MOV",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00000062",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Precip"
+        },
+        {
+            "concept_name": "wind velocity",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001544",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "Wind"
+        },
+        {
+            "concept_name": "wind exposure scale",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002619",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Wind"
+        },
+        {
+            "concept_name": "wind direction standard deviation",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001715",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Wind"
+        },
+        {
             "concept_name": "Air Temperature",
-            "concept_definition": "The temperature of the air.",
-            "concept_id": "http://purl.obolibrary.org/obo/ENVO_00002006",
-            "confidence": 0.9
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001225",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "AirThermometer"
         },
         {
-            "column_name": "AirTemperature_F",
-            "concept_name": "Temperature",
-            "concept_definition": "A physical quality of the thermal energy of a system.",
-            "concept_id": "http://purl.obolibrary.org/obo/PATO_0000146",
-            "confidence": 0.85
+            "concept_name": "sensor identifier",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002477",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "AirThermometer"
         },
         {
-            "column_name": "WaterTemperature_F",
+            "concept_name": "type of sensor",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001592",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "AirThermometer"
+        },
+        {
+            "concept_name": "Air Temperature",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001225",
+            "confidence": 0.90,
+            "concept_definition": "Objective comparative measure of hot or cold of air",
+            "column_name": "AirTemperature_F"
+        },
+        {
+            "concept_name": "dew point temperature",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001657",
+            "confidence": 0.85,
+            "concept_definition": "A temperature to which air must be cooled to become saturated with water vapor.",
+            "column_name": "AirTemperature_F"
+        },
+        {
+            "concept_name": "dry bulb temperature",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001521",
+            "confidence": 0.75,
+            "concept_definition": "An air temperature which is measured by a thermometer freely exposed to the air but shielded from radiation and moisture.",
+            "column_name": "AirTemperature_F"
+        },
+        {
+            "concept_name": "type of sensor",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001592",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "WaterThermometer"
+        },
+        {
             "concept_name": "Water Temperature",
-            "concept_definition": "The temperature of water.",
-            "concept_id": "http://purl.obolibrary.org/obo/ENVO_00002010",
-            "confidence": 0.95
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001227",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "WaterThermometer"
         },
         {
-            "column_name": "Lake",
-            "concept_name": "Lake",
-            "concept_definition": "A large body of water surrounded by land.",
-            "concept_id": "http://purl.obolibrary.org/obo/ENVO_00000020",
-            "confidence": 0.92
+            "concept_name": "thermokarst activity",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002429",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "WaterThermometer"
         },
         {
-            "column_name": "SpeciesCode",
-            "concept_name": "Taxon",
-            "concept_definition": "A group of one or more populations of an organism.",
-            "concept_id": "http://rs.tdwg.org/dwc/terms/Taxon",
-            "confidence": 0.88
+            "concept_name": "Water Temperature",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001227",
+            "confidence": 0.95,
+            "concept_definition": "Objective comparative measure of hot or cold of water",
+            "column_name": "WaterTemperature_F"
         },
         {
-            "column_name": "SpeciesCode",
-            "concept_name": "Scientific Name",
-            "concept_definition": "The full scientific name.",
-            "concept_id": "http://rs.tdwg.org/dwc/terms/scientificName",
-            "confidence": 0.8
+            "concept_name": "Lake Temperature",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001231",
+            "confidence": 0.85,
+            "concept_definition": "Objective comparative measure of hot or cold of water in lake",
+            "column_name": "WaterTemperature_F"
         },
+        {
+            "concept_name": "river water temperature",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001528",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "WaterTemperature_F"
+        },
+        {
+            "concept_name": "chromophoric dissolved organic matter absorbance",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001500",
+            "confidence": 0.95,
+            "concept_definition": "An absorbance measurement of the optically measurable component of dissolved organic matter in water.",
+            "column_name": "WaterColor"
+        },
+        {
+            "concept_name": "turbidity",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002359",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "WaterColor"
+        },
+        {
+            "concept_name": "water band index",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002205",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "WaterColor"
+        },
+        {
+            "concept_name": "Field Method",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00000082",
+            "confidence": 0.95,
+            "concept_definition": "strawman definition from margaret: a Field_Method is a method for determining a component of primary production that involves observations or measurements of the real world. A field method may have steps which could be considered 'modeling' (such as development of an allometric model of tree growth based on height), but measurements \"in the field\" (eg, of trees) are always involved. compare to Modeled_Method.",
+            "column_name": "SurveyType"
+        },
+        {
+            "concept_name": "method of capture",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00003074",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "SurveyType"
+        },
+        {
+            "concept_name": "nest or den observed",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002523",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "SurveyType"
+        },
+        {
+            "concept_name": "observer confidence",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002450",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "Comments"
+        },
+        {
+            "concept_name": "data quality flag",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001720",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Comments"
+        },
+        {
+            "concept_name": "confidence in taxonomic identification",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002438",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Comments"
+        },
+        {
+            "concept_name": "species code",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002490",
+            "confidence": 0.90,
+            "concept_definition": "",
+            "column_name": "SpeciesCode"
+        },
+        {
+            "concept_name": "taxon code",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002608",
+            "confidence": 0.80,
+            "concept_definition": "",
+            "column_name": "SpeciesCode"
+        },
+        {
+            "concept_name": "species name",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002735",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "SpeciesCode"
+        },
+        {
+            "concept_name": "Count Density",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001160",
+            "confidence": 0.95,
+            "concept_definition": "Number density is an intensive quantity used to describe the degree of concentration of countable objects in a given physical space. Confirm: if OBOE class ArealDensity is for physical (material) measuements, then we need a different characteristics for this class, eg, analogous to biomass_density.",
+            "column_name": "NumberOfEggMasses"
+        },
+        {
+            "concept_name": "Entity Count",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001189",
+            "confidence": 0.85,
+            "concept_definition": "Counting entities is the action of finding the number of elements of a finite set of entities.",
+            "column_name": "NumberOfEggMasses"
+        },
+        {
+            "concept_name": "Sample Count",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001188",
+            "confidence": 0.75,
+            "concept_definition": "Counting entities within a sample is the action of finding the number of elements of a finite set of entities constrained within a sample.",
+            "column_name": "NumberOfEggMasses"
+        },
+        {
+            "concept_name": "Entity Count",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001189",
+            "confidence": 0.95,
+            "concept_definition": "Counting entities is the action of finding the number of elements of a finite set of entities.",
+            "column_name": "NumberOfAdults"
+        },
+        {
+            "concept_name": "Count Measurement Type",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001141",
+            "confidence": 0.85,
+            "concept_definition": "Counting is the action of finding the number of elements of a finite set of objects. The traditional way of counting consists of continually increasing a (mental or spoken) counter by a unit for every element of the set, in some order, while marking (or displacing) those elements to avoid visiting the same element more than once, until no unmarked elements are left; if the counter was set to one after the first object, the value after visiting the final object gives the desired number of elements. The related term enumeration refers to uniquely identifying the elements of a finite (combinatorial) set or infinite set by assigning a number to each element. Count count dimensionless doi:10.5063/AA/gtg488d.4.1",
+            "column_name": "NumberOfAdults"
+        },
+        {
+            "concept_name": "Count Density",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001160",
+            "confidence": 0.75,
+            "concept_definition": "Number density is an intensive quantity used to describe the degree of concentration of countable objects in a given physical space. Confirm: if OBOE class ArealDensity is for physical (material) measuements, then we need a different characteristics for this class, eg, analogous to biomass_density.",
+            "column_name": "NumberOfAdults"
+        },
+        {
+            "concept_name": "observer confidence",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002450",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "Weather"
+        },
+        {
+            "concept_name": "cloud cover percentage",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002310",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Weather"
+        },
+        {
+            "concept_name": "light intensity",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002236",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Weather"
+        }
     ],
     "EggMasses.csv": [
         {
-            "column_name": "EggMassSubstrate",
-            "concept_name": "Surface Layer",
-            "concept_definition": "The layer of a material that is in contact with the surrounding medium.",
-            "concept_id": "http://purl.obolibrary.org/obo/ENVO_00002005",
-            "confidence": 0.7
+            "concept_name": "lake identifier",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002565",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "SurveyID"
+        },
+        {
+            "concept_name": "plot identifier",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002432",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "SurveyID"
+        },
+        {
+            "concept_name": "study location identifier",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002767",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "SurveyID"
+        },
+        {
+            "concept_name": "date and time of measurement",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002043",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "DateTime"
+        },
+        {
+            "concept_name": "hour and minute of measurement time",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002066",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "DateTime"
+        },
+        {
+            "concept_name": "measurement start time",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002044",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "DateTime"
+        },
+        {
+            "concept_name": "latitude coordinate",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002130",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "Latitude"
+        },
+        {
+            "concept_name": "latitude degree component",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002247",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Latitude"
+        },
+        {
+            "concept_name": "latitude minute component",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002137",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Latitude"
+        },
+        {
+            "concept_name": "longitude coordinate",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002132",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "Longitude"
+        },
+        {
+            "concept_name": "longitude degree component",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002239",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Longitude"
+        },
+        {
+            "concept_name": "longitude minute component",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002151",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Longitude"
+        },
+        {
+            "concept_name": "GPS waypoint identifier",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002982",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "Accuracy_m"
+        },
+        {
+            "concept_name": "error MeasurementType",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00000667",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Accuracy_m"
+        },
+        {
+            "concept_name": "location standard deviation",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002957",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Accuracy_m"
+        },
+        {
+            "concept_name": "Count Density",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001160",
+            "confidence": 0.95,
+            "concept_definition": "Number density is an intensive quantity used to describe the degree of concentration of countable objects in a given physical space. Confirm: if OBOE class ArealDensity is for physical (material) measuements, then we need a different characteristics for this class, eg, analogous to biomass_density.",
+            "column_name": "NumberOfEggMasses"
+        },
+        {
+            "concept_name": "Entity Count",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001189",
+            "confidence": 0.85,
+            "concept_definition": "Counting entities is the action of finding the number of elements of a finite set of entities.",
+            "column_name": "NumberOfEggMasses"
+        },
+        {
+            "concept_name": "Sample Count",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001188",
+            "confidence": 0.75,
+            "concept_definition": "Counting entities within a sample is the action of finding the number of elements of a finite set of entities constrained within a sample.",
+            "column_name": "NumberOfEggMasses"
+        },
+        {
+            "concept_name": "species code",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002490",
+            "confidence": 0.90,
+            "concept_definition": "",
+            "column_name": "SpeciesCode"
+        },
+        {
+            "concept_name": "taxon code",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002608",
+            "confidence": 0.80,
+            "concept_definition": "",
+            "column_name": "SpeciesCode"
+        },
+        {
+            "concept_name": "species name",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002735",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "SpeciesCode"
+        },
+        {
+            "concept_name": "basal mineral substrate depth",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001864",
+            "confidence": 0.90,
+            "concept_definition": "",
+            "column_name": "EggMassSubstrate"
+        },
+        {
+            "concept_name": "surface type",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002640",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "EggMassSubstrate"
+        },
+        {
+            "concept_name": "particle detection rate",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002179",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "EggMassSubstrate"
+        },
+        {
+            "concept_name": "data quality assessment measurement type",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001719",
+            "confidence": 0.95,
+            "concept_definition": "",
+            "column_name": "Comments"
+        },
+        {
+            "concept_name": "data quality flag",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00001720",
+            "confidence": 0.85,
+            "concept_definition": "",
+            "column_name": "Comments"
+        },
+        {
+            "concept_name": "observer confidence",
+            "concept_id": "http://purl.dataone.org/odo/ECSO_00002450",
+            "confidence": 0.75,
+            "concept_definition": "",
+            "column_name": "Comments"
         }
     ]
 }
@@ -262,24 +2129,51 @@ MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS = [
         "id": "geo-1",
         "recommendations": [
             {
-                "label": "Freshwater Lake Ecosystem",
-                "uri": "http://purl.obolibrary.org/obo/ENVO_01000021",
+                "label": "lake",
+                "uri": "http://purl.obolibrary.org/obo/ENVO_00000020",
                 "ontology": "ENVO",
-                "confidence": 0.75,
-                "description": "An aquatic ecosystem that is part of a lake.",
-                "propertyLabel": "contains",
-                "propertyUri": "http://www.w3.org/ns/oa#hasBody",
+                "confidence": 0.90,
+                "description": "A body of water or other liquid of considerable size contained in a depression on a landmass.",
+                "propertyLabel": "broad-scale environmental context",
+                "propertyUri": "https://genomicsstandardsconsortium.github.io/mixs/0000012/"
             },
             {
-                "label": "Temperate Climate",
-                "uri": "http://purl.obolibrary.org/obo/ENVO_01000000",
+                "label": "temperate",
+                "uri": "http://purl.obolibrary.org/obo/ENVO_01000206",
                 "ontology": "ENVO",
-                "confidence": 0.80,
-                "description": "A climate with moderate conditions",
-                "propertyLabel": "contains",
-                "propertyUri": "http://www.w3.org/ns/oa#hasBody",
+                "confidence": 0.90,
+                "description": "A temperate condition is an environmental condition in which an environmental system receives less solar irradiance than those with subpolar conditions, but greater than those with subtropical conditions.",
+                "propertyLabel": "broad-scale environmental context",
+                "propertyUri": "https://genomicsstandardsconsortium.github.io/mixs/0000012/"
             },
-        ],
+            {
+                "label": "humid air",
+                "uri": "http://purl.obolibrary.org/obo/ENVO_01000828",
+                "ontology": "ENVO",
+                "confidence": 0.90,
+                "description": "Air which has increased levels of water vapour.",
+                "propertyLabel": "broad-scale environmental context",
+                "propertyUri": "https://genomicsstandardsconsortium.github.io/mixs/0000012/"
+            },
+            {
+                "label": "forested area",
+                "uri": "http://purl.obolibrary.org/obo/ENVO_00000111",
+                "ontology": "ENVO",
+                "confidence": 0.90,
+                "description": "An area with a high density of trees. A small forest may be called a wood.",
+                "propertyLabel": "broad-scale environmental context",
+                "propertyUri": "https://genomicsstandardsconsortium.github.io/mixs/0000012/"
+            },
+            {
+                "label": "mountain range",
+                "uri": "http://purl.obolibrary.org/obo/ENVO_00000080",
+                "ontology": "ENVO",
+                "confidence": 0.90,
+                "description": "A range of mounts which is dominated by mountains.",
+                "propertyLabel": "broad-scale environmental context",
+                "propertyUri": "https://genomicsstandardsconsortium.github.io/mixs/0000012/"
+            }
+        ]
     }
 ]
 

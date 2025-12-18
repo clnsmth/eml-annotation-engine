@@ -21,7 +21,7 @@ def test_recommend_for_attribute_unit():
     print(json.dumps(results, indent=2))
 
     assert isinstance(results, list)
-    assert len(results) == 7
+    assert len(results) == 35
     for i, item in enumerate(results):
         assert "id" in item
         assert "recommendations" in item
@@ -118,3 +118,19 @@ def test_recommendations_endpoint_snapshot():
     data_sorted = sorted(data, key=lambda x: x["id"])
     expected_sorted = sorted(expected, key=lambda x: x["id"])
     assert data_sorted == expected_sorted
+
+
+def test_extract_ontology():
+    from webapp.run import extract_ontology
+    # Standard cases
+    assert extract_ontology("http://purl.obolibrary.org/obo/ENVO_00002006") == "ENVO"
+    assert extract_ontology("http://purl.obolibrary.org/obo/PATO_0000146") == "PATO"
+    assert extract_ontology("http://purl.obolibrary.org/obo/IAO_0000578") == "IAO"
+    # DWC case
+    assert extract_ontology("http://rs.tdwg.org/dwc/terms/decimalLatitude") == "DWC"
+    # ECSO case
+    assert extract_ontology("http://purl.dataone.org/odo/ECSO_00002565") == "ECSO"
+    # Unknown/empty
+    assert extract_ontology("") == "UNKNOWN"
+    assert extract_ontology(None) == "UNKNOWN"
+    assert extract_ontology("http://example.com/other/THING_12345") == "UNKNOWN"
