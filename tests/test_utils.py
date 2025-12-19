@@ -1,8 +1,13 @@
+"""
+Test utilities for updating the recommendations snapshot using the FastAPI test client.
+"""
 import json
 import os
-import pytest
-from webapp.models.mock_objects import MOCK_FRONTEND_PAYLOAD
 from typing import Any
+
+import pytest
+
+from webapp.models.mock_objects import MOCK_FRONTEND_PAYLOAD
 
 
 @pytest.mark.usefixtures("client")
@@ -26,7 +31,7 @@ def test_update_snapshot_recommendations_response(client: Any) -> None:
     )
     print(f"Attempting to write snapshot to: {os.path.abspath(snapshot_path)}")
     try:
-        with open(snapshot_path, "w") as f:
+        with open(snapshot_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, sort_keys=False)
         print(f"Snapshot updated successfully: {os.path.abspath(snapshot_path)}")
     except Exception as e:
