@@ -1,3 +1,6 @@
+
+# pylint: disable=line-too-long
+
 MOCK_RESPONSE = [
     {
         "id": "cfe0601b-e76b-4f34-8a5a-655db3b0491c",
