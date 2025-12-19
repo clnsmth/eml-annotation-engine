@@ -3,7 +3,7 @@
 
 # eml-annotation-engine
 
-The EML Annotation Engine is a backend service for the EML Annotation Studio, designed to provide semantic annotation recommendations and support for Ecological Metadata Language (EML) datasets. It exposes a RESTful API for recommending annotations for EML metadata, and proposing new ontology terms.
+The EML Annotation Engine is a backend service for the [EML Annotation Studio](https://github.com/clnsmth/eml-annotation-studio), designed to provide semantic annotation recommendations and support for Ecological Metadata Language (EML) datasets. It exposes a RESTful API for recommending annotations for EML metadata, and proposing new ontology terms.
 
 ## Features
 - EML attribute and geographic coverage recommendation engines
