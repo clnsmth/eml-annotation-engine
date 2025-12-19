@@ -11,3 +11,5 @@ dependencies:
   - black
   - requests
   - daiquiri
+  - black
+  - pylint
