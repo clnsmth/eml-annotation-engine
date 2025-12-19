@@ -119,6 +119,22 @@ def send_email_notification(proposal: ProposalRequest) -> None:
         print(f"Failed to send email: {e}")
 
 
+def _normalize_recommender_response(raw_response):
+    """
+    Normalize the recommender API response to a flat list of dicts.
+    """
+    recommender_response = []
+    if isinstance(raw_response, dict):
+        for col_name, recs in raw_response.items():
+            for r in recs[:5]:
+                if "column_name" not in r:
+                    r["column_name"] = col_name
+                recommender_response.append(r)
+    elif isinstance(raw_response, list):
+        recommender_response = raw_response
+    return recommender_response
+
+
 # pylint: disable=too-many-locals
 def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
@@ -154,23 +170,15 @@ def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, 
                 response = requests.post(api_url, json=api_payload, timeout=60)
                 response.raise_for_status()
                 raw_response = response.json()
-                # Normalize response (Dict[col, list] -> List[dict])
-                if isinstance(raw_response, dict):
-                    for col_name, recs in raw_response.items():
-                        for r in recs[:5]:
-                            if "column_name" not in r:
-                                r["column_name"] = col_name
-                            recommender_response.append(r)
-                elif isinstance(raw_response, list):
-                    recommender_response = raw_response
-                # Merge results for this file group
-                file_results = merge_recommender_results(
-                    file_attributes, recommender_response, "ATTRIBUTE"
-                )
-                final_output.extend(file_results)
+                recommender_response = _normalize_recommender_response(raw_response)
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred for {object_name}: {e}")
                 continue
+            # Merge results for this file group
+            file_results = merge_recommender_results(
+                file_attributes, recommender_response, "ATTRIBUTE"
+            )
+            final_output.extend(file_results)
     return final_output
 
 
