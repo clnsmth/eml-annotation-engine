@@ -1,6 +1,9 @@
+"""
+Unit tests for the send_email_notification function and related email notification logic.
+"""
+from unittest.mock import MagicMock
 import smtplib
 import pytest
-from unittest.mock import MagicMock
 from webapp.run import (
     send_email_notification,
     ProposalRequest,
@@ -10,8 +13,11 @@ from webapp.run import (
 from webapp.config import Config
 
 
-@pytest.fixture
-def proposal_request():
+@pytest.fixture(name="proposal_request")
+def proposal_request_fixture():
+    """
+    Fixture for a sample ProposalRequest used in email notification tests.
+    """
     return ProposalRequest(
         target_vocabulary="TestVocab",
         term_details=TermDetails(
@@ -28,6 +34,9 @@ def proposal_request():
 
 
 def test_send_email_notification_success(monkeypatch, proposal_request):
+    """
+    Test that send_email_notification completes successfully with valid SMTP settings.
+    """
     monkeypatch.setenv("PROPOSAL_RECIPIENT_EMAIL", Config.VOCABULARY_PROPOSAL_RECIPIENT)
     monkeypatch.setenv("SMTP_USER", "user@example.com")
     monkeypatch.setenv("SMTP_PASSWORD", "password")
@@ -61,22 +70,28 @@ def test_send_email_notification_success(monkeypatch, proposal_request):
 
 
 def test_send_email_notification_exception(monkeypatch, proposal_request, capsys):
+    """
+    Test that send_email_notification handles SMTPException gracefully.
+    """
     monkeypatch.setenv("PROPOSAL_RECIPIENT_EMAIL", Config.VOCABULARY_PROPOSAL_RECIPIENT)
     monkeypatch.setenv("SMTP_USER", "user@example.com")
     monkeypatch.setenv("SMTP_PASSWORD", "password")
 
     class FailingSMTP:
+        """Mock SMTP class that always raises SMTPException on sendmail."""
+
         def starttls(self):
-            pass
+            """Mock starttls method."""
 
         def login(self, u, p):
-            pass
+            """Mock login method."""
 
         def sendmail(self, u, r, t):
+            """Mock sendmail method that raises SMTPException."""
             raise smtplib.SMTPException("SMTP error")
 
         def quit(self):
-            pass
+            """Mock quit method."""
 
     monkeypatch.setattr("smtplib.SMTP", lambda *args, **kwargs: FailingSMTP())
     send_email_notification(proposal_request)
