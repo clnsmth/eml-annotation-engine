@@ -1,6 +1,6 @@
-import os
+import smtplib
 import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock
 from webapp.run import (
     send_email_notification,
     ProposalRequest,
@@ -73,7 +73,7 @@ def test_send_email_notification_exception(monkeypatch, proposal_request, capsys
             pass
 
         def sendmail(self, u, r, t):
-            raise Exception("SMTP error")
+            raise smtplib.SMTPException("SMTP error")
 
         def quit(self):
             pass

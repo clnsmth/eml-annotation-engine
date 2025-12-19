@@ -115,7 +115,7 @@ def send_email_notification(proposal: ProposalRequest) -> None:
         server.sendmail(smtp_user, recipient, text)
         server.quit()
         print(f"Proposal email successfully sent to {recipient}")
-    except Exception as e:
+    except (smtplib.SMTPException, OSError) as e:
         print(f"Failed to send email: {e}")
 
 
