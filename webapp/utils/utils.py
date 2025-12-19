@@ -1,8 +1,12 @@
+"""
+Utility functions for ontology extraction, recommendation merging, and EML data formatting.
+"""
 import re
 from collections import defaultdict
 from typing import Any, Dict, List, Optional
-from webapp.config import Config
+
 import daiquiri
+from webapp.config import Config
 
 # Set up daiquiri logging for this module
 daiquiri.setup()
@@ -74,7 +78,7 @@ def merge_recommender_results(
                         "objectName": item.get("objectName"),
                     }
                     entry["recommendations"].append(annot)
-                except Exception as e:
+                except (KeyError, TypeError, ValueError) as e:
                     logger.exception(
                         "Error merging recommender result for item %s: %s",
                         item.get("id"),
@@ -106,7 +110,7 @@ def reformat_attribute_elements(
                     "column_description": attr.get("description"),
                 }
             )
-        except Exception as e:
+        except (KeyError, TypeError, ValueError) as e:
             logger.exception("Error reformatting attribute element: %s", e)
     logger.info("Reformatted %d attribute elements.", len(reformatted))
     return reformatted
