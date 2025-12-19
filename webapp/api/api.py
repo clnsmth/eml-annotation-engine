@@ -1,6 +1,11 @@
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Body
 from fastapi.responses import JSONResponse
-from webapp.services.core import ProposalRequest, send_email_notification, recommend_for_attribute, recommend_for_geographic_coverage
+from webapp.services.core import (
+    ProposalRequest,
+    send_email_notification,
+    recommend_for_attribute,
+    recommend_for_geographic_coverage,
+)
 import json
 import daiquiri
 from typing import Any, Dict
@@ -10,6 +15,7 @@ daiquiri.setup()
 logger = daiquiri.getLogger(__name__)
 
 router = APIRouter()
+
 
 @router.get("/")
 def read_root() -> Dict[str, str]:
@@ -21,8 +27,11 @@ def read_root() -> Dict[str, str]:
     logger.info("Health check endpoint called.")
     return {"message": "Semantic EML Annotator Backend is running."}
 
+
 @router.post("/api/proposals")
-async def submit_proposal(proposal: ProposalRequest, background_tasks: BackgroundTasks) -> Dict[str, str]:
+async def submit_proposal(
+    proposal: ProposalRequest, background_tasks: BackgroundTasks
+) -> Dict[str, str]:
     """
     Receives a new term proposal and queues an email notification.
 
@@ -40,6 +49,7 @@ async def submit_proposal(proposal: ProposalRequest, background_tasks: Backgroun
         raise HTTPException(
             status_code=500, detail="Internal server error processing proposal."
         )
+
 
 @router.post("/api/recommendations")
 def recommend_annotations(payload: Dict[str, Any] = Body(...)) -> JSONResponse:
@@ -60,7 +70,9 @@ def recommend_annotations(payload: Dict[str, Any] = Body(...)) -> JSONResponse:
             recommended_attributes = recommend_for_attribute(payload["ATTRIBUTE"])
             results.append(recommended_attributes)
         if "GEOGRAPHICCOVERAGE" in payload:
-            recommended_geographic_coverage = recommend_for_geographic_coverage(payload["GEOGRAPHICCOVERAGE"])
+            recommended_geographic_coverage = recommend_for_geographic_coverage(
+                payload["GEOGRAPHICCOVERAGE"]
+            )
             results.append(recommended_geographic_coverage)
         if results:
             flat_results = [item for sublist in results for item in sublist]
@@ -71,6 +83,9 @@ def recommend_annotations(payload: Dict[str, Any] = Body(...)) -> JSONResponse:
             return JSONResponse(content=[], status_code=200)
     except Exception as e:
         logger.exception("Error in /api/recommendations: %s", e)
-        raise HTTPException(status_code=500, detail="Internal server error processing recommendations.")
+        raise HTTPException(
+            status_code=500, detail="Internal server error processing recommendations."
+        )
+
 
 __all__ = ["router"]

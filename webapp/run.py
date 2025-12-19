@@ -10,8 +10,14 @@ Entrypoint for the Semantic EML Annotator Backend.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from webapp.api.api import router
-from webapp.services.core import recommend_for_attribute, recommend_for_geographic_coverage, send_email_notification, \
-    ProposalRequest, TermDetails, SubmitterInfo
+from webapp.services.core import (
+    recommend_for_attribute,
+    recommend_for_geographic_coverage,
+    send_email_notification,
+    ProposalRequest,
+    TermDetails,
+    SubmitterInfo,
+)
 
 # Instantiate the FastAPI app
 app: FastAPI = FastAPI(title="Semantic EML Annotator Backend")
@@ -40,5 +46,6 @@ __all__ = [
 
 if __name__ == "__main__":
     import uvicorn
+
     # Run the FastAPI app with Uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

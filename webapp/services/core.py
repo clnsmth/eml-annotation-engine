@@ -8,6 +8,7 @@ from pydantic import BaseModel, EmailStr
 from webapp.config import Config
 from webapp.utils.utils import merge_recommender_results
 
+
 class TermDetails(BaseModel):
     """
     Data model for ontology term details.
@@ -16,9 +17,11 @@ class TermDetails(BaseModel):
     :ivar description: The term description
     :ivar evidence_source: Optional evidence source
     """
+
     label: str
     description: str
     evidence_source: Optional[str] = None
+
 
 class SubmitterInfo(BaseModel):
     """
@@ -28,9 +31,11 @@ class SubmitterInfo(BaseModel):
     :ivar orcid_id: Optional ORCID identifier
     :ivar attribution_consent: Whether submitter consents to attribution
     """
+
     email: EmailStr
     orcid_id: Optional[str] = None
     attribution_consent: bool
+
 
 class ProposalRequest(BaseModel):
     """
@@ -40,9 +45,11 @@ class ProposalRequest(BaseModel):
     :ivar term_details: Details of the proposed term
     :ivar submitter_info: Information about the submitter
     """
+
     target_vocabulary: str
     term_details: TermDetails
     submitter_info: SubmitterInfo
+
 
 class EMLMetadata(BaseModel):
     """
@@ -50,7 +57,9 @@ class EMLMetadata(BaseModel):
 
     :ivar elements: Dictionary of EML elements
     """
+
     elements: dict = {}
+
 
 def send_email_notification(proposal: ProposalRequest) -> None:
     """
@@ -66,7 +75,9 @@ def send_email_notification(proposal: ProposalRequest) -> None:
     smtp_user = Config.SMTP_USER
     smtp_password = Config.SMTP_PASSWORD
     if not recipient:
-        print("Warning: VOCABULARY_PROPOSAL_RECIPIENT not set. Skipping email dispatch.")
+        print(
+            "Warning: VOCABULARY_PROPOSAL_RECIPIENT not set. Skipping email dispatch."
+        )
         print(f"Payload received: {proposal.model_dump_json(indent=2)}")
         return
     if not smtp_user or not smtp_password:
@@ -102,6 +113,7 @@ def send_email_notification(proposal: ProposalRequest) -> None:
     except Exception as e:
         print(f"Failed to send email: {e}")
 
+
 def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
     Groups attributes by objectName, sends to API (or gets mock per file), and merges results.
@@ -109,24 +121,35 @@ def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, 
     :param attributes: List of attribute dictionaries
     :return: List of merged recommendation results for attributes
     """
-    BASE_URL = 'http://98.88.80.17:5000'
-    ANNOTATE_ENDPOINT = '/api/annotate'
+    BASE_URL = "http://98.88.80.17:5000"
+    ANNOTATE_ENDPOINT = "/api/annotate"
     API_URL = f"{BASE_URL}{ANNOTATE_ENDPOINT}"
     attributes.sort(key=lambda x: x.get("objectName", "unknown"))
     final_output: List[Dict[str, Any]] = []
     # Group by File (object_name)
-    for object_name, group_iter in groupby(attributes, key=lambda x: x.get("objectName", "unknown")):
+    for object_name, group_iter in groupby(
+        attributes, key=lambda x: x.get("objectName", "unknown")
+    ):
         file_attributes = list(group_iter)
         recommender_response: List[Dict[str, Any]] = []
         if Config.USE_MOCK_RECOMMENDATIONS:
-            from webapp.models.mock_objects import MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE
-            recommender_response = MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE.get(object_name, [])
+            from webapp.models.mock_objects import (
+                MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE,
+            )
+
+            recommender_response = MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE.get(
+                object_name, []
+            )
             # Merge results for this file group using the retrieved mock data
-            file_results = merge_recommender_results(file_attributes, recommender_response, "ATTRIBUTE")
+            file_results = merge_recommender_results(
+                file_attributes, recommender_response, "ATTRIBUTE"
+            )
             final_output.extend(file_results)
         else:
             # REAL API LOGIC
-            api_payload = [{k: v for k, v in i.items() if k != 'id'} for i in file_attributes]
+            api_payload = [
+                {k: v for k, v in i.items() if k != "id"} for i in file_attributes
+            ]
             try:
                 response = requests.post(API_URL, json=api_payload)
                 response.raise_for_status()
@@ -135,19 +158,25 @@ def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, 
                 if isinstance(raw_response, dict):
                     for col_name, recs in raw_response.items():
                         for r in recs[:5]:
-                            if 'column_name' not in r: r['column_name'] = col_name
+                            if "column_name" not in r:
+                                r["column_name"] = col_name
                             recommender_response.append(r)
                 elif isinstance(raw_response, list):
                     recommender_response = raw_response
                 # Merge results for this file group
-                file_results = merge_recommender_results(file_attributes, recommender_response, "ATTRIBUTE")
+                file_results = merge_recommender_results(
+                    file_attributes, recommender_response, "ATTRIBUTE"
+                )
                 final_output.extend(file_results)
             except requests.exceptions.RequestException as e:
                 print(f"An error occurred for {object_name}: {e}")
                 continue
     return final_output
 
-def recommend_for_geographic_coverage(geos: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+
+def recommend_for_geographic_coverage(
+    geos: List[Dict[str, Any]],
+) -> List[Dict[str, Any]]:
     """
     Stub recommender for geographic coverage elements.
 
@@ -156,5 +185,6 @@ def recommend_for_geographic_coverage(geos: List[Dict[str, Any]]) -> List[Dict[s
     """
     if Config.USE_MOCK_RECOMMENDATIONS:
         from webapp.models.mock_objects import MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
+
         return MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
     return []

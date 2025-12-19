@@ -4,6 +4,7 @@ import pytest
 from webapp.models.mock_objects import MOCK_FRONTEND_PAYLOAD
 from typing import Any
 
+
 @pytest.mark.usefixtures("client")
 def test_update_snapshot_recommendations_response(client: Any) -> None:
     """
@@ -18,7 +19,11 @@ def test_update_snapshot_recommendations_response(client: Any) -> None:
     response = client.post("/api/recommendations", json=payload)
     assert response.status_code == 200, f"Request failed: {response.status_code}"
     data = response.json()
-    snapshot_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "tests", "snapshot_recommendations_response.json")
+    snapshot_path = os.path.join(
+        os.path.dirname(os.path.dirname(__file__)),
+        "tests",
+        "snapshot_recommendations_response.json",
+    )
     print(f"Attempting to write snapshot to: {os.path.abspath(snapshot_path)}")
     try:
         with open(snapshot_path, "w") as f:
