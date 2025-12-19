@@ -1,14 +1,19 @@
+"""
+API endpoints for the Semantic EML Annotator Backend.
+"""
+import json
+from typing import Any, Dict
+
+import daiquiri
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Body
 from fastapi.responses import JSONResponse
+
 from webapp.services.core import (
     ProposalRequest,
     send_email_notification,
     recommend_for_attribute,
     recommend_for_geographic_coverage,
 )
-import json
-import daiquiri
-from typing import Any, Dict
 
 # Set up daiquiri logging for this module
 daiquiri.setup()
@@ -48,16 +53,17 @@ async def submit_proposal(
         logger.exception("Error processing proposal: %s", e)
         raise HTTPException(
             status_code=500, detail="Internal server error processing proposal."
-        )
+        ) from e
 
 
 @router.post("/api/recommendations")
 def recommend_annotations(payload: Dict[str, Any] = Body(...)) -> JSONResponse:
     """
-    Accepts a JSON payload of EML metadata elements grouped by type (e.g. ATTRIBUTE, GEOGRAPHICCOVERAGE),
-    parses the types, fans out to respective recommendation engines, and combines the results.
-    Implements a gateway aggregation pattern for annotation recommendations.
-    If no recognized types are present, returns the original mock response for backward compatibility.
+    Accepts a JSON payload of EML metadata elements grouped by type (e.g. ATTRIBUTE,
+    GEOGRAPHICCOVERAGE), parses the types, fans out to respective recommendation engines, and
+    combines the results. Implements a gateway aggregation pattern for annotation recommendations.
+    If no recognized types are present, returns the original mock response for backward
+    compatibility.
 
     :param payload: The request payload containing EML metadata elements
     :return: JSONResponse with the recommendations or an empty list
@@ -78,14 +84,13 @@ def recommend_annotations(payload: Dict[str, Any] = Body(...)) -> JSONResponse:
             flat_results = [item for sublist in results for item in sublist]
             logger.info("Returning %d recommendation results.", len(flat_results))
             return JSONResponse(content=flat_results, status_code=200)
-        else:
-            logger.warning("No recognized types in payload. Returning empty list.")
-            return JSONResponse(content=[], status_code=200)
+        logger.warning("No recognized types in payload. Returning empty list.")
+        return JSONResponse(content=[], status_code=200)
     except Exception as e:
         logger.exception("Error in /api/recommendations: %s", e)
         raise HTTPException(
             status_code=500, detail="Internal server error processing recommendations."
-        )
+        ) from e
 
 
 __all__ = ["router"]

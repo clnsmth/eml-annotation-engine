@@ -2504,5 +2504,3 @@ MOCK_FRONTEND_PAYLOAD = {
         }
     ],
 }
-
-
