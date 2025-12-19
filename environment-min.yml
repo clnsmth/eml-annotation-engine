@@ -9,3 +9,7 @@ dependencies:
   - httpx
   - pytest
   - black
+  - requests
+  - daiquiri
+  - black
+  - pylint

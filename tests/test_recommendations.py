@@ -1,111 +1,127 @@
+"""
+Unit and integration tests for the recommendations API and utility functions.
+"""
+from typing import Any, Dict, List
+import json
+import pytest
 from webapp.run import (
-    recommend_for_dataset,
     recommend_for_attribute,
-    recommend_for_entity,
     recommend_for_geographic_coverage,
-    app,
 )
-from fastapi.testclient import TestClient
-
-client = TestClient(app)
-
-
-# --- Unit tests for individual recommenders ---
-def test_recommend_for_dataset_unit():
-    """
-    Unit test for recommend_for_dataset.
-    """
-    datasets = [
-        {"title": "Example Dataset", "creator": "Jane Doe"},
-        {"title": "Another Dataset", "creator": "John Smith"},
-    ]
-    results = recommend_for_dataset(datasets)
-    assert isinstance(results, list)
-    assert len(results) == 2
-    for i, item in enumerate(results):
-        assert item["id"] == f"dataset-{i}"
-        assert "recommendations" in item
-        rec = item["recommendations"][0]
-        assert rec["label"] == "Survey Dataset"
-        assert rec["ontology"] == "IAO"
+from webapp.utils.utils import (reformat_attribute_elements, reformat_geographic_coverage_elements,
+                                extract_ontology)
 
 
-def test_recommend_for_attribute_unit():
+@pytest.mark.usefixtures("client", "mock_payload")
+def test_recommend_for_attribute_unit(mock_payload: Dict[str, Any]) -> None:
     """
     Unit test for recommend_for_attribute.
+    Checks that the output structure and content are as expected.
     """
-    attributes = [
-        {"name": "SurveyID", "type": "string"},
-        {"name": "SampleID", "type": "int"},
-    ]
+    attributes = mock_payload["ATTRIBUTE"]
     results = recommend_for_attribute(attributes)
+    print(json.dumps(results, indent=2))
     assert isinstance(results, list)
-    assert len(results) == 2
-    for i, item in enumerate(results):
-        assert item["id"] == f"attribute-{i}"
+    assert len(results) == 35
+    for item in results:
+        assert "id" in item
         assert "recommendations" in item
-        rec = item["recommendations"][0]
-        assert rec["label"] == "Identifier"
-        assert rec["ontology"] == "IAO"
+        for rec in item["recommendations"]:
+            assert "attributeName" in rec
+            assert "objectName" in rec
+            assert "uri" in rec
+            assert "ontology" in rec
+            assert "confidence" in rec
+            assert "description" in rec
+            assert "propertyLabel" in rec
+            assert "propertyUri" in rec
 
 
-def test_recommend_for_entity_unit():
-    """
-    Unit test for recommend_for_entity.
-    """
-    entities = [
-        {"name": "Lake", "type": "waterbody"},
-        {"name": "River", "type": "waterbody"},
-    ]
-    results = recommend_for_entity(entities)
-    assert isinstance(results, list)
-    assert len(results) == 2
-    for i, item in enumerate(results):
-        assert item["id"] == f"entity-{i}"
-        assert "recommendations" in item
-        rec = item["recommendations"][0]
-        assert rec["label"] == "Lake"
-        assert rec["ontology"] == "ENVO"
-
-
-def test_recommend_for_geographic_coverage_unit():
+@pytest.mark.usefixtures("mock_geo_coverage")
+def test_recommend_for_geographic_coverage_unit(
+    mock_geo_coverage: List[Dict[str, Any]],
+) -> None:
     """
     Unit test for recommend_for_geographic_coverage.
+    Checks that the output matches the mock_geo_coverage fixture.
     """
-    geos = [
-        {"description": "Lake Tahoe region", "objectName": "LakeTahoe"},
-        {"description": "Sierra Nevada", "objectName": "SierraNevada"},
-    ]
+    geos = [{"description": "Lake Tahoe region", "objectName": "LakeTahoe"}]
     results = recommend_for_geographic_coverage(geos)
     assert isinstance(results, list)
-    assert len(results) == 2
-    for i, item in enumerate(results):
-        assert item["id"] == f"geographicCoverage-{i}"
-        assert "recommendations" in item
-        rec = item["recommendations"][0]
-        assert rec["label"] == "Geographic Region"
-        assert rec["ontology"] == "ENVO"
-        assert rec["attributeName"] == geos[i]["description"]
-        assert rec["objectName"] == geos[i]["objectName"]
+    assert results == mock_geo_coverage
 
 
-# --- Integration tests for the endpoint (keep only those that test the endpoint as a whole) ---
-def test_recommendations_endpoint():
-    # Minimal example EML metadata payload using a supported type key
-    payload = {"elements": {"dataset": [
-        {"title": "Example Dataset", "creator": "Jane Doe"}
-    ]}}
-    response = client.post("/api/recommendations", json=payload)
+@pytest.mark.parametrize(
+    "data,expected",
+    [
+        (
+            [
+                {
+                    "id": "d49be2c0-7b9e-41f4-ae07-387d3e1f14c8",
+                    "name": "Latitude",
+                    "description": "Latitude of collection",
+                    "context": "SurveyResults",
+                    "objectName": "SurveyResults.csv",
+                    "entityDescription": "Table contains survey information and the counts of "
+                                         "the number of egg masses for each species during that "
+                                         "survey.",
+                }
+            ],
+            [
+                {
+                    "entity_name": "SurveyResults.csv",
+                    "entity_description": "Table contains survey information and the counts of "
+                                          "the number of egg masses for each species during that "
+                                          "survey.",
+                    "object_name": "SurveyResults.csv",
+                    "column_name": "Latitude",
+                    "column_description": "Latitude of collection",
+                }
+            ],
+        )
+    ],
+)
+def test_reformat_attribute_elements_unit(
+    data: List[Dict[str, Any]], expected: List[Dict[str, Any]]
+) -> None:
+    """
+    Test reformat_attribute_elements utility function for correct transformation.
+    """
+    out = reformat_attribute_elements(data)
+    assert out == expected
+
+
+@pytest.mark.parametrize(
+    "data",
+    [
+        ([{"description": "D1"}, {"description": "D2"}]),
+    ],
+)
+def test_reformat_geographic_coverage_elements_unit(data: List[Dict[str, Any]]) -> None:
+    """
+    Test reformat_geographic_coverage_elements utility function for pass-through behavior.
+    """
+    out = reformat_geographic_coverage_elements(data)
+    assert out == data
+
+
+@pytest.mark.usefixtures("client", "mock_payload")
+def test_recommend_annotations_endpoint_with_full_mock_frontend_payload(
+    client: Any, mock_payload: Dict[str, Any]
+) -> None:
+    """
+    Integration test for the /api/recommendations endpoint with the full mock frontend payload as
+    input (as-is). Checks that the response is a list and that the number of items matches the
+    number of attributes and coverages.
+    """
+    response = client.post("/api/recommendations", json=mock_payload)
     assert response.status_code == 200
     data = response.json()
     assert isinstance(data, list)
-    assert len(data) > 0
-    # Check that each item has 'id' and 'recommendations' keys
+    # Check structure of each item
     for item in data:
         assert "id" in item
         assert "recommendations" in item
-        assert isinstance(item["recommendations"], list)
-        # Check that each recommendation has required keys
         for rec in item["recommendations"]:
             assert "label" in rec
             assert "uri" in rec
@@ -114,22 +130,43 @@ def test_recommendations_endpoint():
             assert "description" in rec
             assert "propertyLabel" in rec
             assert "propertyUri" in rec
-            # Optional keys: attributeName, objectName (may not be present in all)
 
 
-# def test_recommendations_mixed_types():
-#     """
-#     Test /api/recommendations with multiple types (dataset, attribute, entity).
-#     """
-#     payload = {"elements": {
-#         "dataset": [{"title": "Example Dataset"}],
-#         "attribute": [{"name": "SurveyID"}],
-#         "entity": [{"name": "Lake"}]
-#     }}
-#     response = client.post("/api/recommendations", json=payload)
-#     assert response.status_code == 200
-#     data = response.json()
-#     ids = [item["id"] for item in data]
-#     assert any(i.startswith("dataset-") for i in ids)
-#     assert any(i.startswith("attribute-") for i in ids)
-#     assert any(i.startswith("entity-") for i in ids)
+@pytest.mark.usefixtures("client", "mock_payload")
+def test_recommendations_endpoint_snapshot(
+    client: Any, mock_payload: Dict[str, Any]
+) -> None:
+    """
+    Integration test: POST to /api/recommendations with MOCK_FRONTEND_PAYLOAD and compare
+    response to stored snapshot. Sorts both lists by 'id' to ensure order does not affect
+    the test.
+    """
+    response = client.post("/api/recommendations", json=mock_payload)
+    assert response.status_code == 200
+    data = response.json()
+    with open("tests/snapshot_recommendations_response.json", "r", encoding="utf-8") as f:
+        expected = json.load(f)
+    data_sorted = sorted(data, key=lambda x: x["id"])
+    expected_sorted = sorted(expected, key=lambda x: x["id"])
+    assert data_sorted == expected_sorted
+
+
+@pytest.mark.parametrize(
+    "uri,expected",
+    [
+        ("http://purl.obolibrary.org/obo/ENVO_00002006", "ENVO"),
+        ("http://purl.obolibrary.org/obo/PATO_0000146", "PATO"),
+        ("http://purl.obolibrary.org/obo/IAO_0000578", "IAO"),
+        ("http://rs.tdwg.org/dwc/terms/decimalLatitude", "DWC"),
+        ("http://purl.dataone.org/odo/ECSO_00002565", "ECSO"),
+        ("", "UNKNOWN"),
+        (None, "UNKNOWN"),
+        ("http://example.com/other/THING_12345", "UNKNOWN"),
+    ],
+)
+def test_extract_ontology(uri: str, expected: str) -> None:
+    """
+    Test extract_ontology utility function for correct ontology extraction from URIs.
+    """
+
+    assert extract_ontology(uri) == expected

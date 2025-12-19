@@ -1,58 +1,38 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-""":Mod: config
-
-:Synopsis:
-
-:Author:
-    servilla
-
-:Created:
-    4/21/18
+"""
+Configuration for the annotation engine and email notifications.
 """
 
-class Config(object):
+# pylint: disable=too-few-public-methods
+class Config:
+    """
+    Centralized configuration for the annotation engine and email notifications.
 
-    # Flask app configuration
-    SECRET_KEY = 'SECRET KEY'
-    DEBUG = False
+    :cvar VOCABULARY_PROPOSAL_RECIPIENT: Email address for proposal notifications
+    :cvar SMTP_SERVER: SMTP server address
+    :cvar SMTP_PORT: SMTP server port
+    :cvar SMTP_USER: SMTP username
+    :cvar SMTP_PASSWORD: SMTP password
+    :cvar USE_MOCK_RECOMMENDATIONS: Whether to use mock recommendations
+    :cvar MERGE_CONFIG: Configuration for merging recommender results
+    """
+    VOCABULARY_PROPOSAL_RECIPIENT = 'curator@mail.com'
+    SMTP_SERVER = 'smtp.mail.com'
+    SMTP_PORT = 587
+    SMTP_USER = 'curator@mail.com'
+    SMTP_PASSWORD = 'xxxx xxxx xxxx xxxx'
 
-    # Webapp configuration
-    CACHE_P = 'cache location for production json files'
-    CACHE_S = 'cache location for staging json files'
-    CACHE_D = 'cache location for development json files'
-
-    PASTA_P = 'https://pasta.lternet.edu/package'
-    PASTA_S = 'https://pasta-s.lternet.edu/package'
-    PASTA_D = 'https://pasta-d.lternet.edu/package'
-
-    PORTAL_P = 'https://portal.edirepository.org/nis'
-    PORTAL_S = 'https://portal-s.edirepository.org/nis'
-    PORTAL_D = 'https://portal-d.edirepository.org/nis'
-
-    DESCRIPTION_EDI = 'The Environmental Data Initiative is an NSF-funded' + \
-        ' project accelerating curation and archive of environmental data,' + \
-        ' emphasizing data from projects funded by the NSF DEB.  Programs' + \
-        ' served include, but are not limited to, Long Term Research in' + \
-        ' Environmental Biology (LTREB), Organization for Biological Field' + \
-        ' Stations (OBFS), MacroSystems Biology (MSB), and Long Term' + \
-        ' Ecological Research (LTER).'
-
-    URL_EDI = 'https://edirepository.org'
-    EMAIL_EDI = 'info@edirepository.org'
-    LOGO_EDI = 'https://raw.githubusercontent.com/EDIorg/EDI-miscellaneous/main/logos/EDI-logo-312x307.png'
-
-    # PASTA Data Package Manager Server Addresses
-    WHITE_LIST = {
-        '129.24.124.76': PASTA_D,
-        '129.24.240.153': PASTA_S,
-        '129.24.240.146': PASTA_P,
-        '127.0.0.1': PASTA_P,
+    # Centralized configuration for annotation engine
+    USE_MOCK_RECOMMENDATIONS: bool = True  # Set to False to use real recommendation logic
+    MERGE_CONFIG: dict = {
+        "ATTRIBUTE": {
+            "property_label": "contains measurements of type",
+            "property_uri": "http://ecoinformatics.org/oboe/oboe.1.2/oboe-core.owl#"
+                            "containsMeasurementsOfType",
+            "join_key": "column_name"
         }
+    }
 
-    # SOLR
-    ROWS = 500
-
-    # Sitemap
-    SITEMAP_PAGE_SIZE = 5000
+    # API endpoint configuration of the attribute recommender (private, for internal use only)
+    _BASE_URL: str = "http://xx.xx.xx.xx:xxxx"
+    _ANNOTATE_ENDPOINT: str = "/api/xxx"
+    API_URL: str = f"{_BASE_URL}{_ANNOTATE_ENDPOINT}"
