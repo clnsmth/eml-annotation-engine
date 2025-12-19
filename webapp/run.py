@@ -19,10 +19,8 @@ from webapp.services.core import (
     SubmitterInfo,
 )
 
-# Instantiate the FastAPI app
 app: FastAPI = FastAPI(title="Semantic EML Annotator Backend")
 
-# Add CORS middleware to allow all origins and methods
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -31,7 +29,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include the API router
 app.include_router(router)
 
 __all__ = [
@@ -47,5 +44,4 @@ __all__ = [
 if __name__ == "__main__":
     import uvicorn
 
-    # Run the FastAPI app with Uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

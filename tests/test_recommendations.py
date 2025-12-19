@@ -12,7 +12,6 @@ from webapp.utils.utils import (reformat_attribute_elements, reformat_geographic
                                 extract_ontology)
 
 
-# --- Unit tests for individual recommenders ---
 @pytest.mark.usefixtures("client", "mock_payload")
 def test_recommend_for_attribute_unit(mock_payload: Dict[str, Any]) -> None:
     """

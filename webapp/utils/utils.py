@@ -8,7 +8,6 @@ from typing import Any, Dict, List, Optional
 import daiquiri
 from webapp.config import Config
 
-# Set up daiquiri logging for this module
 daiquiri.setup()
 logger = daiquiri.getLogger(__name__)
 

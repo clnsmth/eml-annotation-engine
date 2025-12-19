@@ -15,7 +15,6 @@ from webapp.services.core import (
     recommend_for_geographic_coverage,
 )
 
-# Set up daiquiri logging for this module
 daiquiri.setup()
 logger = daiquiri.getLogger(__name__)
 
