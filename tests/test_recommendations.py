@@ -3,7 +3,6 @@ import pytest
 from webapp.run import (
     recommend_for_attribute,
     recommend_for_geographic_coverage,
-    app,
 )
 from typing import Any, Dict, List
 
@@ -69,7 +68,7 @@ def test_reformat_attribute_elements_unit(data: List[Dict[str, Any]], expected: 
     """
     Test reformat_attribute_elements utility function for correct transformation.
     """
-    from webapp.utils import reformat_attribute_elements
+    from webapp.utils.utils import reformat_attribute_elements
     out = reformat_attribute_elements(data)
     assert out == expected
 
@@ -81,7 +80,7 @@ def test_reformat_geographic_coverage_elements_unit(data: List[Dict[str, Any]]) 
     """
     Test reformat_geographic_coverage_elements utility function for pass-through behavior.
     """
-    from webapp.utils import reformat_geographic_coverage_elements
+    from webapp.utils.utils import reformat_geographic_coverage_elements
     out = reformat_geographic_coverage_elements(data)
     assert out == data
 
@@ -140,5 +139,5 @@ def test_extract_ontology(uri: str, expected: str) -> None:
     """
     Test extract_ontology utility function for correct ontology extraction from URIs.
     """
-    from webapp.utils import extract_ontology
+    from webapp.utils.utils import extract_ontology
     assert extract_ontology(uri) == expected

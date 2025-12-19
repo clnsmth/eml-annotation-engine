@@ -6,7 +6,7 @@ import requests
 import smtplib
 from pydantic import BaseModel, EmailStr
 from webapp.config import Config
-from webapp.utils import merge_recommender_results
+from webapp.utils.utils import merge_recommender_results
 
 class TermDetails(BaseModel):
     """
@@ -119,7 +119,7 @@ def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, 
         file_attributes = list(group_iter)
         recommender_response: List[Dict[str, Any]] = []
         if Config.USE_MOCK_RECOMMENDATIONS:
-            from webapp.mock_objects import MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE
+            from webapp.models.mock_objects import MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE
             recommender_response = MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE.get(object_name, [])
             # Merge results for this file group using the retrieved mock data
             file_results = merge_recommender_results(file_attributes, recommender_response, "ATTRIBUTE")
@@ -155,6 +155,6 @@ def recommend_for_geographic_coverage(geos: List[Dict[str, Any]]) -> List[Dict[s
     :return: Mock recommendations if enabled, otherwise an empty list
     """
     if Config.USE_MOCK_RECOMMENDATIONS:
-        from webapp.mock_objects import MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
+        from webapp.models.mock_objects import MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
         return MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
     return []

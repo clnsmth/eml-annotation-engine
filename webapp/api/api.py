@@ -1,6 +1,6 @@
 from fastapi import APIRouter, BackgroundTasks, HTTPException, Body
 from fastapi.responses import JSONResponse
-from webapp.core import ProposalRequest, send_email_notification, recommend_for_attribute, recommend_for_geographic_coverage
+from webapp.services.core import ProposalRequest, send_email_notification, recommend_for_attribute, recommend_for_geographic_coverage
 import json
 import daiquiri
 from typing import Any, Dict

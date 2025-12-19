@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from webapp.run import app
-from webapp.mock_objects import MOCK_FRONTEND_PAYLOAD, MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
+from webapp.models.mock_objects import MOCK_FRONTEND_PAYLOAD, MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
 
 @pytest.fixture(scope="session")
 def client():

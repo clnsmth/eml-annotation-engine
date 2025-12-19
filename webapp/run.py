@@ -9,9 +9,9 @@ Entrypoint for the Semantic EML Annotator Backend.
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from webapp.config import Config
-from webapp.api import router
-from webapp.core import ProposalRequest, TermDetails, SubmitterInfo, EMLMetadata, send_email_notification, recommend_for_attribute, recommend_for_geographic_coverage
+from webapp.api.api import router
+from webapp.services.core import recommend_for_attribute, recommend_for_geographic_coverage, send_email_notification, \
+    ProposalRequest, TermDetails, SubmitterInfo
 
 # Instantiate the FastAPI app
 app: FastAPI = FastAPI(title="Semantic EML Annotator Backend")
@@ -32,6 +32,10 @@ __all__ = [
     "recommend_for_attribute",
     "recommend_for_geographic_coverage",
     "app",
+    "send_email_notification",
+    "ProposalRequest",
+    "TermDetails",
+    "SubmitterInfo",
 ]
 
 if __name__ == "__main__":

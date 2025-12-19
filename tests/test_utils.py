@@ -1,7 +1,7 @@
 import json
 import os
 import pytest
-from webapp.mock_objects import MOCK_FRONTEND_PAYLOAD
+from webapp.models.mock_objects import MOCK_FRONTEND_PAYLOAD
 from typing import Any
 
 @pytest.mark.usefixtures("client")
