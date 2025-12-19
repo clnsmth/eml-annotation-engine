@@ -120,8 +120,8 @@ def reformat_geographic_coverage_elements(
     geos: List[Dict[str, Any]],
 ) -> List[Dict[str, Any]]:
     """
-    Stub: Transform geographic coverage elements to the format expected by the geographic coverage recommender.
-    For now, returns input unchanged.
+    Stub: Transform geographic coverage elements to the format expected by the geographic coverage
+    recommender. For now, returns input unchanged.
 
     :param geos: List of geographic coverage dictionaries
     :return: List of geographic coverage dictionaries (unchanged)

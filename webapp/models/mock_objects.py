@@ -1,5 +1,8 @@
+"""
+Mock data objects for testing and development of the annotation engine.
+"""
 
-# pylint: disable=line-too-long
+# pylint: disable=line-too-long, too-many-lines
 
 MOCK_RESPONSE = [
     {
@@ -2501,3 +2504,5 @@ MOCK_FRONTEND_PAYLOAD = {
         }
     ],
 }
+
+
