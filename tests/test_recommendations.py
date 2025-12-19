@@ -1,10 +1,15 @@
+"""
+Unit and integration tests for the recommendations API and utility functions.
+"""
+from typing import Any, Dict, List
 import json
 import pytest
 from webapp.run import (
     recommend_for_attribute,
     recommend_for_geographic_coverage,
 )
-from typing import Any, Dict, List
+from webapp.utils.utils import (reformat_attribute_elements, reformat_geographic_coverage_elements,
+                                extract_ontology)
 
 
 # --- Unit tests for individual recommenders ---
@@ -58,13 +63,17 @@ def test_recommend_for_geographic_coverage_unit(
                     "description": "Latitude of collection",
                     "context": "SurveyResults",
                     "objectName": "SurveyResults.csv",
-                    "entityDescription": "Table contains survey information and the counts of the number of egg masses for each species during that survey.",
+                    "entityDescription": "Table contains survey information and the counts of "
+                                         "the number of egg masses for each species during that "
+                                         "survey.",
                 }
             ],
             [
                 {
                     "entity_name": "SurveyResults.csv",
-                    "entity_description": "Table contains survey information and the counts of the number of egg masses for each species during that survey.",
+                    "entity_description": "Table contains survey information and the counts of "
+                                          "the number of egg masses for each species during that "
+                                          "survey.",
                     "object_name": "SurveyResults.csv",
                     "column_name": "Latitude",
                     "column_description": "Latitude of collection",
@@ -79,8 +88,6 @@ def test_reformat_attribute_elements_unit(
     """
     Test reformat_attribute_elements utility function for correct transformation.
     """
-    from webapp.utils.utils import reformat_attribute_elements
-
     out = reformat_attribute_elements(data)
     assert out == expected
 
@@ -95,8 +102,6 @@ def test_reformat_geographic_coverage_elements_unit(data: List[Dict[str, Any]]) 
     """
     Test reformat_geographic_coverage_elements utility function for pass-through behavior.
     """
-    from webapp.utils.utils import reformat_geographic_coverage_elements
-
     out = reformat_geographic_coverage_elements(data)
     assert out == data
 
@@ -106,8 +111,9 @@ def test_recommend_annotations_endpoint_with_full_mock_frontend_payload(
     client: Any, mock_payload: Dict[str, Any]
 ) -> None:
     """
-    Integration test for the /api/recommendations endpoint with the full mock frontend payload as input (as-is).
-    Checks that the response is a list and that the number of items matches the number of attributes and coverages.
+    Integration test for the /api/recommendations endpoint with the full mock frontend payload as
+    input (as-is). Checks that the response is a list and that the number of items matches the
+    number of attributes and coverages.
     """
     response = client.post("/api/recommendations", json=mock_payload)
     assert response.status_code == 200
@@ -132,13 +138,14 @@ def test_recommendations_endpoint_snapshot(
     client: Any, mock_payload: Dict[str, Any]
 ) -> None:
     """
-    Integration test: POST to /api/recommendations with MOCK_FRONTEND_PAYLOAD and compare response to stored snapshot.
-    Sorts both lists by 'id' to ensure order does not affect the test.
+    Integration test: POST to /api/recommendations with MOCK_FRONTEND_PAYLOAD and compare
+    response to stored snapshot. Sorts both lists by 'id' to ensure order does not affect
+    the test.
     """
     response = client.post("/api/recommendations", json=mock_payload)
     assert response.status_code == 200
     data = response.json()
-    with open("tests/snapshot_recommendations_response.json", "r") as f:
+    with open("tests/snapshot_recommendations_response.json", "r", encoding="utf-8") as f:
         expected = json.load(f)
     data_sorted = sorted(data, key=lambda x: x["id"])
     expected_sorted = sorted(expected, key=lambda x: x["id"])
@@ -162,6 +169,5 @@ def test_extract_ontology(uri: str, expected: str) -> None:
     """
     Test extract_ontology utility function for correct ontology extraction from URIs.
     """
-    from webapp.utils.utils import extract_ontology
 
     assert extract_ontology(uri) == expected
