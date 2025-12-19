@@ -1,12 +1,17 @@
+"""
+Core business logic and data models for the Semantic EML Annotator Backend.
+"""
 from itertools import groupby
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from typing import Optional, List, Dict, Any
-import requests
 import smtplib
+import requests
 from pydantic import BaseModel, EmailStr
 from webapp.config import Config
 from webapp.utils.utils import merge_recommender_results
+from webapp.models.mock_objects import (MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE,
+                                        MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS)
 
 
 class TermDetails(BaseModel):
@@ -114,6 +119,7 @@ def send_email_notification(proposal: ProposalRequest) -> None:
         print(f"Failed to send email: {e}")
 
 
+# pylint: disable=too-many-locals
 def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """
     Groups attributes by objectName, sends to API (or gets mock per file), and merges results.
@@ -121,9 +127,7 @@ def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, 
     :param attributes: List of attribute dictionaries
     :return: List of merged recommendation results for attributes
     """
-    BASE_URL = "http://98.88.80.17:5000"
-    ANNOTATE_ENDPOINT = "/api/annotate"
-    API_URL = f"{BASE_URL}{ANNOTATE_ENDPOINT}"
+    api_url = Config.API_URL
     attributes.sort(key=lambda x: x.get("objectName", "unknown"))
     final_output: List[Dict[str, Any]] = []
     # Group by File (object_name)
@@ -133,10 +137,6 @@ def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, 
         file_attributes = list(group_iter)
         recommender_response: List[Dict[str, Any]] = []
         if Config.USE_MOCK_RECOMMENDATIONS:
-            from webapp.models.mock_objects import (
-                MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE,
-            )
-
             recommender_response = MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE.get(
                 object_name, []
             )
@@ -151,7 +151,7 @@ def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, 
                 {k: v for k, v in i.items() if k != "id"} for i in file_attributes
             ]
             try:
-                response = requests.post(API_URL, json=api_payload)
+                response = requests.post(api_url, json=api_payload, timeout=60)
                 response.raise_for_status()
                 raw_response = response.json()
                 # Normalize response (Dict[col, list] -> List[dict])
@@ -183,8 +183,7 @@ def recommend_for_geographic_coverage(
     :param geos: List of geographic coverage dictionaries
     :return: Mock recommendations if enabled, otherwise an empty list
     """
+    #pylint: disable=unused-argument
     if Config.USE_MOCK_RECOMMENDATIONS:
-        from webapp.models.mock_objects import MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
-
         return MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
     return []
