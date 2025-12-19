@@ -5,7 +5,7 @@ import json
 from typing import Any, Dict
 
 import daiquiri
-from fastapi import APIRouter, BackgroundTasks, HTTPException, Body
+from fastapi import APIRouter, BackgroundTasks, HTTPException, Body, Request
 from fastapi.responses import JSONResponse
 
 from webapp.services.core import (
@@ -90,6 +90,17 @@ def recommend_annotations(payload: Dict[str, Any] = Body(...)) -> JSONResponse:
         raise HTTPException(
             status_code=500, detail="Internal server error processing recommendations."
         ) from e
+
+@router.post("/api/log-selection")
+async def log_selection(request: Request):
+    # 2. Get the raw JSON body
+    body = await request.json()
+
+    print("\n--- 🐍 Incoming Python Beacon ---")
+    print(json.dumps(body, indent=2))
+    print("---------------------------------\n")
+
+    return {"status": "received"}
 
 
 __all__ = ["router"]
