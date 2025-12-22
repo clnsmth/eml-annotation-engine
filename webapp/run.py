@@ -14,10 +14,8 @@ from webapp.services.core import (
     recommend_for_attribute,
     recommend_for_geographic_coverage,
     send_email_notification,
-    ProposalRequest,
-    TermDetails,
-    SubmitterInfo,
 )
+from webapp.models.proposal_request import ProposalRequest, TermDetails, SubmitterInfo
 
 app: FastAPI = FastAPI(title="Semantic EML Annotator Backend")
 

@@ -1,15 +1,12 @@
 """
 Unit tests for the send_email_notification function and related email notification logic.
 """
+
 from unittest.mock import MagicMock
 import smtplib
 import pytest
-from webapp.run import (
-    send_email_notification,
-    ProposalRequest,
-    TermDetails,
-    SubmitterInfo,
-)
+from webapp.run import send_email_notification
+from webapp.models.proposal_request import ProposalRequest, TermDetails, SubmitterInfo
 from webapp.config import Config
 
 

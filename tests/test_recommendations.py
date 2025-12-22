@@ -1,15 +1,21 @@
 """
 Unit and integration tests for the recommendations API and utility functions.
 """
+
 from typing import Any, Dict, List
 import json
+import re
+import copy
 import pytest
 from webapp.run import (
     recommend_for_attribute,
     recommend_for_geographic_coverage,
 )
-from webapp.utils.utils import (reformat_attribute_elements, reformat_geographic_coverage_elements,
-                                extract_ontology)
+from webapp.utils.utils import (
+    reformat_attribute_elements,
+    reformat_geographic_coverage_elements,
+    extract_ontology,
+)
 
 
 @pytest.mark.usefixtures("client", "mock_payload")
@@ -19,7 +25,7 @@ def test_recommend_for_attribute_unit(mock_payload: Dict[str, Any]) -> None:
     Checks that the output structure and content are as expected.
     """
     attributes = mock_payload["ATTRIBUTE"]
-    results = recommend_for_attribute(attributes)
+    results = recommend_for_attribute(attributes, request_id="test-uuid-1234")
     print(json.dumps(results, indent=2))
     assert isinstance(results, list)
     assert len(results) == 35
@@ -35,6 +41,8 @@ def test_recommend_for_attribute_unit(mock_payload: Dict[str, Any]) -> None:
             assert "description" in rec
             assert "propertyLabel" in rec
             assert "propertyUri" in rec
+            assert "request_id" in rec
+            assert rec["request_id"] == "test-uuid-1234"
 
 
 @pytest.mark.usefixtures("mock_geo_coverage")
@@ -46,8 +54,19 @@ def test_recommend_for_geographic_coverage_unit(
     Checks that the output matches the mock_geo_coverage fixture.
     """
     geos = [{"description": "Lake Tahoe region", "objectName": "LakeTahoe"}]
-    results = recommend_for_geographic_coverage(geos)
+    results = recommend_for_geographic_coverage(geos, request_id="test-uuid-5678")
     assert isinstance(results, list)
+    for item in results:
+        for rec in item.get("recommendations", []):
+            assert "request_id" in rec
+            assert rec["request_id"] == "test-uuid-5678"
+    # Remove request_id for comparison
+    for item in results:
+        for rec in item.get("recommendations", []):
+            rec.pop("request_id", None)
+    for item in mock_geo_coverage:
+        for rec in item.get("recommendations", []):
+            rec.pop("request_id", None)
     assert results == mock_geo_coverage
 
 
@@ -63,16 +82,16 @@ def test_recommend_for_geographic_coverage_unit(
                     "context": "SurveyResults",
                     "objectName": "SurveyResults.csv",
                     "entityDescription": "Table contains survey information and the counts of "
-                                         "the number of egg masses for each species during that "
-                                         "survey.",
+                    "the number of egg masses for each species during that "
+                    "survey.",
                 }
             ],
             [
                 {
                     "entity_name": "SurveyResults.csv",
                     "entity_description": "Table contains survey information and the counts of "
-                                          "the number of egg masses for each species during that "
-                                          "survey.",
+                    "the number of egg masses for each species during that "
+                    "survey.",
                     "object_name": "SurveyResults.csv",
                     "column_name": "Latitude",
                     "column_description": "Latitude of collection",
@@ -130,6 +149,9 @@ def test_recommend_annotations_endpoint_with_full_mock_frontend_payload(
             assert "description" in rec
             assert "propertyLabel" in rec
             assert "propertyUri" in rec
+            assert "request_id" in rec
+            # Check UUID format (8-4-4-4-12)
+            assert re.match(r"^[a-f0-9\-]{36}$", rec["request_id"])
 
 
 @pytest.mark.usefixtures("client", "mock_payload")
@@ -139,15 +161,30 @@ def test_recommendations_endpoint_snapshot(
     """
     Integration test: POST to /api/recommendations with MOCK_FRONTEND_PAYLOAD and compare
     response to stored snapshot. Sorts both lists by 'id' to ensure order does not affect
-    the test.
+    the test. Normalizes request_id in all recommendations to allow for UUID differences.
+    Prevents in-place modification of the snapshot file.
     """
+
     response = client.post("/api/recommendations", json=mock_payload)
     assert response.status_code == 200
     data = response.json()
-    with open("tests/snapshot_recommendations_response.json", "r", encoding="utf-8") as f:
+    with open(
+        "tests/snapshot_recommendations_response.json", "r", encoding="utf-8"
+    ) as f:
         expected = json.load(f)
-    data_sorted = sorted(data, key=lambda x: x["id"])
-    expected_sorted = sorted(expected, key=lambda x: x["id"])
+
+    def normalize_request_id(results):
+        for item in results:
+            for rec in item.get("recommendations", []):
+                rec["request_id"] = "SNAPSHOT_REQUEST_ID"
+        return results
+
+    data_sorted = sorted(
+        normalize_request_id(copy.deepcopy(data)), key=lambda x: x["id"]
+    )
+    expected_sorted = sorted(
+        normalize_request_id(copy.deepcopy(expected)), key=lambda x: x["id"]
+    )
     assert data_sorted == expected_sorted
 
 

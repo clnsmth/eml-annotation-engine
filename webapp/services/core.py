@@ -1,69 +1,20 @@
 """
 Core business logic and data models for the Semantic EML Annotator Backend.
 """
+
 from itertools import groupby
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from typing import Optional, List, Dict, Any
+from typing import List, Dict, Any
 import smtplib
 import requests
-from pydantic import BaseModel, EmailStr
 from webapp.config import Config
 from webapp.utils.utils import merge_recommender_results
-from webapp.models.mock_objects import (MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE,
-                                        MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS)
-
-
-class TermDetails(BaseModel):
-    """
-    Data model for ontology term details.
-
-    :ivar label: The term label
-    :ivar description: The term description
-    :ivar evidence_source: Optional evidence source
-    """
-
-    label: str
-    description: str
-    evidence_source: Optional[str] = None
-
-
-class SubmitterInfo(BaseModel):
-    """
-    Data model for submitter information.
-
-    :ivar email: Submitter's email address
-    :ivar orcid_id: Optional ORCID identifier
-    :ivar attribution_consent: Whether submitter consents to attribution
-    """
-
-    email: EmailStr
-    orcid_id: Optional[str] = None
-    attribution_consent: bool
-
-
-class ProposalRequest(BaseModel):
-    """
-    Data model for a vocabulary proposal request.
-
-    :ivar target_vocabulary: Target vocabulary/category
-    :ivar term_details: Details of the proposed term
-    :ivar submitter_info: Information about the submitter
-    """
-
-    target_vocabulary: str
-    term_details: TermDetails
-    submitter_info: SubmitterInfo
-
-
-class EMLMetadata(BaseModel):
-    """
-    Data model for EML metadata elements.
-
-    :ivar elements: Dictionary of EML elements
-    """
-
-    elements: dict = {}
+from webapp.models.mock_objects import (
+    MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE,
+    MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS,
+)
+from webapp.models.proposal_request import ProposalRequest
 
 
 def send_email_notification(proposal: ProposalRequest) -> None:
@@ -136,11 +87,14 @@ def _normalize_recommender_response(raw_response):
 
 
 # pylint: disable=too-many-locals
-def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def recommend_for_attribute(
+    attributes: List[Dict[str, Any]], request_id: str = None
+) -> List[Dict[str, Any]]:
     """
     Groups attributes by objectName, sends to API (or gets mock per file), and merges results.
 
     :param attributes: List of attribute dictionaries
+    :param request_id: The request UUID to include in each recommendation object
     :return: List of merged recommendation results for attributes
     """
     api_url = Config.API_URL
@@ -160,6 +114,10 @@ def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, 
             file_results = merge_recommender_results(
                 file_attributes, recommender_response, "ATTRIBUTE"
             )
+            # Add request_id to each recommendation in each result
+            for item in file_results:
+                for rec in item.get("recommendations", []):
+                    rec["request_id"] = request_id
             final_output.extend(file_results)
         else:
             # REAL API LOGIC
@@ -178,20 +136,29 @@ def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, 
             file_results = merge_recommender_results(
                 file_attributes, recommender_response, "ATTRIBUTE"
             )
+            for item in file_results:
+                for rec in item.get("recommendations", []):
+                    rec["request_id"] = request_id
             final_output.extend(file_results)
     return final_output
 
 
 def recommend_for_geographic_coverage(
-    geos: List[Dict[str, Any]],
+    geos: List[Dict[str, Any]], request_id: str = None
 ) -> List[Dict[str, Any]]:
     """
     Stub recommender for geographic coverage elements.
 
     :param geos: List of geographic coverage dictionaries
+    :param request_id: The request UUID to include in each recommendation object
     :return: Mock recommendations if enabled, otherwise an empty list
     """
-    #pylint: disable=unused-argument
+    # pylint: disable=unused-argument
     if Config.USE_MOCK_RECOMMENDATIONS:
-        return MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
+        results = MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS.copy()
+        # Add request_id to each recommendation in each result
+        for item in results:
+            for rec in item.get("recommendations", []):
+                rec["request_id"] = request_id
+        return results
     return []
