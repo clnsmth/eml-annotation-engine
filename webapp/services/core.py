@@ -15,58 +15,10 @@ from webapp.models.mock_objects import (
     MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE,
     MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS,
 )
-
-
-class TermDetails(BaseModel):
-    """
-    Data model for ontology term details.
-
-    :ivar label: The term label
-    :ivar description: The term description
-    :ivar evidence_source: Optional evidence source
-    """
-
-    label: str
-    description: str
-    evidence_source: Optional[str] = None
-
-
-class SubmitterInfo(BaseModel):
-    """
-    Data model for submitter information.
-
-    :ivar email: Submitter's email address
-    :ivar orcid_id: Optional ORCID identifier
-    :ivar attribution_consent: Whether submitter consents to attribution
-    """
-
-    email: EmailStr
-    orcid_id: Optional[str] = None
-    attribution_consent: bool
-
-
-class ProposalRequest(BaseModel):
-    """
-    Data model for a vocabulary proposal request.
-
-    :ivar target_vocabulary: Target vocabulary/category
-    :ivar term_details: Details of the proposed term
-    :ivar submitter_info: Information about the submitter
-    """
-
-    target_vocabulary: str
-    term_details: TermDetails
-    submitter_info: SubmitterInfo
-
-
-class EMLMetadata(BaseModel):
-    """
-    Data model for EML metadata elements.
-
-    :ivar elements: Dictionary of EML elements
-    """
-
-    elements: dict = {}
+from webapp.models.proposal_request import ProposalRequest
+from webapp.models.proposal_request import TermDetails
+from webapp.models.proposal_request import SubmitterInfo
+from webapp.models.eml_metadata import EMLMetadata
 
 
 def send_email_notification(proposal: ProposalRequest) -> None:
