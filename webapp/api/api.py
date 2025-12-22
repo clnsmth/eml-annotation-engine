@@ -16,6 +16,7 @@ from webapp.services.core import (
     recommend_for_attribute,
     recommend_for_geographic_coverage,
 )
+from webapp.models.log_selection import LogSelection
 
 daiquiri.setup()
 logger = daiquiri.getLogger(__name__)
@@ -98,14 +99,10 @@ def recommend_annotations(payload: Dict[str, Any] = Body(...)) -> JSONResponse:
 
 
 @router.post("/api/log-selection")
-async def log_selection(request: Request):
-    # 2. Get the raw JSON body
-    body = await request.json()
-
+async def log_selection(payload: LogSelection):
     print("\n--- 🐍 Incoming Python Beacon ---")
-    print(json.dumps(body, indent=2))
+    print(json.dumps(payload.model_dump(), indent=2))
     print("---------------------------------\n")
-
     return {"status": "received"}
 
 
