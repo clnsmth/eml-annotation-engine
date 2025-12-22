@@ -1,12 +1,14 @@
 from pydantic import BaseModel
 from typing import List
 
+
 class SelectionItem(BaseModel):
     label: str
     uri: str
     property_label: str
     property_uri: str
     confidence: float
+
 
 class LogSelection(BaseModel):
     request_id: str
