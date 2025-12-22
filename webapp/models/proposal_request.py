@@ -1,5 +1,9 @@
-from pydantic import BaseModel, EmailStr
+"""
+Pydantic models for proposal requests, term details, and submitter information in the annotation engine.
+"""
+
 from typing import Optional
+from pydantic import BaseModel, EmailStr
 
 
 class TermDetails(BaseModel):
