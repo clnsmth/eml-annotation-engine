@@ -11,7 +11,7 @@ from webapp.models.mock_objects import MOCK_FRONTEND_PAYLOAD
 
 
 @pytest.mark.usefixtures("client")
-def test_update_snapshot_recommendations_response(client: Any) -> None:
+def update_snapshot_recommendations_response(client: Any) -> None:
     """
     Update the snapshot_recommendations_response.json file with the current
     response from the /api/recommendations endpoint using MOCK_FRONTEND_PAYLOAD.
@@ -37,3 +37,15 @@ def test_update_snapshot_recommendations_response(client: Any) -> None:
     except Exception as e:
         print(f"Failed to update snapshot: {e}")
         raise
+
+if __name__ == "__main__":
+    # This allows the script to be run directly for updating the snapshot
+    from fastapi.testclient import TestClient
+    from webapp.api.api import router
+    from fastapi import FastAPI
+
+    app = FastAPI()
+    app.include_router(router)
+    client = TestClient(app)
+
+    update_snapshot_recommendations_response(client)
