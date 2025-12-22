@@ -157,7 +157,9 @@ def test_recommendations_endpoint_snapshot(
     Integration test: POST to /api/recommendations with MOCK_FRONTEND_PAYLOAD and compare
     response to stored snapshot. Sorts both lists by 'id' to ensure order does not affect
     the test. Normalizes request_id in all recommendations to allow for UUID differences.
+    Prevents in-place modification of the snapshot file.
     """
+    import copy
     response = client.post("/api/recommendations", json=mock_payload)
     assert response.status_code == 200
     data = response.json()
@@ -170,8 +172,8 @@ def test_recommendations_endpoint_snapshot(
                 rec["request_id"] = "SNAPSHOT_REQUEST_ID"
         return results
 
-    data_sorted = sorted(normalize_request_id(data), key=lambda x: x["id"])
-    expected_sorted = sorted(normalize_request_id(expected), key=lambda x: x["id"])
+    data_sorted = sorted(normalize_request_id(copy.deepcopy(data)), key=lambda x: x["id"])
+    expected_sorted = sorted(normalize_request_id(copy.deepcopy(expected)), key=lambda x: x["id"])
     assert data_sorted == expected_sorted
 
 
