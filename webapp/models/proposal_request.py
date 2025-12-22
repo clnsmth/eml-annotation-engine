@@ -1,5 +1,6 @@
 """
-Pydantic models for proposal requests, term details, and submitter information in the annotation engine.
+Pydantic models for proposal requests, term details, and submitter information in the annotation
+engine.
 """
 
 from typing import Optional
