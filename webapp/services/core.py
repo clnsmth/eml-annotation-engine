@@ -5,10 +5,9 @@ Core business logic and data models for the Semantic EML Annotator Backend.
 from itertools import groupby
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from typing import Optional, List, Dict, Any
+from typing import List, Dict, Any
 import smtplib
 import requests
-from pydantic import BaseModel, EmailStr
 from webapp.config import Config
 from webapp.utils.utils import merge_recommender_results
 from webapp.models.mock_objects import (
@@ -16,9 +15,6 @@ from webapp.models.mock_objects import (
     MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS,
 )
 from webapp.models.proposal_request import ProposalRequest
-from webapp.models.proposal_request import TermDetails
-from webapp.models.proposal_request import SubmitterInfo
-from webapp.models.eml_metadata import EMLMetadata
 
 
 def send_email_notification(proposal: ProposalRequest) -> None:
