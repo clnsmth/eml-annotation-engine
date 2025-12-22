@@ -136,11 +136,12 @@ def _normalize_recommender_response(raw_response):
 
 
 # pylint: disable=too-many-locals
-def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def recommend_for_attribute(attributes: List[Dict[str, Any]], request_id: str = None) -> List[Dict[str, Any]]:
     """
     Groups attributes by objectName, sends to API (or gets mock per file), and merges results.
 
     :param attributes: List of attribute dictionaries
+    :param request_id: The request UUID to include in each recommendation object
     :return: List of merged recommendation results for attributes
     """
     api_url = Config.API_URL
@@ -160,6 +161,10 @@ def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, 
             file_results = merge_recommender_results(
                 file_attributes, recommender_response, "ATTRIBUTE"
             )
+            # Add request_id to each recommendation in each result
+            for item in file_results:
+                for rec in item.get("recommendations", []):
+                    rec["request_id"] = request_id
             final_output.extend(file_results)
         else:
             # REAL API LOGIC
@@ -178,20 +183,29 @@ def recommend_for_attribute(attributes: List[Dict[str, Any]]) -> List[Dict[str, 
             file_results = merge_recommender_results(
                 file_attributes, recommender_response, "ATTRIBUTE"
             )
+            for item in file_results:
+                for rec in item.get("recommendations", []):
+                    rec["request_id"] = request_id
             final_output.extend(file_results)
     return final_output
 
 
 def recommend_for_geographic_coverage(
-    geos: List[Dict[str, Any]],
+    geos: List[Dict[str, Any]], request_id: str = None
 ) -> List[Dict[str, Any]]:
     """
     Stub recommender for geographic coverage elements.
 
     :param geos: List of geographic coverage dictionaries
+    :param request_id: The request UUID to include in each recommendation object
     :return: Mock recommendations if enabled, otherwise an empty list
     """
     #pylint: disable=unused-argument
     if Config.USE_MOCK_RECOMMENDATIONS:
-        return MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS
+        results = MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS.copy()
+        # Add request_id to each recommendation in each result
+        for item in results:
+            for rec in item.get("recommendations", []):
+                rec["request_id"] = request_id
+        return results
     return []

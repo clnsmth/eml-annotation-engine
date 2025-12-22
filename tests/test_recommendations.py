@@ -19,7 +19,7 @@ def test_recommend_for_attribute_unit(mock_payload: Dict[str, Any]) -> None:
     Checks that the output structure and content are as expected.
     """
     attributes = mock_payload["ATTRIBUTE"]
-    results = recommend_for_attribute(attributes)
+    results = recommend_for_attribute(attributes, request_id="test-uuid-1234")
     print(json.dumps(results, indent=2))
     assert isinstance(results, list)
     assert len(results) == 35
@@ -35,6 +35,8 @@ def test_recommend_for_attribute_unit(mock_payload: Dict[str, Any]) -> None:
             assert "description" in rec
             assert "propertyLabel" in rec
             assert "propertyUri" in rec
+            assert "request_id" in rec
+            assert rec["request_id"] == "test-uuid-1234"
 
 
 @pytest.mark.usefixtures("mock_geo_coverage")
@@ -46,8 +48,19 @@ def test_recommend_for_geographic_coverage_unit(
     Checks that the output matches the mock_geo_coverage fixture.
     """
     geos = [{"description": "Lake Tahoe region", "objectName": "LakeTahoe"}]
-    results = recommend_for_geographic_coverage(geos)
+    results = recommend_for_geographic_coverage(geos, request_id="test-uuid-5678")
     assert isinstance(results, list)
+    for item in results:
+        for rec in item.get("recommendations", []):
+            assert "request_id" in rec
+            assert rec["request_id"] == "test-uuid-5678"
+    # Remove request_id for comparison
+    for item in results:
+        for rec in item.get("recommendations", []):
+            rec.pop("request_id", None)
+    for item in mock_geo_coverage:
+        for rec in item.get("recommendations", []):
+            rec.pop("request_id", None)
     assert results == mock_geo_coverage
 
 
@@ -130,6 +143,10 @@ def test_recommend_annotations_endpoint_with_full_mock_frontend_payload(
             assert "description" in rec
             assert "propertyLabel" in rec
             assert "propertyUri" in rec
+            assert "request_id" in rec
+            # Check UUID format (8-4-4-4-12)
+            import re
+            assert re.match(r"^[a-f0-9\-]{36}$", rec["request_id"])
 
 
 @pytest.mark.usefixtures("client", "mock_payload")

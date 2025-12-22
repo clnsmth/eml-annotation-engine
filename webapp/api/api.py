@@ -2,6 +2,7 @@
 API endpoints for the Semantic EML Annotator Backend.
 """
 import json
+import uuid
 from typing import Any, Dict
 
 import daiquiri
@@ -70,13 +71,16 @@ def recommend_annotations(payload: Dict[str, Any] = Body(...)) -> JSONResponse:
     """
     logger.info("Received recommendation payload: %s", json.dumps(payload, indent=2))
     results = []
+    request_id = str(uuid.uuid4())
     try:
         if "ATTRIBUTE" in payload:
-            recommended_attributes = recommend_for_attribute(payload["ATTRIBUTE"])
+            recommended_attributes = recommend_for_attribute(
+                payload["ATTRIBUTE"], request_id=request_id
+            )
             results.append(recommended_attributes)
         if "GEOGRAPHICCOVERAGE" in payload:
             recommended_geographic_coverage = recommend_for_geographic_coverage(
-                payload["GEOGRAPHICCOVERAGE"]
+                payload["GEOGRAPHICCOVERAGE"], request_id=request_id
             )
             results.append(recommended_geographic_coverage)
         if results:
@@ -90,6 +94,7 @@ def recommend_annotations(payload: Dict[str, Any] = Body(...)) -> JSONResponse:
         raise HTTPException(
             status_code=500, detail="Internal server error processing recommendations."
         ) from e
+
 
 @router.post("/api/log-selection")
 async def log_selection(request: Request):
