@@ -4,25 +4,23 @@ Test utilities for updating the recommendations snapshot using the FastAPI test 
 
 import json
 import os
-from typing import Any
-
-import pytest
-
+from fastapi.testclient import TestClient
+from fastapi import FastAPI
 from webapp.models.mock_objects import MOCK_FRONTEND_PAYLOAD
+from webapp.run import app
+from webapp.api.api import router
 
 
-@pytest.mark.usefixtures("client")
-def update_snapshot_recommendations_response(client: Any) -> None:
+def update_snapshot_recommendations_response() -> None:
     """
     Update the snapshot_recommendations_response.json file with the current
     response from the /api/recommendations endpoint using MOCK_FRONTEND_PAYLOAD.
 
-    :param client: The FastAPI test client fixture
     :raises AssertionError: If the response status code is not 200
     :raises Exception: If writing the snapshot file fails
     """
     payload = MOCK_FRONTEND_PAYLOAD
-    response = client.post("/api/recommendations", json=payload)
+    response = TestClient(app).post("/api/recommendations", json=payload)
     assert response.status_code == 200, f"Request failed: {response.status_code}"
     data = response.json()
     snapshot_path = os.path.join(
@@ -42,12 +40,9 @@ def update_snapshot_recommendations_response(client: Any) -> None:
 
 if __name__ == "__main__":
     # This allows the script to be run directly for updating the snapshot
-    from fastapi.testclient import TestClient
-    from webapp.api.api import router
-    from fastapi import FastAPI
 
     app = FastAPI()
     app.include_router(router)
     client = TestClient(app)
 
-    update_snapshot_recommendations_response(client)
+    update_snapshot_recommendations_response()
