@@ -7,7 +7,7 @@ import uuid
 from typing import Any, Dict
 
 import daiquiri
-from fastapi import APIRouter, BackgroundTasks, HTTPException, Body, Request
+from fastapi import APIRouter, BackgroundTasks, HTTPException, Body
 from fastapi.responses import JSONResponse
 
 from webapp.services.core import (
@@ -100,6 +100,12 @@ def recommend_annotations(payload: Dict[str, Any] = Body(...)) -> JSONResponse:
 
 @router.post("/api/log-selection")
 async def log_selection(payload: LogSelection):
+    """
+    Receives a log-selection POST payload, prints it for debugging, and returns a status response.
+
+    :param payload: The validated log-selection payload
+    :return: Status message indicating receipt
+    """
     print("\n--- 🐍 Incoming Python Beacon ---")
     print(json.dumps(payload.model_dump(), indent=2))
     print("---------------------------------\n")
