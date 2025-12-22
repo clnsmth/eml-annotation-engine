@@ -1,6 +1,7 @@
 """
 Unit tests for the send_email_notification function and related email notification logic.
 """
+
 from unittest.mock import MagicMock
 import smtplib
 import pytest

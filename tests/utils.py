@@ -1,6 +1,7 @@
 """
 Test utilities for updating the recommendations snapshot using the FastAPI test client.
 """
+
 import json
 import os
 from typing import Any
@@ -37,6 +38,7 @@ def update_snapshot_recommendations_response(client: Any) -> None:
     except Exception as e:
         print(f"Failed to update snapshot: {e}")
         raise
+
 
 if __name__ == "__main__":
     # This allows the script to be run directly for updating the snapshot
