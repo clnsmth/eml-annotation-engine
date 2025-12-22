@@ -1,6 +1,7 @@
 """
 API endpoints for the Semantic EML Annotator Backend.
 """
+
 import json
 import uuid
 from typing import Any, Dict

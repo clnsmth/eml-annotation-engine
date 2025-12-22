@@ -1,6 +1,7 @@
 """
 Core business logic and data models for the Semantic EML Annotator Backend.
 """
+
 from itertools import groupby
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -10,8 +11,10 @@ import requests
 from pydantic import BaseModel, EmailStr
 from webapp.config import Config
 from webapp.utils.utils import merge_recommender_results
-from webapp.models.mock_objects import (MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE,
-                                        MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS)
+from webapp.models.mock_objects import (
+    MOCK_RAW_ATTRIBUTE_RECOMMENDATIONS_BY_FILE,
+    MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS,
+)
 
 
 class TermDetails(BaseModel):
@@ -136,7 +139,9 @@ def _normalize_recommender_response(raw_response):
 
 
 # pylint: disable=too-many-locals
-def recommend_for_attribute(attributes: List[Dict[str, Any]], request_id: str = None) -> List[Dict[str, Any]]:
+def recommend_for_attribute(
+    attributes: List[Dict[str, Any]], request_id: str = None
+) -> List[Dict[str, Any]]:
     """
     Groups attributes by objectName, sends to API (or gets mock per file), and merges results.
 
@@ -200,7 +205,7 @@ def recommend_for_geographic_coverage(
     :param request_id: The request UUID to include in each recommendation object
     :return: Mock recommendations if enabled, otherwise an empty list
     """
-    #pylint: disable=unused-argument
+    # pylint: disable=unused-argument
     if Config.USE_MOCK_RECOMMENDATIONS:
         results = MOCK_GEOGRAPHICCOVERAGE_RECOMMENDATIONS.copy()
         # Add request_id to each recommendation in each result
