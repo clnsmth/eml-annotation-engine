@@ -4,6 +4,8 @@ Unit and integration tests for the recommendations API and utility functions.
 
 from typing import Any, Dict, List
 import json
+import re
+import copy
 import pytest
 from webapp.run import (
     recommend_for_attribute,
@@ -149,8 +151,6 @@ def test_recommend_annotations_endpoint_with_full_mock_frontend_payload(
             assert "propertyUri" in rec
             assert "request_id" in rec
             # Check UUID format (8-4-4-4-12)
-            import re
-
             assert re.match(r"^[a-f0-9\-]{36}$", rec["request_id"])
 
 
@@ -164,7 +164,6 @@ def test_recommendations_endpoint_snapshot(
     the test. Normalizes request_id in all recommendations to allow for UUID differences.
     Prevents in-place modification of the snapshot file.
     """
-    import copy
 
     response = client.post("/api/recommendations", json=mock_payload)
     assert response.status_code == 200
